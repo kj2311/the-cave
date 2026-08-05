@@ -11,7 +11,8 @@ import { CASES } from '../data/cases.js';
 import { pickUnseen } from '../store.js';
 import { hud, choices, reveal, nextBtn } from './_shared.js';
 
-const PER_RUN = 3;
+/** More case files per sitting as the level climbs. */
+const perRunFor = (level) => (level >= 7 ? 5 : level >= 4 ? 4 : 3);
 
 export default {
   id: 'chain',
@@ -22,7 +23,7 @@ export default {
   length: '5 min',
 
   mount(root, ctx) {
-    const cases = pickUnseen('cases', CASES, PER_RUN);
+    const cases = pickUnseen('cases', CASES, perRunFor(ctx.level));
     const bar = hud(cases.length * 2);
     let step = 0;
     const score = { got: 0, of: cases.length * 2 };
@@ -35,7 +36,7 @@ export default {
         h('div.fade-in.stack',
           h('div.panel',
             h('div.label', 'Deduction · The Chain'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `${cases.length} case files`),
+            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${cases.length} case files`),
             h('p.prose', 'Each file gives you a scene and a handful of observations. Some of them are noise, deliberately.'),
             h('p.prose', 'Choose the conclusion the evidence will actually support — not the most interesting one. Then name the observation that did the work.'),
           ),

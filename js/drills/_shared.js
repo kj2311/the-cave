@@ -104,8 +104,3 @@ export function countdown(stage, from, onDone) {
   }, 900);
   return () => clearInterval(id);
 }
-
-/** Level 1..5 from how many times this drill has been completed. */
-export function levelFor(runs = 0) {
-  return Math.max(1, Math.min(5, 1 + Math.floor(runs / 3)));
-}

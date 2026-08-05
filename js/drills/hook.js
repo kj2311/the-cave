@@ -10,7 +10,7 @@ import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { hud, choices, reveal, nextBtn } from './_shared.js';
 
-const PER_RUN = 4;
+const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
 export default {
   id: 'hook',
@@ -21,7 +21,7 @@ export default {
   length: '4 min',
 
   mount(root, ctx) {
-    const items = pickUnseen('coldreads', COLDREADS, PER_RUN);
+    const items = pickUnseen('coldreads', COLDREADS, perRunFor(ctx.level));
     const bar = hud(items.length);
     let right = 0;
     let cancelled = false;
@@ -33,7 +33,7 @@ export default {
         h('div.fade-in.stack',
           h('div.panel',
             h('div.label', 'Influence · The Hook'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `${items.length} devices`),
+            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} devices`),
             h('p.prose', 'These are the mechanics behind psychics, fraudsters and bad-faith persuasion. They are taught here so that they can never be run on you unnoticed.'),
             h('div.reveal',
               h('div.reveal__title', 'The test that matters'),

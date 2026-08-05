@@ -3,17 +3,19 @@
    ============================================================ */
 
 import {
-  h, svg, ICONS, toast, render, pick, fmtDate, ringSvg, buzz,
+  h, svg, ICONS, toast, render, pick, fmtDate, ringSvg, sparkline, buzz,
 } from './ui.js';
 import {
   DISCIPLINES, get, reset, dayKey, levelFromXp, rank,
   liveStreak, ensureDaily, dailyComplete, recordRun, addLog, deleteLog,
   markRead, exportJson, importJson,
+  drillLevel, toNextLevel, drillScores, activity, recentAverage, trend,
+  MAX_LEVEL, MASTERY,
 } from './store.js';
 import { DRILLS, byId, drillIds } from './drills/index.js';
 import { LESSONS } from './data/lessons.js';
 import { LOG_PROMPTS } from './data/people.js';
-import { levelFor, mdish } from './drills/_shared.js';
+import { mdish } from './drills/_shared.js';
 
 const QUOTES = [
   'Everyone is telling you something. Almost nobody is saying it.',
@@ -115,8 +117,7 @@ function hashDay() {
 }
 
 function drillCard(d, isDone) {
-  const s = get();
-  const lvl = levelFor(s.runs[d.id] || 0);
+  const lvl = drillLevel(d.id);
   return h(`button.drill.${DISCIPLINES[d.discipline].cls}${isDone ? '.is-done' : ''}`,
     { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
     h('span.drill__glyph', svg(d.icon, 21)),
@@ -154,7 +155,8 @@ function viewTrain() {
     h('div.panel',
       h('div.label', 'Training'),
       h('h2', { style: { margin: '8px 0 8px' } }, 'Six systems'),
-      h('p.prose', 'Each drill scales with you. Three completed runs moves it up a level — more items, less time, fewer cues.'),
+      h('p.prose', `Each drill scales with you, up to level ${MAX_LEVEL}. Two runs at ${Math.round(MASTERY * 100)}% or better move it up — more items, less time, fewer cues, a bigger board.`),
+      h('p.prose.faint', { style: { fontSize: '13.5px' } }, 'Turning up counts for XP. Only doing well makes it harder.'),
     ),
   ];
 
@@ -171,13 +173,22 @@ function viewTrain() {
       ...list.map(d => {
         const runs = s.runs[d.id] || 0;
         const best = s.bests[d.id];
+        const lvl = drillLevel(d.id);
+        const toNext = toNextLevel(d.id);
         return h(`button.drill.${meta.cls}`, { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
           h('span.drill__glyph', svg(d.icon, 21)),
           h('span.grow',
-            h('div.drill__name', d.name),
+            h('div.row',
+              h('div.drill__name.grow', d.name),
+              h('span.chip.chip--accent', `LV ${lvl}`),
+            ),
             h('div.drill__sub', d.blurb),
             h('div.drill__sub', { style: { marginTop: '4px', opacity: .8 } },
-              `Level ${levelFor(runs)} · ${runs} run${runs === 1 ? '' : 's'}${best !== undefined ? ` · best ${Math.round(best * 100)}%` : ''}`),
+              `${runs} run${runs === 1 ? '' : 's'}`,
+              best !== undefined ? ` · best ${Math.round(best * 100)}%` : '',
+              toNext === 0
+                ? ' · at the ceiling'
+                : ` · ${toNext} more strong run${toNext === 1 ? '' : 's'} to level ${lvl + 1}`),
           ),
           h('span.drill__chev', svg(ICONS.chevron, 18)),
         );
@@ -406,8 +417,14 @@ function viewProfile() {
         h('div.stat', h('div.stat__v', runs), h('div.stat__k', 'Sessions')),
       ),
 
+      h('div.section-head', h('span.label', 'Last 28 days')),
+      h('div.panel', activityStrip()),
+
       h('div.section-head', h('span.label', 'Systems')),
       h('div.panel', meters),
+
+      h('div.section-head', h('span.label', 'Drill by drill')),
+      ...DRILLS.map(drillProgressCard),
 
       h('div.section-head', h('span.label', 'Recent')),
       h('div.panel', s.history.length
@@ -415,7 +432,8 @@ function viewProfile() {
             const d = byId(x.drill);
             return h('div.row.row--between', { style: { padding: '7px 0' } },
               h('span', { style: { fontSize: '14px' } }, d ? d.name : x.drill),
-              h('span.mono.faint', { style: { fontSize: '12px' } }, `${Math.round(x.pct * 100)}%  +${x.xp}`),
+              h('span.mono.faint', { style: { fontSize: '12px' } },
+                `${fmtDate(x.ts)} · ${Math.round(x.pct * 100)}%  +${x.xp}`),
             );
           }))
         : h('div.empty', 'No sessions yet.')),
@@ -430,9 +448,88 @@ function viewProfile() {
       h('div.center.faint.mono', { style: { marginTop: '22px', fontSize: '10.5px', letterSpacing: '.16em' } },
         'THE CAVE · v1.0'),
     ),
-    { title: 'PROFILE' },
+    { title: 'PROGRESS' },
   );
   setTab('#/profile');
+}
+
+/** A day-by-day strip of training activity — intensity by session count. */
+function activityStrip() {
+  const days = activity(28);
+  const max = Math.max(1, ...days.map(d => d.count));
+  const cells = days.map(d => {
+    const intensity = d.count === 0 ? 0 : 0.28 + 0.72 * (d.count / max);
+    return h('span.spark-day', {
+      title: `${d.key} — ${d.count} session${d.count === 1 ? '' : 's'}`,
+      style: {
+        background: d.count
+          ? `color-mix(in srgb, var(--amber) ${Math.round(intensity * 100)}%, transparent)`
+          : 'var(--line)',
+      },
+    });
+  });
+  const total = days.reduce((a, b) => a + b.count, 0);
+  const active = days.filter(d => d.count).length;
+  return h('div',
+    h('div.spark-grid', cells),
+    h('div.row.row--between', { style: { marginTop: '12px' } },
+      h('span.label', `${active} of 28 days`),
+      h('span.label', `${total} session${total === 1 ? '' : 's'}`),
+    ),
+  );
+}
+
+/** Per-drill progress: level, path to the next one, trend, sparkline. */
+function drillProgressCard(d) {
+  const s = get();
+  const meta = DISCIPLINES[d.discipline];
+  const runs = s.runs[d.id] || 0;
+  const lvl = drillLevel(d.id);
+  const toNext = toNextLevel(d.id);
+  const best = s.bests[d.id];
+  const avg = recentAverage(d.id);
+  const tr = trend(d.id);
+  const line = sparkline(drillScores(d.id));
+
+  if (!runs) {
+    return h(`div.panel.${meta.cls}`,
+      h('div.row',
+        h('span.drill__glyph', svg(d.icon, 20)),
+        h('span.grow', h('div.drill__name', d.name), h('div.drill__sub', 'Not attempted yet')),
+        h('span.chip', 'LV 1'),
+      ),
+    );
+  }
+
+  const arrow = tr === null ? null
+    : tr > 0.04 ? h('span', { style: { color: 'var(--green)' } }, '▲ improving')
+    : tr < -0.04 ? h('span', { style: { color: 'var(--red)' } }, '▼ slipping')
+    : h('span.faint', '▬ steady');
+
+  return h(`div.panel.${meta.cls}`,
+    h('div.row',
+      h('span.drill__glyph', svg(d.icon, 20)),
+      h('span.grow',
+        h('div.drill__name', d.name),
+        h('div.drill__sub', `${meta.name} · ${runs} run${runs === 1 ? '' : 's'}`),
+      ),
+      line,
+    ),
+    h('div.row', { style: { marginTop: '13px', gap: '8px' } },
+      h('span.chip.chip--accent', `LEVEL ${lvl}`),
+      best !== undefined ? h('span.chip', `best ${Math.round(best * 100)}%`) : null,
+      avg !== null ? h('span.chip', `last 5 ${Math.round(avg * 100)}%`) : null,
+    ),
+    h('div.row.row--between', { style: { marginTop: '11px', fontSize: '12.5px' } },
+      h('span.faint',
+        toNext === 0
+          ? `Level ${MAX_LEVEL} — the ceiling`
+          : `${toNext} more run${toNext === 1 ? '' : 's'} at ${Math.round(MASTERY * 100)}%+ to reach level ${lvl + 1}`),
+      arrow,
+    ),
+    h('div.bar', { style: { marginTop: '9px' } },
+      h('div.bar__fill', { style: { width: `${Math.round((lvl / MAX_LEVEL) * 100)}%` } })),
+  );
 }
 
 /* ============================================================
@@ -443,9 +540,8 @@ function viewDrill(id) {
   const d = byId(id);
   if (!d) return go('#/train');
 
-  const s = get();
   const root = h('div');
-  const level = levelFor(s.runs[d.id] || 0);
+  const level = drillLevel(d.id);
 
   render(root, {
     title: d.name.toUpperCase(),
@@ -462,6 +558,30 @@ function viewDrill(id) {
       showResult(d, result, outcome);
     },
   });
+}
+
+/** Where this run leaves you: level, distance to the next, recent shape. */
+function progressStrip(d, outcome) {
+  const lvl = drillLevel(d.id);
+  const line = sparkline(drillScores(d.id), { w: 104, hgt: 28 });
+
+  return h('div.panel', { style: { marginTop: '12px' } },
+    h('div.row.row--between',
+      h('div',
+        h('div.label', 'Difficulty'),
+        h('div', { style: { marginTop: '5px', fontSize: '15px' } }, `Level ${lvl} of ${MAX_LEVEL}`),
+      ),
+      line,
+    ),
+    h('div.bar', { style: { marginTop: '11px' } },
+      h('div.bar__fill', { style: { width: `${Math.round((lvl / MAX_LEVEL) * 100)}%` } })),
+    h('div.faint', { style: { marginTop: '9px', fontSize: '12.5px' } },
+      outcome.toNext === 0
+        ? 'You are at the ceiling for this drill.'
+        : outcome.strongRun
+          ? `Counted as a strong run. ${outcome.toNext} more to level ${lvl + 1}.`
+          : `Below ${Math.round(MASTERY * 100)}%, so it does not count towards the next level. ${outcome.toNext} strong run${outcome.toNext === 1 ? '' : 's'} needed.`),
+  );
 }
 
 function showResult(d, result, outcome) {
@@ -482,6 +602,10 @@ function showResult(d, result, outcome) {
         h('div', { style: { marginTop: '16px' } },
           h('span.xp-pop', `+${outcome.xp} XP`),
         ),
+        outcome.drillLevelUp
+          ? h('div', { style: { marginTop: '10px' } },
+              h('span.chip.chip--accent', `${d.name} is now level ${outcome.drillLevelUp} — it gets harder from here`))
+          : null,
         outcome.levelUp
           ? h('div', { style: { marginTop: '10px' } },
               h('span.chip.chip--accent', `${meta.name} reached level ${outcome.levelUp}`))
@@ -490,6 +614,8 @@ function showResult(d, result, outcome) {
           ? h('div', { style: { marginTop: '10px' } }, h('span.chip', { style: { color: 'var(--green)' } }, 'Personal best'))
           : null,
       ),
+
+      progressStrip(d, outcome),
 
       result.stats
         ? h('div.result-grid', ...result.stats.map(st =>

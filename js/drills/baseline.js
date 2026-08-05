@@ -11,7 +11,7 @@ import { BASELINES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { hud, choices, reveal, nextBtn } from './_shared.js';
 
-const PER_RUN = 4;
+const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
 export default {
   id: 'baseline',
@@ -22,7 +22,7 @@ export default {
   length: '4 min',
 
   mount(root, ctx) {
-    const items = pickUnseen('baselines', BASELINES, PER_RUN);
+    const items = pickUnseen('baselines', BASELINES, perRunFor(ctx.level));
     const bar = hud(items.length);
     let right = 0;
     let cancelled = false;
@@ -34,7 +34,7 @@ export default {
         h('div.fade-in.stack',
           h('div.panel',
             h('div.label', 'Reading · Baseline'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `${items.length} observations`),
+            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} observations`),
             h('p.prose', 'You get a person\'s established normal, then a single moment. Identify what genuinely departed from the baseline.'),
             h('div.reveal.reveal--myth',
               h('div.reveal__title', 'Ground rule'),

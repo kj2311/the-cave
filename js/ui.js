@@ -148,6 +148,32 @@ export function fmtDate(ts) {
   return new Date(ts).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+/**
+ * Small score-over-time line. `values` are 0..1, oldest first.
+ * Returns null when there is not enough history to say anything.
+ */
+export function sparkline(values, { w = 88, hgt = 26, color = 'var(--accent, var(--amber))' } = {}) {
+  if (!values || values.length < 2) return null;
+  const pad = 3;
+  const stepX = (w - pad * 2) / (values.length - 1);
+  const y = v => pad + (1 - Math.max(0, Math.min(1, v))) * (hgt - pad * 2);
+  const pts = values.map((v, i) => `${(pad + i * stepX).toFixed(1)},${y(v).toFixed(1)}`);
+
+  const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  el.setAttribute('width', w);
+  el.setAttribute('height', hgt);
+  el.setAttribute('viewBox', `0 0 ${w} ${hgt}`);
+  el.setAttribute('aria-hidden', 'true');
+  el.style.display = 'block';
+
+  const last = values[values.length - 1];
+  el.innerHTML = `
+    <polyline points="${pts.join(' ')}" fill="none" stroke="${color}" stroke-width="1.6"
+              stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+    <circle cx="${(pad + (values.length - 1) * stepX).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.4" fill="${color}"/>`;
+  return el;
+}
+
 export function ringSvg(pct, size = 62, stroke = 5) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;

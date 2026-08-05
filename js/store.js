@@ -34,6 +34,7 @@ function blankState() {
     history: [],   // { ts, drill, pct, xp }
     bests: {},     // drillId -> best percentage
     runs: {},      // drillId -> times completed
+    strong: {},    // drillId -> runs at or above MASTERY; this drives difficulty
     log: [],       // { ts, prompt, body }
     read: [],      // lesson ids
     seen: {},      // content ids already served, so items do not repeat
@@ -169,6 +170,25 @@ export function dailyComplete() {
 
 /* ---------- recording a run ---------- */
 
+/** A run at or above this counts towards moving the drill up a level. */
+export const MASTERY = 0.7;
+
+/** Strong runs needed per level step, and the ceiling. */
+export const STEP = 2;
+export const MAX_LEVEL = 8;
+
+export function drillLevel(drillId) {
+  const strong = state.strong[drillId] || 0;
+  return Math.max(1, Math.min(MAX_LEVEL, 1 + Math.floor(strong / STEP)));
+}
+
+/** How many more strong runs before this drill gets harder. */
+export function toNextLevel(drillId) {
+  const strong = state.strong[drillId] || 0;
+  if (drillLevel(drillId) >= MAX_LEVEL) return 0;
+  return STEP - (strong % STEP);
+}
+
 /**
  * @param {string} drillId
  * @param {string} discipline
@@ -180,8 +200,12 @@ export function recordRun(drillId, discipline, pct, baseXp = 40) {
   // Half the XP is participation; effort still counts on a bad day.
   const xp = Math.round(baseXp * (0.5 + 0.5 * clamped));
 
+  const levelBefore = drillLevel(drillId);
+
   state.xp[discipline] = (state.xp[discipline] || 0) + xp;
   state.runs[drillId] = (state.runs[drillId] || 0) + 1;
+  const strongRun = clamped >= MASTERY;
+  if (strongRun) state.strong[drillId] = (state.strong[drillId] || 0) + 1;
   state.bests[drillId] = Math.max(state.bests[drillId] || 0, clamped);
   state.history.push({ ts: Date.now(), drill: drillId, pct: clamped, xp });
   if (state.history.length > 400) state.history = state.history.slice(-400);
@@ -193,7 +217,56 @@ export function recordRun(drillId, discipline, pct, baseXp = 40) {
   const streak = touchStreak();
   save();
 
-  return { xp, levelUp: after > before ? after : 0, streak, best: state.bests[drillId] === clamped };
+  return {
+    xp,
+    levelUp: after > before ? after : 0,
+    drillLevelUp: drillLevel(drillId) > levelBefore ? drillLevel(drillId) : 0,
+    strongRun,
+    toNext: toNextLevel(drillId),
+    streak,
+    best: state.bests[drillId] === clamped,
+  };
+}
+
+/* ---------- progress read models ---------- */
+
+/** Recent scores for one drill, oldest first. */
+export function drillScores(drillId, limit = 12) {
+  return state.history.filter(h => h.drill === drillId).slice(-limit).map(h => h.pct);
+}
+
+/** Runs per day for the last `days` days, oldest first. */
+export function activity(days = 28) {
+  const out = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    const key = dayKey(d);
+    out.push({
+      key,
+      day: d.getDate(),
+      count: state.history.filter(h => dayKey(new Date(h.ts)) === key).length,
+    });
+  }
+  return out;
+}
+
+/** Mean of the last n scores for a drill, or null if never run. */
+export function recentAverage(drillId, n = 5) {
+  const s = drillScores(drillId, n);
+  if (!s.length) return null;
+  return s.reduce((a, b) => a + b, 0) / s.length;
+}
+
+/** Change between the previous block of runs and the latest block. */
+export function trend(drillId, n = 5) {
+  const all = drillScores(drillId, n * 2);
+  if (all.length < 4) return null;
+  const half = Math.floor(all.length / 2);
+  const older = all.slice(0, half);
+  const newer = all.slice(half);
+  const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+  return mean(newer) - mean(older);
 }
 
 /* ---------- content rotation ---------- */

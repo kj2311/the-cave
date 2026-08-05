@@ -28,8 +28,8 @@ export default {
 
   mount(root, ctx) {
     const level = ctx.level;
-    const count = 5 + level * 2;                       // 7 → 15 items
-    const showMs = Math.max(950, 1750 - level * 160);
+    const count = 5 + level * 2;                       // 7 → 21 items
+    const showMs = Math.max(700, 1800 - level * 150);
     const scaffold = level <= 2;
 
     const items = sampleUnique(NOUNS, count);

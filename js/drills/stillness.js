@@ -17,12 +17,13 @@ const INKS = [
   { n: 'AMBER', v: '#f5a623' },
 ];
 
-const LIMIT_MS = 3000;
+/** The answer window closes faster as the level climbs. */
+const limitFor = (level) => Math.max(1300, 3200 - level * 200);
 
 const TIPS = [
   'Slowing your breathing before a hard question buys you working memory. Four in, six or eight out.',
   'The pause you are afraid of is about a quarter as long from the outside as it feels from the inside.',
-  'Naming a state reduces it. "This is adrenaline, it peaks in ninety seconds" measurably takes the edge off.',
+  'Putting a feeling into words measurably reduces its intensity. Naming it beats trying to suppress it.',
   'Suppressing the obvious answer is the same muscle whether the pull is a word, a hunch, or a satisfying conclusion.',
   'Speed without accuracy is not composure. Get it right, then get it quick.',
 ];
@@ -39,6 +40,7 @@ export default {
     const level = ctx.level;
     const trials = 20 + level * 3;
     const switching = level >= 3;
+    const LIMIT_MS = limitFor(level);
 
     const seq = buildTrials(trials, switching);
     const bar = hud(trials);
@@ -77,7 +79,7 @@ export default {
             switching
               ? h('p.prose', 'From this level the rule switches without warning to ', h('b', { style: { color: 'var(--cyan)' } }, 'WORD'), ', where you tap what it says and ignore the ink. Watch the banner.')
               : h('p.prose', 'The rule stays on INK for the whole run at this level.'),
-            h('p.prose.faint', { style: { fontSize: '13.5px' } }, `Three seconds per trial. A miss counts the same as a wrong answer.`),
+            h('p.prose.faint', { style: { fontSize: '13.5px' } }, `${(LIMIT_MS / 1000).toFixed(1)} seconds per trial. A miss counts the same as a wrong answer.`),
           ),
           nextBtn('Begin', () => run()),
         ),

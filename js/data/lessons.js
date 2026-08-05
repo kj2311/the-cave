@@ -15,7 +15,8 @@ export const LESSONS = [
     teaser: 'Everything you have been told about reading people is backwards until you fix this one thing.',
     body: [
       { p: 'Almost everyone who tries to read people makes the same mistake: they look for behaviours that *mean* something. Arms folded means closed. Touching the nose means lying. Looking up and left means fabricating. None of it survives contact with evidence.' },
-      { myth: 'When researchers test people on detecting deception from behaviour, accuracy lands around 54% — barely above a coin. Police officers, judges and customs agents score about the same as students. Confidence rises with training. Accuracy does not.' },
+      { myth: 'The largest synthesis of this question — 206 studies, 24,483 judges — puts average accuracy at 54%, barely above a coin toss. Police officers, judges and customs agents score about the same as students. Confidence rises with training. Accuracy does not.' },
+      { p: 'A companion meta-analysis looked at the cues themselves rather than the judges. Of 50 behaviours studied often enough to test, 36 showed no significant relationship with lying at all — and the 14 that did averaged a small effect, around d = 0.25. That is the empirical ceiling everyone is working under.' },
       { p: 'The reason is simple. There is no behaviour that belongs to lying, because lying is not one thing. It has no dedicated muscle. What actually exists is *arousal*, *cognitive load*, and *self-management* — and those have a hundred causes, of which deception is one.' },
       { h: 'What is actually trainable' },
       { p: 'You cannot read a person. You can read a *change* in a person. That requires knowing what they were like before, which is the part almost everyone skips.' },
@@ -62,7 +63,7 @@ export const LESSONS = [
       { p: 'To recall, walk the route. The location cues the image, the image cues the item. You will find the order comes free — that is the part that feels like a trick the first time it happens.' },
       { h: 'Why it works' },
       { p: 'Spatial memory is ancient and involuntary; verbal list memory is recent and effortful. You are not improving your memory in any general sense. You are converting a task you are bad at into a task you were already excellent at.' },
-      { p: 'Every world memory champion uses this. None of them started with unusual memories — the ones who have been tested score normally on everything they have not trained.' },
+      { p: 'When researchers scanned and tested ten superior memorisers, including World Memory Championship competitors, nine of the ten turned out to be using this method. They had no structural brain differences from controls and no higher IQ — what differed was which regions they recruited, the hippocampal and spatial machinery the technique is built on. They were not born with better memories. They converted the task.' },
     ],
   },
 
@@ -133,7 +134,7 @@ export const LESSONS = [
     mins: 5,
     teaser: 'How cold reading works, taught so it can never be done to you again.',
     body: [
-      { p: 'In 1948 a psychologist gave his students a personality test and handed each of them an individual profile. They rated the accuracy at 4.3 out of 5. Every student had received the identical text, assembled from a newsstand astrology column.' },
+      { p: 'In 1949 a psychologist gave 39 students a personality test and handed each of them an individual profile. They rated the accuracy at 4.26 out of 5. Every student had received the identical text, which he had assembled from thirteen lines of a newsstand astrology book.' },
       { p: 'That effect powers psychics, fraudulent mediums, a great deal of recruitment, and a surprising amount of ordinary conversation. Its components are learnable in ten minutes, which is exactly why you should learn them.' },
       { h: 'The toolkit' },
       { ul: [
@@ -179,7 +180,7 @@ export const LESSONS = [
       ]},
       { pull: 'Volume creates resistance. Repetition creates dilution. Silence creates weight.' },
       { h: 'Change blindness' },
-      { p: 'Attention is not just steerable, it is narrow enough that people miss enormous things. In the well-known experiments, subjects fail to notice a person they are speaking to being swapped for someone else during a brief interruption. Not a subtle change. A different human being.' },
+      { p: 'Attention is not just steerable, it is narrow enough that people miss enormous things. In the well-known door experiment, someone stops a pedestrian to ask directions; two workers carry a door between them; and the person asking is swapped for a different man. Roughly half the pedestrians carried on the conversation without noticing. Not a subtle change. A different human being.' },
       { p: 'The lesson cuts both ways. It is why misdirection works at all — and it is why your own confidence that you would have noticed something is worth very little.' },
     ],
   },
@@ -221,7 +222,7 @@ export const LESSONS = [
       { h: 'What actually lowers arousal in the moment' },
       { ul: [
         '**Extend the exhale.** Breathe in for four, out for six to eight. The lengthened out-breath is the part that engages the parasympathetic response; the in-breath does very little.',
-        '**Name the state.** "This is adrenaline, and it peaks in about ninety seconds." Labelling an internal state measurably reduces its intensity.',
+        '**Name the state.** "This is adrenaline." Putting a feeling into words measurably reduces its intensity — affect labelling is one of the better-supported findings here. Ignore the popular claim that the surge clears in ninety seconds; that number comes from one author\'s personal account, not from data, and circulating adrenaline can persist far longer.',
         '**Slow the visible things.** Speech rate, hand movement, how fast you sit down. Deliberately slowing output feeds back into state.',
         '**Take the pause you are afraid of.** The silence you fear is roughly a quarter as long as it feels from the inside.',
       ]},
@@ -279,8 +280,9 @@ export const LESSONS = [
       ]},
       { pull: 'Retrieval builds memory. Review does not. Getting it out is the exercise; putting it in is just the setup.' },
       { h: 'Spacing' },
-      { p: 'If the person matters, retrieve the name again after an hour, then that evening, then in a few days. Expanding intervals are dramatically more efficient than repeating something ten times in one sitting — same total effort, several times the retention.' },
-      { p: 'This generalises. Every fact you actually want to keep should be recalled at increasing gaps rather than reread. Rereading feels like learning because it feels fluent, and fluency is the most reliable illusion in the whole field.' },
+      { p: 'If the person matters, retrieve the name again later that day, then the next day, then a few days on. Spreading retrievals out beats cramming ten repetitions into one sitting — same total effort, substantially more retention.' },
+      { myth: 'The popular refinement — that gaps should *expand* — does not hold up. Karpicke and Roediger found expanding schedules win on an immediate test and lose on a delayed one; equally spaced retrieval produced better long-term retention. What matters most is that the first retrieval is delayed long enough to be difficult, not the shape of the schedule after it.' },
+      { p: 'This generalises. Every fact you actually want to keep should be recalled at intervals rather than reread. Rereading feels like learning because it feels fluent, and fluency is the most reliable illusion in the whole field.' },
     ],
   },
 
@@ -310,6 +312,47 @@ export const LESSONS = [
       ]},
       { p: 'The last one is the trap this app can actually lead you into. A person who has trained observation for a few months tends to become *more* confident than accurate, and telling someone what they are feeling — with authority, on thin evidence — does real damage to them and to your own calibration.' },
       { p: 'Hold it as a question. "Something changed when I mentioned your brother — is that anything?" is honest, useful, and leaves them their own mind.' },
+    ],
+  },
+
+  {
+    id: 'l-sources',
+    title: 'Where This Comes From',
+    discipline: 'deduction',
+    mins: 3,
+    teaser: 'The studies behind the claims, including the ones that killed ideas this app used to contain.',
+    body: [
+      { p: 'An app that tells you most popular advice in this area is unsupported owes you the ability to check it. These are the main sources.' },
+      { h: 'Detecting deception' },
+      { ul: [
+        'Bond & DePaulo (2006), *Accuracy of Deception Judgments* — 206 studies, 24,483 judges, 54% average accuracy. Professionals score no better than students.',
+        'DePaulo et al. (2003), *Cues to Deception* — of 50 behaviours tested across five or more studies, 36 showed no significant link to lying; the 14 that did averaged about d = 0.25.',
+      ]},
+      { h: 'Attention and observation' },
+      { ul: [
+        'Simons & Levin (1998), *Failure to detect changes to people during a real-world interaction* — the door study. Only 7 of 15 pedestrians noticed their conversation partner had been swapped.',
+        'Simons & Chabris (1999) — the selective-attention gorilla, the standard demonstration of inattentional blindness.',
+      ]},
+      { h: 'Memory' },
+      { ul: [
+        'Maguire et al. (2003), *Routes to remembering: the brains behind superior memory* — ten superior memorisers, nine using the method of loci, no structural brain differences and no IQ advantage over controls.',
+        'Karpicke & Roediger (2007) — expanding retrieval schedules beat equal ones on an immediate test and lose on a delayed one. The widely repeated claim that gaps should expand is not supported.',
+        'Roediger & Karpicke (2006) — the testing effect: retrieval beats rereading for retention.',
+      ]},
+      { h: 'Persuasion and belief' },
+      { ul: [
+        'Forer (1949), *The fallacy of personal validation* — 39 students, one identical profile drawn from an astrology book, rated 4.26 out of 5 for personal accuracy.',
+      ]},
+      { h: 'Things this app used to say, and no longer does' },
+      { p: 'These were removed after checking, and each is worth knowing precisely because it sounds right:' },
+      { ul: [
+        '**The eye-crinkle test for genuine smiles.** The muscle is voluntarily controllable by most people, and the "genuine" marker shows up in a majority of deliberately posed smiles in several studies. It does not separate felt from produced.',
+        '**Reverse-order recall as a lie-detection tool.** Promising early results; later replications failed and meta-analytic work does not support it for detection. It remains useful as a memory aid.',
+        '**"The adrenaline surge clears in ninety seconds."** This traces to one author\'s personal account rather than to data, and circulating adrenaline can persist far longer.',
+        '**Dropped first-person pronouns as a deception cue.** Results are inconsistent, several studies find no effect, and earlier findings may reflect dataset artefacts.',
+        '**"Clusters of cues get you meaningfully above chance."** Stacking weak indicators does not reliably produce a strong one.',
+      ]},
+      { pull: 'If a claim about reading people cannot name a study, assume it is folklore. Most of it is.' },
     ],
   },
 ];

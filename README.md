@@ -76,12 +76,16 @@ export default {
   blurb: 'One line for the training list.',
   length: '3 min',
   mount(root, ctx) {
-    // ctx.level  → 1..5, rises every 3 completed runs
+    // ctx.level  → 1..8 (MAX_LEVEL), rises every 2 runs scoring >= MASTERY (70%)
     // ctx.finish({ pct, stats: [{k,v}], note })
     return () => { /* cleanup on navigate away */ };
   },
 };
 ```
+
+Scale something real off `ctx.level` — item count, exposure time, answer window,
+available distractors. Difficulty is **mastery-gated**: turning up earns XP, but only
+runs at 70% or better move the level, so the drill cannot outrun the person doing it.
 
 2. Import it in `js/drills/index.js` and add it to `DRILLS`.
 3. Add the file path to `SHELL` in `sw.js` and bump `CACHE`.
@@ -106,3 +110,14 @@ popular readings.
 
 Cold reading is taught from the defensive side — the mechanics are laid out so
 they can be recognised when someone runs them on you.
+
+Empirical claims were checked against the literature and the sources are listed
+in the codex entry **Where This Comes From** (`l-sources` in `js/data/lessons.js`).
+Five claims were removed during that pass because they did not survive checking:
+the eye-crinkle test for genuine smiles, reverse-order recall as a lie-detection
+tool, the "ninety second" adrenaline figure, dropped pronouns as a deception cue,
+and the idea that clusters of weak cues add up to a strong one. Each is now
+documented in the app as a correction rather than quietly deleted.
+
+**If you add content, cite it.** The app's whole credibility rests on not being
+another confident repetition of folklore.

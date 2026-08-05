@@ -18,7 +18,13 @@ const COLORS = [
 ];
 
 const SHAPES = ['circle', 'square', 'triangle', 'diamond', 'hexagon', 'cross'];
-const COLS = 4, ROWS = 4;
+
+/** The board grows with the level, so object counts can keep climbing. */
+function gridFor(level) {
+  if (level >= 6) return { cols: 5, rows: 5 };
+  if (level >= 4) return { cols: 5, rows: 4 };
+  return { cols: 4, rows: 4 };
+}
 
 function shapeMarkup(shape, color, ring) {
   const f = `fill="${color}"`;
@@ -37,15 +43,16 @@ function shapeMarkup(shape, color, ring) {
 }
 
 function buildScene(level) {
-  const count = Math.min(COLS * ROWS - 2, 6 + level * 2);
-  const cells = shuffle([...Array(COLS * ROWS).keys()]).slice(0, count);
+  const { cols, rows } = gridFor(level);
+  const count = Math.min(cols * rows - 2, 6 + level * 2);
+  const cells = shuffle([...Array(cols * rows).keys()]).slice(0, count);
   const palette = COLORS.slice(0, Math.min(COLORS.length, 3 + level));
   const shapeSet = SHAPES.slice(0, Math.min(SHAPES.length, 3 + level));
 
   const objects = cells.map(idx => ({
     idx,
-    row: Math.floor(idx / COLS) + 1,
-    col: (idx % COLS) + 1,
+    row: Math.floor(idx / cols) + 1,
+    col: (idx % cols) + 1,
     shape: shapeSet[rand(shapeSet.length)],
     color: palette[rand(palette.length)],
     ring: false,
@@ -54,13 +61,13 @@ function buildScene(level) {
   // From level 2 one object is marked, which gives a "which one was marked" question.
   if (level >= 2 && objects.length) objects[rand(objects.length)].ring = true;
 
-  return { objects, palette, shapeSet, count };
+  return { objects, palette, shapeSet, count, cols, rows };
 }
 
 function sceneNode(scene) {
-  const grid = h('div.scene', { style: { gridTemplateColumns: `repeat(${COLS}, 1fr)` } });
+  const grid = h('div.scene', { style: { gridTemplateColumns: `repeat(${scene.cols}, 1fr)` } });
   const byIdx = new Map(scene.objects.map(o => [o.idx, o]));
-  for (let i = 0; i < COLS * ROWS; i++) {
+  for (let i = 0; i < scene.cols * scene.rows; i++) {
     const o = byIdx.get(i);
     grid.appendChild(h('div.scene__cell', o ? { html: shapeMarkup(o.shape, o.color.v, o.ring) } : null));
   }
@@ -169,7 +176,7 @@ function buildQuestions(scene, level) {
     });
   }
 
-  return shuffle(qs).slice(0, Math.min(6, 4 + Math.floor(level / 2)));
+  return shuffle(qs).slice(0, Math.min(qs.length, 3 + Math.ceil(level / 2)));
 }
 
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -194,7 +201,7 @@ export default {
 
   mount(root, ctx) {
     const level = ctx.level;
-    const exposure = Math.max(3200, 9500 - level * 1100);
+    const exposure = Math.max(2900, 10000 - level * 900);
     const scene = buildScene(level);
     const questions = buildQuestions(scene, level);
     let cancelled = false;
