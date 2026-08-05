@@ -1,0 +1,7 @@
+# build artefact — regenerate with tools/package.ps1
+the-cave-site.zip
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store
