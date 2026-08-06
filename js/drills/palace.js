@@ -8,7 +8,7 @@
 
 import { h, ICONS, shuffle, sampleUnique, pick } from '../ui.js';
 import { NOUNS, LOCI_ROUTES } from '../data/words.js';
-import { nextBtn, countdown } from './_shared.js';
+import { nextBtn, countdown } from './shared.js';
 
 const TIPS = [
   'Absurd beats sensible. An anchor smashing through your front door survives; an anchor resting beside it does not.',

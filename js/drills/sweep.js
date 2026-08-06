@@ -9,7 +9,7 @@
    ============================================================ */
 
 import { h, ICONS, rand, shuffle, sampleUnique } from '../ui.js';
-import { hud, choices, nextBtn, countdown } from './_shared.js';
+import { hud, choices, nextBtn, countdown } from './shared.js';
 
 const INK = '#f2f4f7';
 const VOID = '#08080a';

@@ -13,7 +13,7 @@
    ============================================================ */
 
 import { h, ICONS, rand, pick } from '../ui.js';
-import { hud, nextBtn, countdown } from './_shared.js';
+import { hud, nextBtn, countdown } from './shared.js';
 
 const DIRS = [
   { n: 'LEFT',  rot: 180 },

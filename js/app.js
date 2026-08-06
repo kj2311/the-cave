@@ -15,7 +15,7 @@ import {
 import { DRILLS, byId, drillIds } from './drills/index.js';
 import { LESSONS } from './data/lessons.js';
 import { MISSIONS, TIERS } from './data/missions.js';
-import { mdish } from './drills/_shared.js';
+import { mdish } from './drills/shared.js';
 
 const QUOTES = [
   'Everyone is telling you something. Almost nobody is saying it.',

@@ -9,7 +9,7 @@
 import { h, ICONS, buzz } from '../ui.js';
 import { CASES } from '../data/cases.js';
 import { pickUnseen } from '../store.js';
-import { hud, choices, reveal, nextBtn } from './_shared.js';
+import { hud, choices, reveal, nextBtn } from './shared.js';
 
 /** More case files per sitting as the level climbs. */
 const perRunFor = (level) => (level >= 7 ? 5 : level >= 4 ? 4 : 3);

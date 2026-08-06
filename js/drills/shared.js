@@ -1,5 +1,5 @@
 /* ============================================================
-   _shared.js — pieces every drill reuses.
+   shared.js — pieces every drill reuses.
    ============================================================ */
 
 import { h, svg, ICONS, shuffle, buzz } from '../ui.js';

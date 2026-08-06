@@ -8,7 +8,7 @@
 import { h, ICONS } from '../ui.js';
 import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
-import { hud, choices, reveal, nextBtn } from './_shared.js';
+import { hud, choices, reveal, nextBtn } from './shared.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
 

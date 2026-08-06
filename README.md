@@ -23,12 +23,15 @@ preview tooling can start it directly.
 
 ## Hosting notes
 
-`.nojekyll` in the repo root is **required, not optional**. GitHub Pages runs Jekyll by
-default, and Jekyll silently drops every path beginning with an underscore — which would
-delete `js/drills/_shared.js`, a module imported by all six drills and by `app.js`. The
-site would deploy successfully and then fail to boot. `.nojekyll` disables Jekyll so files
-are served verbatim, and it also removes the build step entirely, which is what was
-timing out the deploy.
+**Do not give any file a leading underscore.** GitHub Pages runs Jekyll by default, and
+Jekyll silently drops every path beginning with one. This bit us once: the shared drill
+module was called `_shared.js`, Pages served a 404 for it, and the app rendered its static
+shell and then died — every tab inert, because no JavaScript had run. It is now
+`js/drills/shared.js`.
+
+`.nojekyll` in the repo root is a second line of defence: it disables Jekyll entirely so
+files are served verbatim, and it removes the Jekyll build step, which is what was timing
+out and cancelling deploys. Keep both the marker file and the naming rule.
 
 Every path in the project is relative (`./`, `css/app.css`, `sw.js`), and the manifest
 uses `"start_url": "./"` with `"scope": "./"`, so the app works from a subpath such as
@@ -89,7 +92,7 @@ js/
   store.js              persistence, XP, levels, streak, daily protocol
   drills/
     index.js            drill registry
-    _shared.js          hud, multiple choice, reveal panel, countdown
+    shared.js           hud, multiple choice, reveal panel, countdown
     sweep.js            observation — procedurally generated scenes
     palace.js           memory — ordered recall, method of loci scaffolding
     chain.js            deduction — case files, two-phase answers
