@@ -21,6 +21,19 @@ Then open <http://localhost:8321>.
 The repo is also registered in `../.claude/launch.json` as **cave**, so the
 preview tooling can start it directly.
 
+## Hosting notes
+
+`.nojekyll` in the repo root is **required, not optional**. GitHub Pages runs Jekyll by
+default, and Jekyll silently drops every path beginning with an underscore — which would
+delete `js/drills/_shared.js`, a module imported by all six drills and by `app.js`. The
+site would deploy successfully and then fail to boot. `.nojekyll` disables Jekyll so files
+are served verbatim, and it also removes the build step entirely, which is what was
+timing out the deploy.
+
+Every path in the project is relative (`./`, `css/app.css`, `sw.js`), and the manifest
+uses `"start_url": "./"` with `"scope": "./"`, so the app works from a subpath such as
+`https://user.github.io/the-cave/` without changes.
+
 ## Installing on an iPhone
 
 The app must be served over **HTTPS** for the service worker (offline mode) to
