@@ -33,6 +33,28 @@ work — `localhost` is the only exception. Once it is hosted:
 It then launches full screen with no browser chrome, runs with no signal, and
 keeps its own storage.
 
+## The look
+
+One idea, held consistently: **cold wet rock, warm instrument light.**
+
+- Blue-grey rock tones (`--rock`, `--rock-lit`, `--damp`) belong to the environment.
+  Amber belongs to the machines. Never mix them — an amber cave wall or a blue-grey
+  console breaks it immediately.
+- `.cavern` is a fixed layer drawing stalactites above and cave floor below, tiled at
+  1200px. It sits at `z-index: 0` with `.view` lifted to `1`; a negative layer would
+  paint *under* body's opaque background and disappear.
+- Panels are lit consoles — inset top highlight, a warm underglow, and a heavy drop
+  shadow that separates them from the rock behind. The home briefing is the main
+  display: scanlines, corner bolts, a stronger bloom.
+- Opening the app plays a short descent (`.boot`), once per browser session, gated by
+  a pre-paint inline script in `index.html`. It fades out via CSS animation rather
+  than a JS timeout so a script failure cannot trap anyone behind it, and it is
+  disabled entirely under `prefers-reduced-motion`.
+
+There is deliberately **no Batman iconography** — no bat shapes, no cowl, no
+black-and-yellow oval, no Gotham/Wayne naming. The cave, the console bank and the
+amber-on-rock contrast carry the feel on their own. Keep it that way.
+
 ## Layout
 
 ```

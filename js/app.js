@@ -690,6 +690,15 @@ function isStandalone() {
    BOOT
    ============================================================ */
 
+// The descent fades itself out in CSS; this just lets an impatient tap skip
+// it and takes the node out of the tree afterwards.
+const bootEl = document.getElementById('boot');
+if (bootEl) {
+  const dropBoot = () => bootEl.remove();
+  bootEl.addEventListener('pointerdown', dropBoot);
+  setTimeout(dropBoot, 1700);
+}
+
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => go(t.dataset.route));
 });
