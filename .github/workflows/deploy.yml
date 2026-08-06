@@ -1,0 +1,48 @@
+# Publishes the site to GitHub Pages.
+#
+# Why this exists instead of the default Pages builder: the legacy builder runs
+# Jekyll, which strips paths beginning with an underscore and — on this repo —
+# hung for 10 to 30 minutes before being cancelled. This workflow performs no
+# build at all. It checks the repo out and uploads it verbatim, which is the
+# correct behaviour for a site that is already plain static files.
+#
+# Requires: Settings > Pages > Source set to "GitHub Actions".
+
+name: Deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the site as-is
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

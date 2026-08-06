@@ -29,9 +29,14 @@ module was called `_shared.js`, Pages served a 404 for it, and the app rendered 
 shell and then died — every tab inert, because no JavaScript had run. It is now
 `js/drills/shared.js`.
 
-`.nojekyll` in the repo root is a second line of defence: it disables Jekyll entirely so
-files are served verbatim, and it removes the Jekyll build step, which is what was timing
-out and cancelling deploys. Keep both the marker file and the naming rule.
+`.nojekyll` in the repo root is a second line of defence: it tells Pages to serve files
+verbatim. On this repo it did not stop the legacy builder from running Jekyll anyway, and
+those builds hung for 10 to 30 minutes before being cancelled.
+
+So deployment does not use the legacy builder at all. `.github/workflows/deploy.yml`
+checks the repo out and uploads it unchanged — no build step, nothing to hang. **Pages
+Source must be set to "GitHub Actions"** in repository settings for this to be used;
+switching it back to "Deploy from a branch" reintroduces Jekyll and the problem.
 
 Every path in the project is relative (`./`, `css/app.css`, `sw.js`), and the manifest
 uses `"start_url": "./"` with `"scope": "./"`, so the app works from a subpath such as
