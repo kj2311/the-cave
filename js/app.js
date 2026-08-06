@@ -8,13 +8,13 @@ import {
 import {
   DISCIPLINES, get, reset, dayKey, levelFromXp, rank,
   liveStreak, ensureDaily, dailyComplete, recordRun, addLog, deleteLog,
-  markRead, exportJson, importJson,
+  markRead, exportJson, importJson, missionDone,
   drillLevel, toNextLevel, drillScores, activity, recentAverage, trend,
   MAX_LEVEL, MASTERY,
 } from './store.js';
 import { DRILLS, byId, drillIds } from './drills/index.js';
 import { LESSONS } from './data/lessons.js';
-import { LOG_PROMPTS } from './data/people.js';
+import { MISSIONS, TIERS } from './data/missions.js';
 import { mdish } from './drills/_shared.js';
 
 const QUOTES = [
@@ -64,7 +64,7 @@ function viewHome() {
         h('div', {
           style: {
             position: 'absolute', inset: '0', display: 'grid', placeItems: 'center',
-            fontFamily: 'var(--mono)', fontSize: '15px', color: 'var(--amber)',
+            fontFamily: 'var(--mono)', fontSize: '15px', color: 'var(--silver-hi)',
           },
         }, `${done.size}/${daily.drills.length}`),
       ),
@@ -86,23 +86,25 @@ function viewHome() {
   if (complete) {
     nodes.push(h('div.panel', { style: { marginTop: '12px' } },
       h('div.row',
-        h('span.chip.chip--accent', { style: { '--accent': 'var(--green)' } }, 'Complete'),
+        h('span.chip.chip--accent', 'Complete'),
         h('span.faint', { style: { fontSize: '13.5px' } }, `Streak at ${streak} day${streak === 1 ? '' : 's'}.`),
       ),
     ));
   }
 
-  // Field log prompt for today
-  const promptIdx = hashDay() % LOG_PROMPTS.length;
+  const todays = MISSIONS[hashDay() % MISSIONS.length];
   nodes.push(
     h('div.section-head', h('span.label', 'Field assignment')),
-    h('button.drill', { type: 'button', onclick: () => go('#/log') },
-      h('span.drill__glyph', svg(ICONS.spark, 21)),
+    h(`button.drill.${DISCIPLINES[todays.discipline].cls}`,
+      { type: 'button', onclick: () => go(`#/mission/${todays.id}`) },
+      h('span.drill__glyph', svg(ICONS.spark, 19)),
       h('span.grow',
-        h('div.drill__name', 'Today\'s observation'),
-        h('div.drill__sub', LOG_PROMPTS[promptIdx].slice(0, 62) + '…'),
+        h('div.drill__name', todays.title),
+        h('div.drill__sub', `${TIERS[todays.tier].name} · ${DISCIPLINES[todays.discipline].name} · ${todays.time}`),
       ),
-      h('span.drill__chev', svg(ICONS.chevron, 18)),
+      missionDone(todays.id)
+        ? h('span.drill__tick', svg(ICONS.check, 17))
+        : h('span.drill__chev', svg(ICONS.chevron, 17)),
     ),
   );
 
@@ -223,7 +225,7 @@ function viewCodex() {
         h('div.lesson-card__m',
           h('span.chip.chip--accent', meta.name),
           h('span.chip', `${l.mins} min`),
-          isRead ? h('span.chip', { style: { color: 'var(--green)' } }, 'Read') : null,
+          isRead ? h('span.chip.chip--accent', 'Read') : null,
         ),
       );
     }),
@@ -276,55 +278,122 @@ function viewLesson(id) {
 
 function viewLog() {
   const s = get();
-  const promptIdx = hashDay() % LOG_PROMPTS.length;
-  const prompt = LOG_PROMPTS[promptIdx];
+  const done = new Set(s.missions);
+
+  const byTier = { 1: [], 2: [], 3: [] };
+  for (const m of MISSIONS) byTier[m.tier].push(m);
+
+  // One mission is put forward each day so there is always a default move.
+  const todays = MISSIONS[hashDay() % MISSIONS.length];
+
+  const nodes = [
+    h('div.panel',
+      h('div.label', 'Field work'),
+      h('h2', { style: { margin: '10px 0 10px' } }, 'Assignments'),
+      h('p.prose', 'The drills build the mechanism. These put it outside, where it is harder and where it counts. Every one ends in a written debrief — the training is in the noticing afterwards.'),
+    ),
+
+    h('div.section-head', h('span.label', 'Put forward today')),
+    missionCard(todays, done.has(todays.id)),
+  ];
+
+  for (const tier of [1, 2, 3]) {
+    nodes.push(
+      h('div.section-head',
+        h('span.label', TIERS[tier].name),
+        h('span.label', `${byTier[tier].filter(m => done.has(m.id)).length}/${byTier[tier].length}`),
+      ),
+      h('p.faint', { style: { fontSize: '13px', margin: '0 0 12px' } }, TIERS[tier].note),
+      ...byTier[tier].map(m => missionCard(m, done.has(m.id))),
+    );
+  }
+
+  nodes.push(
+    h('div.section-head', h('span.label', `Filed — ${s.log.length}`)),
+    h('div.panel', s.log.length
+      ? s.log.map(e => h('div.entry',
+          h('div.row.row--between',
+            h('span.entry__d', fmtDate(e.ts)),
+            h('button.btn.btn--ghost.btn--sm', {
+              type: 'button',
+              onclick: () => {
+                if (!confirm('Delete this entry?')) return;
+                deleteLog(e.ts);
+                viewLog();
+              },
+            }, 'Delete'),
+          ),
+          h('div.entry__q', e.prompt),
+          h('div.entry__b', e.body),
+        ))
+      : h('div.empty', 'Nothing filed yet')),
+  );
+
+  render(h('div.fade-in', nodes), { title: 'FIELD' });
+  setTab('#/log');
+}
+
+function missionCard(m, isDone) {
+  const meta = DISCIPLINES[m.discipline];
+  return h(`button.mission.${meta.cls}${isDone ? '.is-done' : ''}`,
+    { type: 'button', onclick: () => go(`#/mission/${m.id}`) },
+    h('div.mission__top',
+      h('span.mission__no', TIERS[m.tier].name.replace('Tier ', '')),
+      h('span.mission__t', m.title),
+    ),
+    h('div.mission__b', m.brief.length > 120 ? m.brief.slice(0, 118) + '…' : m.brief),
+    h('div.mission__m',
+      h('span.chip', meta.name),
+      h('span.chip', m.time),
+      isDone ? h('span.chip.chip--accent', 'Filed') : null,
+    ),
+  );
+}
+
+function viewMission(id) {
+  const m = MISSIONS.find(x => x.id === id);
+  if (!m) return go('#/log');
+  const meta = DISCIPLINES[m.discipline];
+  const isDone = missionDone(m.id);
 
   const field = h('textarea.field', {
-    placeholder: 'Write what you actually noticed — not what you think you should have noticed.',
-    rows: 5,
+    placeholder: 'Answer the debrief. Write what actually happened, not what should have.',
+    rows: 6,
   });
 
-  const saveBtn = h('button.btn.btn--primary.btn--block', { type: 'button' }, 'File it');
+  const saveBtn = h('button.btn.btn--primary.btn--block', { type: 'button' }, 'File the debrief');
   saveBtn.addEventListener('click', () => {
     const body = field.value.trim();
     if (!body) return toast('Nothing written yet.');
-    addLog(prompt, body);
-    field.value = '';
+    addLog(`${m.title} — ${m.debrief}`, body, m.id);
     buzz(14);
     toast('Filed.');
-    viewLog();
+    go('#/log');
   });
 
-  const entries = s.log.length
-    ? s.log.map(e => h('div.entry',
-        h('div.row.row--between',
-          h('span.entry__d', fmtDate(e.ts)),
-          h('button.btn.btn--ghost.btn--sm', {
-            type: 'button',
-            onclick: () => {
-              if (!confirm('Delete this entry?')) return;
-              deleteLog(e.ts);
-              viewLog();
-            },
-          }, 'Delete'),
-        ),
-        h('div.entry__q', e.prompt),
-        h('div.entry__b', e.body),
-      ))
-    : [h('div.empty', svg(ICONS.empty, 34), h('div', 'Nothing filed yet. The first entry is the hardest.'))];
-
   render(
-    h('div.fade-in',
-      h('div.panel',
-        h('div.label', "Today's assignment"),
-        h('p.case-scene', { style: { margin: '10px 0 14px' } }, prompt),
-        field,
-        h('div', { style: { marginTop: '12px' } }, saveBtn),
+    h(`div.fade-in.${meta.cls}`,
+      h('div.row', { style: { marginBottom: '16px' } },
+        h('span.chip.chip--accent', TIERS[m.tier].name),
+        h('span.chip', meta.name),
+        h('span.chip', m.time),
+        isDone ? h('span.chip.chip--accent', 'Filed') : null,
       ),
-      h('div.section-head', h('span.label', `Filed — ${s.log.length}`)),
-      h('div.panel', entries),
+      h('h1', m.title),
+      h('p.prose', { style: { marginTop: '14px' } }, m.brief),
+
+      h('div.section-head', h('span.label', 'Method')),
+      h('ol.steps', ...m.steps.map(s => h('li', s))),
+
+      h('div.section-head', h('span.label', 'Debrief')),
+      h('div.reveal', h('div.reveal__title', 'Answer this'), h('div', m.debrief)),
+
+      h('div', { style: { marginTop: '14px' } }, field),
+      h('div', { style: { marginTop: '10px' } }, saveBtn),
+      h('div', { style: { marginTop: '8px' } },
+        h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/log') }, 'Back')),
     ),
-    { title: 'FIELD LOG' },
+    { title: 'ASSIGNMENT', back: () => go('#/log') },
   );
   setTab('#/log');
 }
@@ -389,9 +458,10 @@ function viewProfile() {
     type: 'button', onclick: () => importInput.click(),
   }, 'Restore from file');
 
+  // Destructive, so it is marked by a dashed edge rather than by colour.
   const resetBtn = h('button.btn.btn--ghost.btn--block', {
     type: 'button',
-    style: { color: 'var(--red)', borderColor: 'rgba(255,95,95,.3)' },
+    style: { borderStyle: 'dashed', borderColor: 'var(--steel)', color: 'var(--steel)' },
     onclick: () => {
       if (!confirm('Wipe all progress, logs and history? This cannot be undone.')) return;
       reset();
@@ -463,7 +533,7 @@ function activityStrip() {
       title: `${d.key} — ${d.count} session${d.count === 1 ? '' : 's'}`,
       style: {
         background: d.count
-          ? `color-mix(in srgb, var(--amber) ${Math.round(intensity * 100)}%, transparent)`
+          ? `rgba(242, 244, 247, ${intensity.toFixed(2)})`
           : 'var(--line)',
       },
     });
@@ -502,8 +572,8 @@ function drillProgressCard(d) {
   }
 
   const arrow = tr === null ? null
-    : tr > 0.04 ? h('span', { style: { color: 'var(--green)' } }, '▲ improving')
-    : tr < -0.04 ? h('span', { style: { color: 'var(--red)' } }, '▼ slipping')
+    : tr > 0.04 ? h('span', { style: { color: 'var(--silver-hi)' } }, '↑ improving')
+    : tr < -0.04 ? h('span', { style: { color: 'var(--steel)' } }, '↓ slipping')
     : h('span.faint', '▬ steady');
 
   return h(`div.panel.${meta.cls}`,
@@ -611,7 +681,7 @@ function showResult(d, result, outcome) {
               h('span.chip.chip--accent', `${meta.name} reached level ${outcome.levelUp}`))
           : null,
         outcome.best && pctNum > 0
-          ? h('div', { style: { marginTop: '10px' } }, h('span.chip', { style: { color: 'var(--green)' } }, 'Personal best'))
+          ? h('div', { style: { marginTop: '10px' } }, h('span.chip.chip--accent', 'Personal best'))
           : null,
       ),
 
@@ -630,7 +700,7 @@ function showResult(d, result, outcome) {
 
       dailyComplete()
         ? h('div.panel', { style: { marginTop: '14px', textAlign: 'center' } },
-            h('div.label', { style: { color: 'var(--green)' } }, 'Protocol complete'),
+            h('div.label', { style: { color: 'var(--silver-hi)' } }, 'Protocol complete'),
             h('p.prose', { style: { marginTop: '8px' } }, `Streak at ${outcome.streak} day${outcome.streak === 1 ? '' : 's'}.`))
         : null,
 
@@ -655,6 +725,7 @@ const ROUTES = [
   [/^#\/codex$/,           () => viewCodex()],
   [/^#\/codex\/(.+)$/,     (m) => viewLesson(m[1])],
   [/^#\/log$/,             () => viewLog()],
+  [/^#\/mission\/(.+)$/,   (m) => viewMission(m[1])],
   [/^#\/profile$/,         () => viewProfile()],
   [/^#\/drill\/(.+)$/,     (m) => viewDrill(m[1])],
 ];
@@ -689,15 +760,6 @@ function isStandalone() {
 /* ============================================================
    BOOT
    ============================================================ */
-
-// The descent fades itself out in CSS; this just lets an impatient tap skip
-// it and takes the node out of the tree afterwards.
-const bootEl = document.getElementById('boot');
-if (bootEl) {
-  const dropBoot = () => bootEl.remove();
-  bootEl.addEventListener('pointerdown', dropBoot);
-  setTimeout(dropBoot, 1700);
-}
 
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => go(t.dataset.route));

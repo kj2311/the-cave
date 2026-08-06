@@ -152,7 +152,7 @@ export function fmtDate(ts) {
  * Small score-over-time line. `values` are 0..1, oldest first.
  * Returns null when there is not enough history to say anything.
  */
-export function sparkline(values, { w = 88, hgt = 26, color = 'var(--accent, var(--amber))' } = {}) {
+export function sparkline(values, { w = 88, hgt = 26, color = 'var(--accent, #f2f4f7)' } = {}) {
   if (!values || values.length < 2) return null;
   const pad = 3;
   const stepX = (w - pad * 2) / (values.length - 1);

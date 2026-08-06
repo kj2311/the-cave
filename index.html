@@ -18,29 +18,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 
 <link rel="stylesheet" href="css/app.css">
-
-<!-- Runs before first paint so the descent only plays once per session. -->
-<script>
-try {
-  if (sessionStorage.getItem('cave.booted')) document.documentElement.classList.add('booted');
-  sessionStorage.setItem('cave.booted', '1');
-} catch (e) {}
-</script>
 </head>
 <body>
-
-<!-- The descent. Fades itself out via CSS, so a JS failure cannot trap anyone. -->
-<div class="boot" id="boot" aria-hidden="true">
-  <div class="boot__inner">
-    <div class="boot__mark"></div>
-    <div class="boot__title">THE CAVE</div>
-    <div class="boot__sub">systems warming</div>
-  </div>
-</div>
-
-<div class="cavern" aria-hidden="true"></div>
-<div class="vignette" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 
 <header class="topbar" id="topbar">
   <button class="topbar__back" id="backBtn" aria-label="Back" hidden>
@@ -72,7 +51,7 @@ try {
   </button>
   <button class="tab" data-route="#/log">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h7M9 16h5M9 8h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-    <span>Log</span>
+    <span>Field</span>
   </button>
   <button class="tab" data-route="#/profile">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.8 20a7.4 7.4 0 0 1 14.4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>

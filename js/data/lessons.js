@@ -228,7 +228,7 @@ export const LESSONS = [
       ]},
       { pull: 'A calm person with an average memory outperforms a rattled person with a superb one. Every time.' },
       { h: 'Interference' },
-      { p: 'The Stillness drill trains something specific: holding a rule while an automatic response pulls the other way. Reading is automatic in a literate adult, so naming the *colour* of the word RED printed in blue requires actively suppressing the read. That suppression is the same mechanism you use to hold "I do not know yet" against the pull of a satisfying conclusion.' },
+      { p: 'The Stillness drill trains something specific: holding a rule while an automatic response pulls the other way. Reading is automatic in a literate adult, so when the word DOWN sits above an arrow pointing left, answering to the arrow means actively overriding the word. That suppression is the same mechanism you use to hold "I do not know yet" against the pull of a satisfying conclusion.' },
       { p: 'It is also measurable, which makes it one of the few things here you can watch improve week by week.' },
     ],
   },
@@ -316,6 +316,72 @@ export const LESSONS = [
   },
 
   {
+    id: 'l-toolkit',
+    title: 'The Toolkit, Item by Item',
+    discipline: 'deduction',
+    mins: 7,
+    teaser: 'Every technique the character uses, what it is actually called, and whether it survives contact with evidence.',
+    body: [
+      { p: 'The character\'s method is coherent enough to take apart. Roughly half of it is real technique with a real name and a real literature. The other half is either stagecraft or, worse, something that sounds scientific and is not. Sorting the two is the most useful hour you can spend on this.' },
+
+      { h: 'Cold reading — real, and a fraud mechanism' },
+      { p: 'The performance of knowing things about a stranger. Built from Barnum statements, forks, fuzzy facts and vanishing negatives. It works reliably on almost everyone, which is precisely why it powers psychic fraud. This is also his stated backstory: he ran the con before he stopped.' },
+
+      { h: 'Muscle reading — real, and older than you think' },
+      { p: 'When he takes someone\'s hand or wrist and "finds" a hidden object, that is a genuine nineteenth-century technique. Its formal names are **contact mind reading** and **Cumberlandism**, after the performer Stuart Cumberland — who publicly denied having any psychic ability and needed to hold his subject\'s hand to do it. The term "muscle reading" was coined in the 1870s by the neurologist George Beard.' },
+      { p: 'The mechanism is the **ideomotor effect**: when you concentrate on a location, you make tiny unconscious movements toward it that you cannot feel yourself making. A trained reader feels them through contact. The same effect explains Ouija boards, dowsing rods and table-turning, none of which require anyone to be lying.' },
+
+      { h: 'The memory palace — real' },
+      { p: 'Method of loci, 2,500 years old, used by essentially every competitive memoriser. Covered in its own entry.' },
+
+      { h: 'Misdirection — real, with a caveat' },
+      { p: 'Attention research using actual magicians confirms the core: people follow gaze, and asking someone a question while making eye contact reliably pulls their attention to your face. That is a genuine and powerful tool.' },
+      { p: 'The caveat is that social cues are not the whole story. In some illusions the effect survives when the magician\'s gaze is removed entirely — a masked performer can still fool an audience. Attention is steerable, but not by one lever.' },
+
+      { h: 'Provocation — real, and the best thing in his kit' },
+      { p: 'He rarely waits for a tell. He says the name, makes the claim, breaks the vase, and watches the first half second. This is the strongest idea in the whole method, and it is undersold: reading a *reaction to a stimulus you chose and timed* is far more informative than reading a person at rest, because you know exactly when the clock started.' },
+      { pull: 'If you take one thing from the character, take this: create the moment, then watch. Do not sit waiting for meaning to arrive.' },
+
+      { h: 'Micro-expressions — contested, and expensively so' },
+      { p: 'The idea that fleeting involuntary facial movements betray concealed emotion is popular and has been enormously influential. It is also thinner than its reputation. The United States built an airport screening programme on it, deployed roughly 3,000 behaviour detection officers against a list of 94 indicators, and the Government Accountability Office concluded that the available evidence did not support using behavioural indicators to identify security threats — and that no validation had been done before deployment. It recommended cutting the funding.' },
+
+      { h: '"Priming" people — largely did not replicate' },
+      { p: 'Scenes where a word planted early steers someone\'s behaviour later belong to social priming, and that literature took the hardest hit of psychology\'s replication crisis. The most famous result — students walking more slowly after exposure to elderly-related words — failed to replicate, and in the replication the effect appeared only when the experimenters *expected* slow walking. That is a finding about experimenters, not subjects.' },
+
+      { h: 'Reading eye direction — pseudoscience' },
+      { p: 'The claim that glancing up-left means recall and up-right means fabrication comes from neuro-linguistic programming. There is no reliable relationship between eye movement and lying, and no consistent mapping to sensory modality. Reviews through the 1980s found no support and none has arrived since. If someone offers to teach you this, you have learned something useful about them instead.' },
+
+      { h: 'The confession scene — see the next entry' },
+      { p: 'The climactic confrontation, where the accusation and the pressure produce a confession, is the one piece of the method that is not just unsupported but actively harmful. It has a name, a literature, and a well-evidenced replacement. That is the next entry.' },
+    ],
+  },
+
+  {
+    id: 'l-interview',
+    title: 'The Interview',
+    discipline: 'influence',
+    mins: 5,
+    teaser: 'Confrontation produces confessions from innocent people. There is a better method and it is not a secret.',
+    body: [
+      { p: 'The dramatic interrogation — accuse, apply pressure, offer a way out, wait for the break — is called the **Reid technique**. It is accusatory by design, and it permits the interviewer to deceive the suspect, including presenting evidence that does not exist.' },
+      { myth: 'In experimental work, innocent participants falsely confessed at around 50% under Reid-style interrogation, against 0% under the alternative below. The technique does not separate the guilty from the innocent. It separates the resistant from the suggestible.' },
+      { p: 'England and Wales abandoned it. After a series of wrongful convictions traced to coercive interviewing, authorities concluded that manipulative practice had contributed to them, and replaced the approach nationally.' },
+      { h: 'What replaced it' },
+      { p: 'The **PEACE model** — Planning and preparation, Engage and explain, Account, Closure, Evaluate. It is non-accusatory, it explicitly forbids deceiving the interviewee, and its goal is a complete account rather than a confession.' },
+      { p: 'The core move is simple and surprisingly hard: let the person give their whole account, uninterrupted, before you raise a single inconsistency. You hold what you know until late. Evaluations find it produces more detail without degrading accuracy, and there is little documented evidence of false confessions from properly conducted PEACE interviews.' },
+      { pull: 'Ask for the account. Do not interrupt it. Disclose what you know last. That is most of it.' },
+      { h: 'Why this matters outside a police station' },
+      { p: 'You are not interrogating anyone. But the same two shapes exist in every difficult conversation you will ever have — with a colleague, a teenager, a contractor, a friend who is clearly not telling you everything.' },
+      { ul: [
+        '**The accusatory shape** starts from a conclusion and applies pressure until the other person agrees. It reliably produces agreement. It does not reliably produce truth.',
+        '**The account shape** starts from a question, gives the other person room to fill, and holds your own information back so it cannot contaminate theirs.',
+      ]},
+      { p: 'The second is slower and less satisfying, and it is the one that gets you information you did not already have. The first only ever returns your own hypothesis, wearing someone else\'s voice.' },
+      { p: 'And notice the trap the confident observer walks into: the better you get at reading people, the more tempting the accusatory shape becomes — because you *feel* certain. Feeling certain is exactly the state in which this technique does its damage.' },
+    ],
+  },
+
+  {
     id: 'l-sources',
     title: 'Where This Comes From',
     discipline: 'deduction',
@@ -342,6 +408,17 @@ export const LESSONS = [
       { h: 'Persuasion and belief' },
       { ul: [
         'Forer (1949), *The fallacy of personal validation* — 39 students, one identical profile drawn from an astrology book, rated 4.26 out of 5 for personal accuracy.',
+        'Kuhn & Tatler, *Misdirection in magic* — gaze and social cues genuinely orient a spectator\'s attention, though they do not account for every illusion.',
+      ]},
+      { h: 'Interviewing' },
+      { ul: [
+        'Comparative work on the **Reid technique** and the **PEACE model** — around 50% false confessions from innocent participants under Reid-style interrogation against 0% under PEACE. England and Wales replaced Reid nationally after wrongful convictions were traced to coercive interviewing.',
+      ]},
+      { h: 'Things attributed to the character that do not hold' },
+      { ul: [
+        '**Behaviour-detection screening.** GAO report GAO-14-159 on the TSA\'s programme: ~3,000 officers, 94 indicators, no validation before deployment, and available evidence not supporting the use of behavioural indicators to identify threats.',
+        '**Social priming.** Bargh, Chen & Burrows (1996) elderly-priming failed to replicate (Doyen et al., 2012); the effect emerged only where experimenters expected it.',
+        '**NLP eye-accessing cues.** No reliable relation between eye movement and deception or sensory modality; reviews from the 1980s onward find no support.',
       ]},
       { h: 'Things this app used to say, and no longer does' },
       { p: 'These were removed after checking, and each is worth knowing precisely because it sounds right:' },

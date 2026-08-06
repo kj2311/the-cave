@@ -35,8 +35,9 @@ function blankState() {
     bests: {},     // drillId -> best percentage
     runs: {},      // drillId -> times completed
     strong: {},    // drillId -> runs at or above MASTERY; this drives difficulty
-    log: [],       // { ts, prompt, body }
+    log: [],       // { ts, prompt, body, mission }
     read: [],      // lesson ids
+    missions: [],  // completed mission ids
     seen: {},      // content ids already served, so items do not repeat
   };
 }
@@ -294,10 +295,15 @@ export function pickUnseen(bucket, items, count) {
 
 /* ---------- log ---------- */
 
-export function addLog(prompt, body) {
-  state.log.unshift({ ts: Date.now(), prompt, body });
+export function addLog(prompt, body, mission = null) {
+  state.log.unshift({ ts: Date.now(), prompt, body, mission });
   if (state.log.length > 500) state.log.length = 500;
+  if (mission && !state.missions.includes(mission)) state.missions.push(mission);
   save();
+}
+
+export function missionDone(id) {
+  return state.missions.includes(id);
 }
 
 export function deleteLog(ts) {

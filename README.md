@@ -35,25 +35,33 @@ keeps its own storage.
 
 ## The look
 
-One idea, held consistently: **cold wet rock, warm instrument light.**
+**Black and silver. Sharp edges. Nothing decorative.** These are hard rules, not
+preferences — the top of `css/app.css` restates them, and breaking one is what makes
+an interface look generated rather than designed.
 
-- Blue-grey rock tones (`--rock`, `--rock-lit`, `--damp`) belong to the environment.
-  Amber belongs to the machines. Never mix them — an amber cave wall or a blue-grey
-  console breaks it immediately.
-- `.cavern` is a fixed layer drawing stalactites above and cave floor below, tiled at
-  1200px. It sits at `z-index: 0` with `.view` lifted to `1`; a negative layer would
-  paint *under* body's opaque background and disappear.
-- Panels are lit consoles — inset top highlight, a warm underglow, and a heavy drop
-  shadow that separates them from the rock behind. The home briefing is the main
-  display: scanlines, corner bolts, a stronger bloom.
-- Opening the app plays a short descent (`.boot`), once per browser session, gated by
-  a pre-paint inline script in `index.html`. It fades out via CSS animation rather
-  than a JS timeout so a script failure cannot trap anyone behind it, and it is
-  disabled entirely under `prefers-reduced-motion`.
+- **No radius.** `* { border-radius: 0 }` is set globally. Nothing is rounded, ever.
+- **No colour.** Black, greys, silver, white. Correct and incorrect are distinguished
+  by fill, weight and rule — a right answer inverts its marker to solid white, a wrong
+  one gets a diagonal hatch and drops to a dimmer grey. Never add a hue to carry
+  meaning; if you need a third state, use a dashed edge.
+- **No glow, no blur, no soft shadows.** Structure is drawn with 1px hairlines.
+  Gradients appear in exactly one place — the brushed-metal slug in the top bar and
+  the icon, where metal would actually catch light.
+- **Left-aligned.** Nothing is centred except a number that is the whole content of
+  its box.
+- **Three typefaces doing three jobs.** Mono for labels, data and anything measured;
+  a tight system sans for headings and controls; a serif for prose. The serif is the
+  signal that you are reading rather than operating.
+- Disciplines step down a **silver scale** (`--accent` per `.d-*` class) instead of
+  each taking a colour.
 
-There is deliberately **no Batman iconography** — no bat shapes, no cowl, no
-black-and-yellow oval, no Gotham/Wayne naming. The cave, the console bank and the
-amber-on-rock contrast carry the feel on their own. Keep it that way.
+No Batman iconography — no bat shapes, no cowl, no yellow oval, no Gotham/Wayne
+naming.
+
+Two drills were rebuilt to survive the monochrome rule. **Sweep** varies objects by
+fill (solid, hollow, hatched, dotted, split, double) rather than by colour. **Stillness**
+replaced the Stroop task, which is colour-dependent by definition, with a
+direction-word/arrow conflict that produces the same interference.
 
 ## Layout
 
@@ -77,8 +85,9 @@ js/
     stillness.js        composure — Stroop with rule switching
   data/
     cases.js            14 deduction case files
-    people.js           10 baseline scenarios, 10 cold-reading items, log prompts
-    lessons.js          11 codex articles
+    people.js           10 baseline scenarios, 13 cold-reading items
+    lessons.js          14 codex articles
+    missions.js         29 real-world field assignments, tiered
     words.js            concrete nouns + loci routes for memory drills
 tools/
   serve.ps1             static server (no Node/Python on this machine)
@@ -143,3 +152,25 @@ documented in the app as a correction rather than quietly deleted.
 
 **If you add content, cite it.** The app's whole credibility rests on not being
 another confident repetition of folklore.
+
+The codex entry **The Toolkit, Item by Item** goes through the techniques the
+character is shown using and sorts them: cold reading and muscle reading (contact mind
+reading / Cumberlandism, running on the ideomotor effect) are real; the memory palace
+and gaze-based misdirection are real; micro-expression screening, social priming and
+NLP eye-accessing cues are not. **The Interview** covers the Reid technique versus the
+PEACE model, which is the one place the show's method is not merely unsupported but
+actively harmful.
+
+## Field missions
+
+`js/data/missions.js` holds 29 assignments across three tiers, surfaced in the Field
+tab with one put forward each day. Rules they follow, which new missions must also
+follow:
+
+- Everything is done to yourself or in public space. **No mission asks the user to run
+  a technique on a named person who has not agreed to it**, and none involve following,
+  approaching or recording anyone.
+- Every mission ends in a debrief question. Filing an answer marks it complete and
+  writes a tagged entry to the log.
+- Tier I is doable today, Tier II needs a real conversation or a full day, Tier III
+  takes a week or touches something that matters.

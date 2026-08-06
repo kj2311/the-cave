@@ -62,7 +62,7 @@ export default {
             h('p.case-scene', { style: { marginTop: '9px' } }, it.baseline),
           ),
           h('div.panel',
-            h('div.label', { style: { color: 'var(--amber)' } }, 'The moment'),
+            h('div.label', { style: { color: 'var(--silver-hi)' } }, 'The moment'),
             h('p.case-scene', { style: { marginTop: '9px' } }, it.moment),
           ),
           h('div.panel', h('h3', it.question)),

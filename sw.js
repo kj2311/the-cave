@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v3';
+const CACHE = 'cave-v4';
 
 const SHELL = [
   './',
@@ -27,6 +27,7 @@ const SHELL = [
   'js/data/people.js',
   'js/data/lessons.js',
   'js/data/words.js',
+  'js/data/missions.js',
   'icons/icon-32.png',
   'icons/icon-192.png',
   'icons/icon-512.png',

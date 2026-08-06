@@ -288,6 +288,45 @@ export const COLDREADS = [
     explain: 'Attention follows *anticipated significance*, and the strongest cue for significance is another person\'s gaze — you look where they look, automatically. Fast movement actually draws the eye, which is why real misdirection uses slow, expected, uninteresting motion for the secret action and lets the gaze do the steering.',
   },
   {
+    id: 'cr-ideomotor',
+    subject: 'A performer holds a volunteer\'s wrist, asks them to concentrate hard on where an object is hidden, and walks them straight to it.',
+    question: 'What is actually happening?',
+    options: [
+      { t: 'The volunteer is unconsciously steering, and the performer is reading it through contact.', ok: true },
+      { t: 'The performer is reading micro-expressions on the volunteer\'s face.', ok: false },
+      { t: 'The performer had the location beforehand and is acting.', ok: false },
+      { t: 'The volunteer is knowingly helping and has agreed to it.', ok: false },
+    ],
+    tech: 'mine',
+    explain: 'This is contact mind reading, also called Cumberlandism, and it is a genuine technique going back to the 1870s. It runs on the *ideomotor effect*: concentrating on a location produces tiny involuntary movements toward it that you cannot feel yourself making. Nobody in this scene is lying — that is the point. The same effect drives Ouija boards and dowsing rods, which is why sincere people defend both.',
+  },
+  {
+    id: 'cr-eyes',
+    subject: 'Someone tells you they can spot lies because liars look up and to the right when they invent an answer.',
+    question: 'What is the correct response?',
+    options: [
+      { t: 'The claim comes from NLP and has no support; eye direction predicts neither lying nor recall.', ok: true },
+      { t: 'It works, but only if you establish which direction is which for that person first.', ok: false },
+      { t: 'It works for recall versus construction, but not specifically for lying.', ok: false },
+      { t: 'It is broadly right but too unreliable to use on its own.', ok: false },
+    ],
+    tech: 'barnum',
+    explain: 'Eye-accessing cues are a neuro-linguistic programming claim, and testing has found no reliable link between eye movement and deception, and no consistent mapping to sensory modality either. The tempting middle answers — "true but unreliable", "true if calibrated" — are how a dead claim stays alive. There is nothing to calibrate.',
+  },
+  {
+    id: 'cr-priming',
+    subject: 'A book tells you that slipping certain words into a conversation will shape the other person\'s behaviour minutes later, without their noticing.',
+    question: 'How much weight should you give this?',
+    options: [
+      { t: 'Very little — the social priming literature largely failed to replicate.', ok: true },
+      { t: 'A lot — it is one of the most replicated findings in psychology.', ok: false },
+      { t: 'Some — the effects are real but small.', ok: false },
+      { t: 'It works, but only on people who are already suggestible.', ok: false },
+    ],
+    tech: 'barnum',
+    explain: 'Social priming was the area hit hardest by psychology\'s replication crisis. The signature result — people walking more slowly after exposure to elderly-related words — failed to replicate, and in the replication the effect showed up only when the experimenters expected it, which makes it a finding about experimenters. Be especially careful here: this is the kind of claim that flatters you by implying you have a lever on other people.',
+  },
+  {
     id: 'cr-ethics',
     subject: 'You have just realised you can steer a conversation with these tools.',
     question: 'What is the line that matters?',
@@ -302,20 +341,4 @@ export const COLDREADS = [
   },
 ];
 
-/* Prompts for the field log — real-world observation homework. */
-export const LOG_PROMPTS = [
-  'Describe, from memory, the shoes of the last stranger you stood near. Then say what you would guess from them — and what you cannot.',
-  'Name three things in the room you are in that you had never consciously registered before today.',
-  'Recall the last conversation you had. What did the other person do with their hands?',
-  'Pick someone you saw today. What is one thing about them that contradicted your first impression?',
-  'What did the last person you spoke to say that they did not have to say? Why do you think they said it?',
-  'Describe the entrance of a building you use often — door handle side, number of steps, what is immediately left.',
-  'Think of a claim someone made to you this week. What physical evidence would have to exist if it were true?',
-  'Who spoke least in the last group you were in? What did the group do when they finally spoke?',
-  'Recall a moment today when you felt certain. What would have had to be true for you to be wrong?',
-  'What is your own baseline? Describe what you do with your body when you are comfortable, in detail.',
-  'Reconstruct the route you walked most recently. Every turn, every crossing. Where does the memory go blank?',
-  'What did you overhear today that you were not meant to be part of? What did it tell you about the speakers?',
-  'Pick one person you know well. What single detail would let a stranger identify them from behind?',
-  'What is the last thing that surprised you? Was the surprise about the world, or about your model of it?',
-];
+/* Field work now lives in data/missions.js as structured assignments. */

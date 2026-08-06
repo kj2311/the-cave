@@ -1,7 +1,11 @@
 #requires -version 5.1
 <#
   Generates the PWA / apple-touch icon set with System.Drawing.
-  The mark is a gapped reticle ring with a glowing core - a "watching lens".
+
+  Black and silver only. A machined bar-and-rule mark: a brushed
+  metal slug over a hard horizontal rule. No colour, no glow, no
+  rounded corners - iOS applies its own mask, so a full-bleed
+  square is the correct source.
 
   Usage:  powershell -ExecutionPolicy Bypass -File tools\make-icons.ps1
 #>
@@ -15,111 +19,62 @@ function New-CaveIcon {
     param(
         [int]$Size,
         [string]$Path,
-        # Maskable icons must survive a circular crop, so the mark shrinks
-        # and the background bleeds to the full square.
+        # Maskable icons must survive a circular crop, so the mark shrinks.
         [switch]$Maskable
     )
 
     $bmp = New-Object System.Drawing.Bitmap($Size, $Size, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
     $g = [System.Drawing.Graphics]::FromImage($bmp)
     $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
-    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
     $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
-    $g.Clear([System.Drawing.Color]::Transparent)
 
-    $amber = [System.Drawing.Color]::FromArgb(255, 245, 166, 35)
-    $amberDim = [System.Drawing.Color]::FromArgb(120, 245, 166, 35)
+    # --- flat black plate, full bleed ------------------------------------
+    $g.Clear([System.Drawing.Color]::FromArgb(255, 0, 0, 0))
 
-    # --- background plate -------------------------------------------------
-    $radius = if ($Maskable) { 0 } else { [int]($Size * 0.225) }
-    $rect = New-Object System.Drawing.RectangleF(0, 0, $Size, $Size)
-    $bgPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-    if ($radius -gt 0) {
-        $d = $radius * 2
-        $bgPath.AddArc(0, 0, $d, $d, 180, 90)
-        $bgPath.AddArc($Size - $d, 0, $d, $d, 270, 90)
-        $bgPath.AddArc($Size - $d, $Size - $d, $d, $d, 0, 90)
-        $bgPath.AddArc(0, $Size - $d, $d, $d, 90, 90)
-        $bgPath.CloseFigure()
-    } else {
-        $bgPath.AddRectangle($rect)
-    }
+    $silverHi = [System.Drawing.Color]::FromArgb(255, 242, 244, 247)
+    $steel    = [System.Drawing.Color]::FromArgb(255, 139, 144, 153)
+    $rule     = [System.Drawing.Color]::FromArgb(255, 62, 64, 70)
 
-    $grad = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
-        (New-Object System.Drawing.PointF(0, 0)),
-        (New-Object System.Drawing.PointF($Size, $Size)),
-        [System.Drawing.Color]::FromArgb(255, 17, 24, 32),
-        [System.Drawing.Color]::FromArgb(255, 5, 7, 10))
-    $g.FillPath($grad, $bgPath)
-    $grad.Dispose()
-
-    # Clip everything else to the plate so glow never leaks past the corners.
-    $g.SetClip($bgPath)
-
+    $scale = if ($Maskable) { 0.62 } else { 1.0 }
     $cx = $Size / 2.0
     $cy = $Size / 2.0
-    $scale = if ($Maskable) { 0.62 } else { 1.0 }
 
-    # --- ambient bloom behind the mark -----------------------------------
-    $bloomR = $Size * 0.42 * $scale
-    $bloomRect = New-Object System.Drawing.RectangleF(($cx - $bloomR), ($cy - $bloomR), ($bloomR * 2), ($bloomR * 2))
-    $bloomPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-    $bloomPath.AddEllipse($bloomRect)
-    $bloom = New-Object System.Drawing.Drawing2D.PathGradientBrush($bloomPath)
-    $bloom.CenterColor = [System.Drawing.Color]::FromArgb(70, 245, 166, 35)
-    $bloom.SurroundColors = @([System.Drawing.Color]::FromArgb(0, 245, 166, 35))
-    $g.FillPath($bloom, $bloomPath)
-    $bloom.Dispose()
-    $bloomPath.Dispose()
+    # --- the horizontal rule the mark sits on ----------------------------
+    $ruleW = $Size * 0.52 * $scale
+    $rulePen = New-Object System.Drawing.Pen($rule, [Math]::Max(1.0, $Size * 0.012 * $scale))
+    $g.DrawLine($rulePen, [single]($cx - $ruleW / 2), [single]$cy, [single]($cx + $ruleW / 2), [single]$cy)
+    $rulePen.Dispose()
 
-    # --- outer reticle: four arcs with gaps on the diagonals --------------
-    $ringR = $Size * 0.315 * $scale
-    $ringRect = New-Object System.Drawing.RectangleF(($cx - $ringR), ($cy - $ringR), ($ringR * 2), ($ringR * 2))
-    $penW = [Math]::Max(2.0, $Size * 0.052 * $scale)
-    $pen = New-Object System.Drawing.Pen($amber, $penW)
-    $pen.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-    $pen.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-    foreach ($start in 28, 118, 208, 298) {
-        $g.DrawArc($pen, $ringRect, $start, 34)
-    }
-    $pen.Dispose()
+    # --- brushed metal slug, sitting on the rule -------------------------
+    $slabW = $Size * 0.30 * $scale
+    $slabH = $Size * 0.30 * $scale
+    $slab = New-Object System.Drawing.RectangleF(
+        [single]($cx - $slabW / 2), [single]($cy - $slabH / 2), [single]$slabW, [single]$slabH)
 
-    # --- inner ring -------------------------------------------------------
-    $innerR = $Size * 0.185 * $scale
-    $innerRect = New-Object System.Drawing.RectangleF(($cx - $innerR), ($cy - $innerR), ($innerR * 2), ($innerR * 2))
-    $penIn = New-Object System.Drawing.Pen($amberDim, [Math]::Max(1.0, $Size * 0.022 * $scale))
-    $g.DrawEllipse($penIn, $innerRect)
-    $penIn.Dispose()
+    $brush = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
+        (New-Object System.Drawing.PointF([single]$slab.Left, [single]$slab.Top)),
+        (New-Object System.Drawing.PointF([single]$slab.Right, [single]$slab.Bottom)),
+        $silverHi, $steel)
+    $g.FillRectangle($brush, $slab)
+    $brush.Dispose()
 
-    # --- core -------------------------------------------------------------
-    $coreR = $Size * 0.072 * $scale
-    $coreRect = New-Object System.Drawing.RectangleF(($cx - $coreR), ($cy - $coreR), ($coreR * 2), ($coreR * 2))
-    $core = New-Object System.Drawing.SolidBrush($amber)
-    $g.FillEllipse($core, $coreRect)
-    $core.Dispose()
+    # --- two short index marks, left and right of the slug ---------------
+    $tickPen = New-Object System.Drawing.Pen($silverHi, [Math]::Max(1.5, $Size * 0.026 * $scale))
+    $t0 = $Size * 0.215 * $scale
+    $t1 = $Size * 0.305 * $scale
+    $g.DrawLine($tickPen, [single]($cx - $t0), [single]$cy, [single]($cx - $t1), [single]$cy)
+    $g.DrawLine($tickPen, [single]($cx + $t0), [single]$cy, [single]($cx + $t1), [single]$cy)
+    $tickPen.Dispose()
 
-    # --- crosshair ticks --------------------------------------------------
-    $tick = New-Object System.Drawing.Pen($amber, [Math]::Max(1.5, $Size * 0.030 * $scale))
-    $tick.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-    $tick.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-    $t0 = $Size * 0.375 * $scale
-    $t1 = $Size * 0.445 * $scale
-    $g.DrawLine($tick, [single]$cx, [single]($cy - $t0), [single]$cx, [single]($cy - $t1))
-    $g.DrawLine($tick, [single]$cx, [single]($cy + $t0), [single]$cx, [single]($cy + $t1))
-    $g.DrawLine($tick, [single]($cx - $t0), [single]$cy, [single]($cx - $t1), [single]$cy)
-    $g.DrawLine($tick, [single]($cx + $t0), [single]$cy, [single]($cx + $t1), [single]$cy)
-    $tick.Dispose()
-
-    $g.ResetClip()
-
-    # --- hairline edge ----------------------------------------------------
+    # --- hairline frame ---------------------------------------------------
     if (-not $Maskable) {
-        $edge = New-Object System.Drawing.Pen(([System.Drawing.Color]::FromArgb(90, 120, 145, 170)), [Math]::Max(1.0, $Size * 0.008))
-        $g.DrawPath($edge, $bgPath)
+        $edge = New-Object System.Drawing.Pen($rule, [Math]::Max(1.0, $Size * 0.008))
+        $inset = [Math]::Max(1.0, $Size * 0.055)
+        $g.DrawRectangle($edge, [single]$inset, [single]$inset,
+            [single]($Size - $inset * 2), [single]($Size - $inset * 2))
         $edge.Dispose()
     }
 
-    $bgPath.Dispose()
     $g.Dispose()
     $bmp.Save($Path, [System.Drawing.Imaging.ImageFormat]::Png)
     $bmp.Dispose()

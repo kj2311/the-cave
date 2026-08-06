@@ -107,7 +107,7 @@ export default {
         const right = idx === c.key;
         buzz(right ? 14 : [10, 40, 10]);
         if (right) score.got += 1;
-        else items[idx].style.borderColor = 'var(--red)';
+        else { items[idx].style.borderStyle = 'dashed'; items[idx].style.opacity = '.5'; }
 
         step += 1;
         bar.set(step);
