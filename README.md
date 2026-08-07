@@ -61,8 +61,10 @@ preferences — the top of `css/app.css` restates them, and breaking one is what
 an interface look generated rather than designed.
 
 - **No radius.** `* { border-radius: 0 }` is set globally. Nothing is rounded, ever.
-- **No colour.** Black, greys, silver, white. Correct and incorrect are distinguished
-  by fill, weight and rule — a right answer inverts its marker to solid white, a wrong
+- **One colour, spent in two places.** The interface is black, greys, silver and
+  white. Gold appears *only* on the discipline pictograms and as the dossier
+  highlighter — nowhere else, ever. Correct and incorrect are distinguished by fill,
+  weight and rule instead: a right answer inverts its marker to solid white, a wrong
   one gets a diagonal hatch and drops to a dimmer grey. Never add a hue to carry
   meaning; if you need a third state, use a dashed edge.
 - **No glow, no blur, no soft shadows.** Structure is drawn with 1px hairlines.
