@@ -195,3 +195,23 @@ follow:
   writes a tagged entry to the log.
 - Tier I is doable today, Tier II needs a real conversation or a full day, Tier III
   takes a week or touches something that matters.
+
+## The dossier
+
+Case files, subject files and mission briefs render as a physical document
+rather than as UI (`.dossier` in `css/app.css`, `dossier()` in
+`js/drills/shared.js`).
+
+It is the **one light surface in the app** and the only place colour appears
+beyond the pictograms. That is deliberate: everywhere else you are operating an
+instrument, and here you are being handed a piece of paper. Bone stock, black
+ink, a newspaper serif (`--news`), filing holes punched down the left edge, a
+rotated rubber stamp, and a small-caps lead-in on the opening paragraph only.
+
+The highlighter is the same gold as the pictograms and is **earned, not
+decorative**: in The Chain it swipes across the decisive observation at the
+moment the case resolves, while a wrong pick is ruled out in pen. `mdish()`
+also supports `==text==` for marking phrases inline in authored content.
+
+Keep the paper confined to documents. A light panel anywhere else destroys the
+contrast this depends on.

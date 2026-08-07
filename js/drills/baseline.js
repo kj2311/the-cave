@@ -10,7 +10,7 @@ import { h, ICONS } from '../ui.js';
 import { BASELINES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { baselineItem } from '../content.js';
-import { hud, choices, reveal, nextBtn } from './shared.js';
+import { hud, choices, reveal, nextBtn, dossier, dossierSection } from './shared.js';
 import { t, tips } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
@@ -56,17 +56,20 @@ export default {
       bar.set(i);
       const holder = h('div');
 
+      const file = dossier({
+        kind: t('doc.subjectFile'),
+        no: t('doc.no', { n: i + 1, of: items.length }),
+        stamp: t('doc.onFile'),
+        extra: [
+          ...dossierSection(t('doc.baselineSec'), it.baseline),
+          ...dossierSection(t('doc.momentSec'), it.moment),
+        ],
+      });
+
       root.replaceChildren(
         h('div.fade-in.stack',
           bar.el,
-          h('div.panel',
-            h('div.label', t('baseline.baseline')),
-            h('p.case-scene', { style: { marginTop: '9px' } }, it.baseline),
-          ),
-          h('div.panel',
-            h('div.label', { style: { color: 'var(--silver-hi)' } }, t('baseline.moment')),
-            h('p.case-scene', { style: { marginTop: '9px' } }, it.moment),
-          ),
+          file.el,
           h('div.panel', h('h3', it.question)),
           holder,
         ),

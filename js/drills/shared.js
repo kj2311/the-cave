@@ -68,12 +68,54 @@ export function reveal(title, text, variant = '') {
   );
 }
 
-/** Minimal inline markdown: **bold** and *emphasis*. */
+/** Minimal inline markdown: **bold**, *emphasis*, ==highlighter==. */
 export function mdish(s) {
   return String(s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/==(.+?)==/g, '<mark>$1</mark>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+/* ---------- the dossier ---------- */
+
+/** A ruled section heading inside a dossier, with its body text. */
+export function dossierSection(label, text) {
+  return [
+    h('div.dossier__rule', label),
+    h('p.dossier__lede', { style: { fontSize: '16px', marginTop: '6px' }, html: mdish(text) }),
+  ];
+}
+
+/**
+ * Renders content as a physical document rather than as UI.
+ * Returns the element plus the observation nodes, so a caller can
+ * highlight or strike one after the fact.
+ */
+export function dossier({ kind, no, title, stamp, lede, extra, factsLabel, facts, onPickFact }) {
+  const factEls = (facts || []).map((f, i) => {
+    const li = h('li', { html: mdish(f) });
+    if (onPickFact) {
+      li.classList.add('is-pickable');
+      li.addEventListener('click', () => onPickFact(i));
+    }
+    return li;
+  });
+
+  const el = h('article.dossier',
+    h('header.dossier__head',
+      h('span.dossier__kind', kind),
+      no ? h('span.dossier__no', no) : null,
+    ),
+    stamp ? h('div.dossier__stamp', stamp) : null,
+    title ? h('h2.dossier__title', title) : null,
+    lede ? h('p.dossier__lede', { html: mdish(lede) }) : null,
+    ...(extra || []),
+    facts && facts.length ? h('div.dossier__rule', factsLabel) : null,
+    facts && facts.length ? h('ol.dossier__facts', factEls) : null,
+  );
+
+  return { el, factEls };
 }
 
 /** Big "NEXT" / "FINISH" button. */

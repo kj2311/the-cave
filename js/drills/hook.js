@@ -9,7 +9,7 @@ import { h, ICONS } from '../ui.js';
 import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { coldReadItem, technique } from '../content.js';
-import { hud, choices, reveal, nextBtn } from './shared.js';
+import { hud, choices, reveal, nextBtn, dossier } from './shared.js';
 import { t, tips } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
@@ -56,13 +56,17 @@ export default {
       bar.set(i);
       const holder = h('div');
 
+      const file = dossier({
+        kind: t('doc.subjectFile'),
+        no: t('doc.no', { n: i + 1, of: items.length }),
+        stamp: t('doc.onFile'),
+        lede: it.subject,
+      });
+
       root.replaceChildren(
         h('div.fade-in.stack',
           bar.el,
-          h('div.panel',
-            h('div.label', t('hook.subject')),
-            h('p.case-scene', { style: { marginTop: '9px' } }, it.subject),
-          ),
+          file.el,
           h('div.panel', h('h3', it.question)),
           holder,
         ),

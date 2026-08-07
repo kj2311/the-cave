@@ -10,7 +10,7 @@ import { h, ICONS, buzz } from '../ui.js';
 import { CASES } from '../data/cases.js';
 import { pickUnseen } from '../store.js';
 import { caseFile } from '../content.js';
-import { hud, choices, reveal, nextBtn } from './shared.js';
+import { hud, choices, reveal, nextBtn, dossier } from './shared.js';
 import { t, tips } from '../i18n.js';
 
 /** More case files per sitting as the level climbs. */
@@ -54,17 +54,22 @@ export default {
       const c = cases[i];
       bar.set(step);
 
-      const factList = h('ol.facts', ...c.facts.map(f => h('li', f)));
+      const file = dossier({
+        kind: t('doc.caseFile'),
+        no: t('doc.no', { n: i + 1, of: cases.length }),
+        stamp: t('doc.open'),
+        title: c.title,
+        lede: c.scene,
+        factsLabel: t('doc.observations'),
+        facts: c.facts,
+      });
+
       const holder = h('div');
 
       root.replaceChildren(
         h('div.fade-in.stack',
           bar.el,
-          h('div.panel',
-            h('div.label', t('chain.case', { n: i + 1, title: c.title })),
-            h('p.case-scene', { style: { marginTop: '10px' } }, c.scene),
-            factList,
-          ),
+          file.el,
           h('div.panel', h('h3', c.question)),
           holder,
         ),
@@ -74,42 +79,50 @@ export default {
         if (correct) score.got += 1;
         step += 1;
         bar.set(step);
-        holder.appendChild(nextBtn(t('chain.whichCarried'), () => askKey(i, factList)));
+        holder.appendChild(nextBtn(t('chain.whichCarried'), () => askKey(i)));
       }));
     }
 
-    function askKey(i, factList) {
+    function askKey(i) {
       if (cancelled) return;
       const c = cases[i];
       const holder = h('div');
 
-      const items = c.facts.map((f, idx) => {
-        const li = h('li.is-pickable', f);
-        li.addEventListener('click', () => choose(idx));
-        return li;
+      const file = dossier({
+        kind: t('doc.caseFile'),
+        no: t('doc.no', { n: i + 1, of: cases.length }),
+        stamp: t('doc.open'),
+        title: c.title,
+        factsLabel: t('doc.observations'),
+        facts: c.facts,
+        onPickFact: (idx) => choose(idx),
       });
-      const list = h('ol.facts', ...items);
 
       root.replaceChildren(
         h('div.fade-in.stack',
           bar.el,
           h('div.panel',
-            h('div.label', t('chain.case', { n: i + 1, title: c.title })),
-            h('h3', { style: { margin: '8px 0 4px' } }, t('chain.decisive')),
-            h('p.prose', { style: { fontSize: '13.5px' } }, t('chain.decisiveSub')),
-            list,
+            h('h3', t('chain.decisive')),
+            h('p.prose', { style: { fontSize: '13.5px', marginTop: '6px' } }, t('chain.decisiveSub')),
           ),
+          file.el,
           holder,
         ),
       );
 
       function choose(idx) {
+        const items = file.factEls;
         items.forEach(li => { li.classList.remove('is-pickable'); li.onclick = null; });
-        items[c.key].classList.add('is-key');
+
         const right = idx === c.key;
         buzz(right ? 14 : [10, 40, 10]);
         if (right) score.got += 1;
-        else { items[idx].style.borderStyle = 'dashed'; items[idx].style.opacity = '.5'; }
+
+        // The wrong pick gets ruled out in pen; the decisive one gets the
+        // highlighter, which is the whole gesture this drill is teaching.
+        if (!right) items[idx].classList.add('is-struck');
+        items[c.key].classList.add('is-key');
+        file.el.appendChild(h('div.dossier__note', t('doc.decisive')));
 
         step += 1;
         bar.set(step);
