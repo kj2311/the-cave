@@ -14,6 +14,7 @@
 
 import { h, ICONS, rand, pick } from '../ui.js';
 import { hud, nextBtn, countdown } from './shared.js';
+import { t } from '../i18n.js';
 
 const DIRS = [
   { n: 'LEFT',  rot: 180 },
@@ -96,7 +97,7 @@ export default {
             h('p.prose.faint', { style: { fontSize: '14px' } },
               `${(LIMIT_MS / 1000).toFixed(1)} seconds per trial. A miss counts the same as a wrong answer.`),
           ),
-          nextBtn('Begin', () => run()),
+          nextBtn(t('drill.begin'), () => run()),
         ),
       );
     }

@@ -9,6 +9,7 @@ import { h, ICONS } from '../ui.js';
 import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
+import { t } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
@@ -40,7 +41,7 @@ export default {
               h('div', 'Could that statement have been visibly wrong? If not, no information passed — no matter how accurate it felt.'),
             ),
           ),
-          nextBtn('Begin', () => ask(0)),
+          nextBtn(t('drill.begin'), () => ask(0)),
         ),
       );
     }
@@ -71,7 +72,7 @@ export default {
         bar.set(i + 1);
         if (tech) holder.appendChild(reveal(tech.name, tech.note));
         holder.appendChild(reveal('Why it works', it.explain));
-        holder.appendChild(nextBtn(i === items.length - 1 ? 'See results' : 'Next', () => ask(i + 1)));
+        holder.appendChild(nextBtn(i === items.length - 1 ? t('drill.seeResults') : t('drill.next'), () => ask(i + 1)));
       }));
     }
 

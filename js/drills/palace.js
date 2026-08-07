@@ -9,6 +9,7 @@
 import { h, ICONS, shuffle, sampleUnique, pick } from '../ui.js';
 import { NOUNS, LOCI_ROUTES } from '../data/words.js';
 import { nextBtn, countdown } from './shared.js';
+import { t } from '../i18n.js';
 
 const TIPS = [
   'Absurd beats sensible. An anchor smashing through your front door survives; an anchor resting beside it does not.',
@@ -55,7 +56,7 @@ export default {
               h('div', route.slice(0, count).join('  →  ')),
             ) : null,
           ),
-          nextBtn('Begin', () => run()),
+          nextBtn(t('drill.begin'), () => run()),
         ),
       );
     }
@@ -103,15 +104,16 @@ export default {
 
       function paint() {
         slots.replaceChildren(...chosen.map((w, i) => {
-          const t = h('button.token', { type: 'button' },
+          // Not named `t` — that would shadow the translation helper.
+          const tok = h('button.token', { type: 'button' },
             h('span.faint.mono', { style: { marginRight: '7px', fontSize: '11px' } }, i + 1), w);
-          t.addEventListener('click', () => {
+          tok.addEventListener('click', () => {
             chosen.splice(i, 1);
             const back = poolBtns.find(b => b.textContent === w && b.classList.contains('is-used'));
             back?.classList.remove('is-used');
             paint();
           });
-          return t;
+          return tok;
         }));
         if (!chosen.length) slots.replaceChildren(h('div.token.token--slot', 'tap the words below, in order'));
         submit.disabled = chosen.length !== items.length;
@@ -153,7 +155,7 @@ export default {
             h('div.label', 'The sequence was'),
             h('div', { style: { marginTop: '12px' } }, list),
           ),
-          nextBtn('Continue', () => ctx.finish({
+          nextBtn(t('drill.continue'), () => ctx.finish({
             pct: exact / items.length,
             stats: [
               { k: 'In place', v: `${exact}/${items.length}` },

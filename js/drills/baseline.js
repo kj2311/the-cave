@@ -10,6 +10,7 @@ import { h, ICONS } from '../ui.js';
 import { BASELINES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
+import { t } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
@@ -41,7 +42,7 @@ export default {
               h('div', 'No behaviour means "lying". Several answers in this drill are the popular reading, and they are wrong. Deviation locates a topic; it never delivers a verdict.'),
             ),
           ),
-          nextBtn('Begin', () => ask(0)),
+          nextBtn(t('drill.begin'), () => ask(0)),
         ),
       );
     }
@@ -75,7 +76,7 @@ export default {
         bar.set(i + 1);
         holder.appendChild(reveal('Reading', it.explain));
         if (it.myth) holder.appendChild(reveal('The popular version is wrong', it.myth, 'reveal--myth'));
-        holder.appendChild(nextBtn(i === items.length - 1 ? 'See results' : 'Next', () => ask(i + 1)));
+        holder.appendChild(nextBtn(i === items.length - 1 ? t('drill.seeResults') : t('drill.next'), () => ask(i + 1)));
       }));
     }
 

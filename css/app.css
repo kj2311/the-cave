@@ -30,6 +30,13 @@
 
   --accent:     var(--silver);
 
+  /* Gold is reserved for the discipline pictograms. It is the one
+     colour in the app, and it earns that by never appearing anywhere
+     a pictogram is not. */
+  --gold-hi:    #f0dca4;
+  --gold:       #cfa93f;
+  --gold-deep:  #7d6320;
+
   --sans:  -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", Georgia, serif;
   --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -297,15 +304,18 @@ p:last-child { margin-bottom: 0; }
 .drill + .drill { margin-top: 8px; }
 .drill.is-done { opacity: .45; }
 
+/* Gilded plate. The only colour in the interface. */
 .drill__glyph {
-  width: 36px; height: 36px;
+  width: 38px; height: 38px;
   flex: none;
   display: grid;
   place-items: center;
-  border: 1px solid var(--rule-hi);
-  color: var(--accent);
+  border: 1px solid var(--gold-deep);
+  background: linear-gradient(150deg, rgba(207,169,63,.10) 0%, rgba(207,169,63,0) 62%);
+  color: var(--gold);
 }
-.drill__glyph svg { width: 19px; height: 19px; }
+.drill__glyph svg { width: 20px; height: 20px; }
+.drill:active .drill__glyph { color: var(--gold-hi); border-color: var(--gold); }
 .drill__name { font-weight: 600; color: var(--silver-hi); }
 .drill__sub { font-size: 12.5px; color: var(--dim); margin-top: 2px; line-height: 1.4; }
 .drill__chev { color: var(--faint); flex: none; }

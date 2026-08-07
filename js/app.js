@@ -3,8 +3,9 @@
    ============================================================ */
 
 import {
-  h, svg, ICONS, toast, render, pick, fmtDate, ringSvg, sparkline, buzz,
+  h, svg, ICONS, PICTOS, toast, render, pick, fmtDate, ringSvg, sparkline, buzz,
 } from './ui.js';
+import { t, getLang, setLang, LANGS, locale } from './i18n.js';
 import {
   DISCIPLINES, get, reset, dayKey, levelFromXp, rank,
   liveStreak, ensureDaily, dailyComplete, recordRun, addLog, deleteLog,
@@ -14,7 +15,8 @@ import {
 } from './store.js';
 import { DRILLS, byId, drillIds } from './drills/index.js';
 import { LESSONS } from './data/lessons.js';
-import { MISSIONS, TIERS } from './data/missions.js';
+import { MISSIONS } from './data/missions.js';
+import { mission } from './content.js';
 import { mdish } from './drills/shared.js';
 
 const QUOTES = [
@@ -32,6 +34,24 @@ const QUOTES = [
 
 let cleanup = null;
 
+/** Discipline display name for the active language. */
+const dName = (key) => t(`disc.${key}`);
+const dTag = (key) => t(`disc.${key}.tag`);
+
+/** Static chrome lives in index.html, so it is painted from JS on boot
+    and again whenever the language changes. */
+function paintChrome() {
+  const labels = {
+    '#/home': 'tab.home', '#/train': 'tab.train', '#/codex': 'tab.codex',
+    '#/log': 'tab.field', '#/profile': 'tab.you',
+  };
+  document.querySelectorAll('.tab').forEach(tab => {
+    const key = labels[tab.dataset.route];
+    if (key) tab.querySelector('span').textContent = t(key);
+  });
+  document.documentElement.lang = getLang();
+}
+
 /* ============================================================
    HOME
    ============================================================ */
@@ -48,16 +68,16 @@ function viewHome() {
 
   const briefing = h('div.briefing',
     h('div.briefing__date',
-      h('span.label', new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })),
-      h('span.label', r.name),
+      h('span.label', new Date().toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })),
+      h('span.label', t(`rank.${r.name}`)),
     ),
     h('div.row',
       h('div.grow',
-        h('h1', complete ? 'Protocol complete.' : streak > 0 ? 'Back again.' : 'Come in.'),
+        h('h1', complete ? t('home.complete') : streak > 0 ? t('home.back') : t('home.first')),
         h('p.prose', { style: { marginTop: '6px' } },
           complete
-            ? 'Three systems trained today. Anything further is surplus.'
-            : `${daily.drills.length - done.size} of ${daily.drills.length} sessions left in today\'s protocol.`),
+            ? t('home.completeSub')
+            : t('home.left', { n: daily.drills.length - done.size, m: daily.drills.length })),
       ),
       h('div', { style: { position: 'relative', flex: 'none' } },
         ringSvg(progress, 62, 5),
@@ -79,28 +99,29 @@ function viewHome() {
 
   const nodes = [
     briefing,
-    h('div.section-head', h('span.label', "Today's protocol")),
+    h('div.section-head', h('span.label', t('home.protocol'))),
     ...protocol,
   ];
 
   if (complete) {
     nodes.push(h('div.panel', { style: { marginTop: '12px' } },
       h('div.row',
-        h('span.chip.chip--accent', 'Complete'),
-        h('span.faint', { style: { fontSize: '13.5px' } }, `Streak at ${streak} day${streak === 1 ? '' : 's'}.`),
+        h('span.chip.chip--accent', t('home.completeChip')),
+        h('span.faint', { style: { fontSize: '13.5px' } }, t('home.streakAt', { n: streak })),
       ),
     ));
   }
 
   const todays = MISSIONS[hashDay() % MISSIONS.length];
+  const tm = mission(todays);
   nodes.push(
-    h('div.section-head', h('span.label', 'Field assignment')),
+    h('div.section-head', h('span.label', t('home.assignment'))),
     h(`button.drill.${DISCIPLINES[todays.discipline].cls}`,
       { type: 'button', onclick: () => go(`#/mission/${todays.id}`) },
-      h('span.drill__glyph', svg(ICONS.spark, 19)),
+      h('span.drill__glyph', svg(PICTOS[todays.discipline], 20)),
       h('span.grow',
-        h('div.drill__name', todays.title),
-        h('div.drill__sub', `${TIERS[todays.tier].name} · ${DISCIPLINES[todays.discipline].name} · ${todays.time}`),
+        h('div.drill__name', tm.title),
+        h('div.drill__sub', `${t(`tier.${todays.tier}`)} · ${dName(todays.discipline)} · ${tm.time}`),
       ),
       missionDone(todays.id)
         ? h('span.drill__tick', svg(ICONS.check, 17))
@@ -110,7 +131,7 @@ function viewHome() {
 
   if (!isStandalone()) nodes.push(installNote());
 
-  render(h('div.fade-in', nodes), { title: 'THE CAVE' });
+  render(h('div.fade-in', nodes), { title: t('title.home') });
   setTab('#/home');
 }
 
@@ -122,10 +143,10 @@ function drillCard(d, isDone) {
   const lvl = drillLevel(d.id);
   return h(`button.drill.${DISCIPLINES[d.discipline].cls}${isDone ? '.is-done' : ''}`,
     { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
-    h('span.drill__glyph', svg(d.icon, 21)),
+    h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
     h('span.grow',
       h('div.drill__name', d.name),
-      h('div.drill__sub', `${DISCIPLINES[d.discipline].name} · Level ${lvl} · ${d.length}`),
+      h('div.drill__sub', `${dName(d.discipline)} · ${t('train.level', { n: lvl })} · ${d.length}`),
     ),
     isDone
       ? h('span.drill__tick', svg(ICONS.check, 18))
@@ -137,10 +158,11 @@ function installNote() {
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   return h('div.install-note',
     ios
-      ? h('div', h('b', 'Install this.'), ' Tap the Share button in Safari, scroll down, and choose ',
-          h('b', 'Add to Home Screen'), '. It then opens full screen, works with no signal, and keeps your progress.')
-      : h('div', h('b', 'Install this.'), ' Use your browser menu and choose ',
-          h('b', 'Install app'), ' or ', h('b', 'Add to Home Screen'), ' to run it full screen and offline.'),
+      ? h('div', h('b', t('install.title')), t('install.ios'),
+          h('b', t('install.iosBold')), t('install.iosEnd'))
+      : h('div', h('b', t('install.title')), t('install.other'),
+          h('b', t('install.otherBold')), t('install.otherOr'),
+          h('b', t('install.iosBold')), t('install.otherEnd')),
   );
 }
 
@@ -155,10 +177,10 @@ function viewTrain() {
 
   const nodes = [
     h('div.panel',
-      h('div.label', 'Training'),
-      h('h2', { style: { margin: '8px 0 8px' } }, 'Six systems'),
-      h('p.prose', `Each drill scales with you, up to level ${MAX_LEVEL}. Two runs at ${Math.round(MASTERY * 100)}% or better move it up — more items, less time, fewer cues, a bigger board.`),
-      h('p.prose.faint', { style: { fontSize: '13.5px' } }, 'Turning up counts for XP. Only doing well makes it harder.'),
+      h('div.label', t('train.label')),
+      h('h2', { style: { margin: '8px 0 8px' } }, t('train.heading')),
+      h('p.prose', t('train.intro', { max: MAX_LEVEL, mastery: Math.round(MASTERY * 100) })),
+      h('p.prose.faint', { style: { fontSize: '13.5px' } }, t('train.intro2')),
     ),
   ];
 
@@ -168,29 +190,29 @@ function viewTrain() {
     const lv = levelFromXp(s.xp[key] || 0);
     nodes.push(
       h(`div.section-head.${meta.cls}`,
-        h('span.label', meta.name),
-        h('span.label', { style: { color: 'var(--accent)' } }, `LV ${lv.level}`),
+        h('span.label', dName(key)),
+        h('span.label', { style: { color: 'var(--gold)' } }, t('train.lv', { n: lv.level })),
       ),
-      h('p.faint', { style: { fontSize: '13px', margin: '0 2px 10px' } }, meta.tag),
+      h('p.faint', { style: { fontSize: '13px', margin: '0 2px 10px' } }, dTag(key)),
       ...list.map(d => {
         const runs = s.runs[d.id] || 0;
         const best = s.bests[d.id];
         const lvl = drillLevel(d.id);
         const toNext = toNextLevel(d.id);
         return h(`button.drill.${meta.cls}`, { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
-          h('span.drill__glyph', svg(d.icon, 21)),
+          h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
           h('span.grow',
             h('div.row',
               h('div.drill__name.grow', d.name),
-              h('span.chip.chip--accent', `LV ${lvl}`),
+              h('span.chip.chip--accent', t('train.lv', { n: lvl })),
             ),
             h('div.drill__sub', d.blurb),
             h('div.drill__sub', { style: { marginTop: '4px', opacity: .8 } },
-              `${runs} run${runs === 1 ? '' : 's'}`,
-              best !== undefined ? ` · best ${Math.round(best * 100)}%` : '',
+              t('train.runs', { n: runs }),
+              best !== undefined ? t('train.best', { p: Math.round(best * 100) }) : '',
               toNext === 0
-                ? ' · at the ceiling'
-                : ` · ${toNext} more strong run${toNext === 1 ? '' : 's'} to level ${lvl + 1}`),
+                ? t('train.ceiling')
+                : t('train.toNext', { n: toNext, lvl: lvl + 1 })),
           ),
           h('span.drill__chev', svg(ICONS.chevron, 18)),
         );
@@ -198,7 +220,7 @@ function viewTrain() {
     );
   }
 
-  render(h('div.fade-in', nodes), { title: 'TRAINING' });
+  render(h('div.fade-in', nodes), { title: t('title.train') });
   setTab('#/train');
 }
 
@@ -210,11 +232,14 @@ function viewCodex() {
   const s = get();
   const nodes = [
     h('div.panel',
-      h('div.label', 'Codex'),
-      h('h2', { style: { margin: '8px 0 8px' } }, 'The written material'),
-      h('p.prose', 'Read these in any order. Every claim in here is one you can act on; where the popular version of an idea is wrong, it says so.'),
+      h('div.label', t('codex.label')),
+      h('h2', { style: { margin: '8px 0 8px' } }, t('codex.heading')),
+      h('p.prose', t('codex.intro')),
+      getLang() !== 'en'
+        ? h('p.prose.faint', { style: { fontSize: '13.5px' } }, t('codex.englishOnly'))
+        : null,
     ),
-    h('div.section-head', h('span.label', `${LESSONS.length} entries`)),
+    h('div.section-head', h('span.label', t('codex.entries', { n: LESSONS.length }))),
     ...LESSONS.map(l => {
       const meta = DISCIPLINES[l.discipline];
       const isRead = s.read.includes(l.id);
@@ -223,14 +248,14 @@ function viewCodex() {
         h('div.lesson-card__t', l.title),
         h('div.lesson-card__d', l.teaser),
         h('div.lesson-card__m',
-          h('span.chip.chip--accent', meta.name),
-          h('span.chip', `${l.mins} min`),
-          isRead ? h('span.chip.chip--accent', 'Read') : null,
+          h('span.chip.chip--accent', dName(l.discipline)),
+          h('span.chip', t('codex.mins', { n: l.mins })),
+          isRead ? h('span.chip.chip--accent', t('codex.read')) : null,
         ),
       );
     }),
   ];
-  render(h('div.fade-in', nodes), { title: 'CODEX' });
+  render(h('div.fade-in', nodes), { title: t('title.codex') });
   setTab('#/codex');
 }
 
@@ -256,18 +281,18 @@ function viewLesson(id) {
   render(
     h(`div.fade-in.${meta.cls}`,
       h('div.row', { style: { marginBottom: '14px' } },
-        h('span.chip.chip--accent', meta.name),
-        h('span.chip', `${l.mins} min read`),
+        h('span.chip.chip--accent', dName(l.discipline)),
+        h('span.chip', t('codex.minRead', { n: l.mins })),
       ),
       h('h1', l.title),
       h('div.article.prose', { style: { marginTop: '16px' } }, blocks),
       h('div', { style: { marginTop: '28px' } },
         next
-          ? h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go(`#/codex/${next.id}`) }, `Next — ${next.title}`)
-          : h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/codex') }, 'Back to the codex'),
+          ? h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go(`#/codex/${next.id}`) }, t('codex.next', { title: next.title }))
+          : h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/codex') }, t('codex.back')),
       ),
     ),
-    { title: 'CODEX', back: () => go('#/codex') },
+    { title: t('title.codex'), back: () => go('#/codex') },
   );
   setTab('#/codex');
 }
@@ -288,28 +313,28 @@ function viewLog() {
 
   const nodes = [
     h('div.panel',
-      h('div.label', 'Field work'),
-      h('h2', { style: { margin: '10px 0 10px' } }, 'Assignments'),
-      h('p.prose', 'The drills build the mechanism. These put it outside, where it is harder and where it counts. Every one ends in a written debrief — the training is in the noticing afterwards.'),
+      h('div.label', t('field.label')),
+      h('h2', { style: { margin: '10px 0 10px' } }, t('field.heading')),
+      h('p.prose', t('field.intro')),
     ),
 
-    h('div.section-head', h('span.label', 'Put forward today')),
+    h('div.section-head', h('span.label', t('field.today'))),
     missionCard(todays, done.has(todays.id)),
   ];
 
   for (const tier of [1, 2, 3]) {
     nodes.push(
       h('div.section-head',
-        h('span.label', TIERS[tier].name),
+        h('span.label', t(`tier.${tier}`)),
         h('span.label', `${byTier[tier].filter(m => done.has(m.id)).length}/${byTier[tier].length}`),
       ),
-      h('p.faint', { style: { fontSize: '13px', margin: '0 0 12px' } }, TIERS[tier].note),
+      h('p.faint', { style: { fontSize: '13px', margin: '0 0 12px' } }, t(`tier.${tier}note`)),
       ...byTier[tier].map(m => missionCard(m, done.has(m.id))),
     );
   }
 
   nodes.push(
-    h('div.section-head', h('span.label', `Filed — ${s.log.length}`)),
+    h('div.section-head', h('span.label', t('field.filed', { n: s.log.length }))),
     h('div.panel', s.log.length
       ? s.log.map(e => h('div.entry',
           h('div.row.row--between',
@@ -317,83 +342,82 @@ function viewLog() {
             h('button.btn.btn--ghost.btn--sm', {
               type: 'button',
               onclick: () => {
-                if (!confirm('Delete this entry?')) return;
+                if (!confirm(t('field.deleteConfirm'))) return;
                 deleteLog(e.ts);
                 viewLog();
               },
-            }, 'Delete'),
+            }, t('field.delete')),
           ),
           h('div.entry__q', e.prompt),
           h('div.entry__b', e.body),
         ))
-      : h('div.empty', 'Nothing filed yet')),
+      : h('div.empty', t('field.nothing'))),
   );
 
-  render(h('div.fade-in', nodes), { title: 'FIELD' });
+  render(h('div.fade-in', nodes), { title: t('title.field') });
   setTab('#/log');
 }
 
 function missionCard(m, isDone) {
   const meta = DISCIPLINES[m.discipline];
+  const tm = mission(m);
   return h(`button.mission.${meta.cls}${isDone ? '.is-done' : ''}`,
     { type: 'button', onclick: () => go(`#/mission/${m.id}`) },
     h('div.mission__top',
-      h('span.mission__no', TIERS[m.tier].name.replace('Tier ', '')),
-      h('span.mission__t', m.title),
+      h('span.mission__no', t(`tier.${m.tier}`).replace(/^(Tier|Niveau)\s*/, '')),
+      h('span.mission__t', tm.title),
     ),
-    h('div.mission__b', m.brief.length > 120 ? m.brief.slice(0, 118) + '…' : m.brief),
+    h('div.mission__b', tm.brief.length > 120 ? tm.brief.slice(0, 118) + '…' : tm.brief),
     h('div.mission__m',
-      h('span.chip', meta.name),
-      h('span.chip', m.time),
-      isDone ? h('span.chip.chip--accent', 'Filed') : null,
+      h('span.chip', dName(m.discipline)),
+      h('span.chip', tm.time),
+      isDone ? h('span.chip.chip--accent', t('mission.filed')) : null,
     ),
   );
 }
 
 function viewMission(id) {
-  const m = MISSIONS.find(x => x.id === id);
-  if (!m) return go('#/log');
-  const meta = DISCIPLINES[m.discipline];
-  const isDone = missionDone(m.id);
+  const raw = MISSIONS.find(x => x.id === id);
+  if (!raw) return go('#/log');
+  const m = mission(raw);
+  const meta = DISCIPLINES[raw.discipline];
+  const isDone = missionDone(raw.id);
 
-  const field = h('textarea.field', {
-    placeholder: 'Answer the debrief. Write what actually happened, not what should have.',
-    rows: 6,
-  });
+  const field = h('textarea.field', { placeholder: t('mission.placeholder'), rows: 6 });
 
-  const saveBtn = h('button.btn.btn--primary.btn--block', { type: 'button' }, 'File the debrief');
+  const saveBtn = h('button.btn.btn--primary.btn--block', { type: 'button' }, t('mission.file'));
   saveBtn.addEventListener('click', () => {
     const body = field.value.trim();
-    if (!body) return toast('Nothing written yet.');
-    addLog(`${m.title} — ${m.debrief}`, body, m.id);
+    if (!body) return toast(t('mission.empty'));
+    addLog(`${m.title} — ${m.debrief}`, body, raw.id);
     buzz(14);
-    toast('Filed.');
+    toast(t('mission.saved'));
     go('#/log');
   });
 
   render(
     h(`div.fade-in.${meta.cls}`,
       h('div.row', { style: { marginBottom: '16px' } },
-        h('span.chip.chip--accent', TIERS[m.tier].name),
-        h('span.chip', meta.name),
+        h('span.chip.chip--accent', t(`tier.${raw.tier}`)),
+        h('span.chip', dName(raw.discipline)),
         h('span.chip', m.time),
-        isDone ? h('span.chip.chip--accent', 'Filed') : null,
+        isDone ? h('span.chip.chip--accent', t('mission.filed')) : null,
       ),
       h('h1', m.title),
       h('p.prose', { style: { marginTop: '14px' } }, m.brief),
 
-      h('div.section-head', h('span.label', 'Method')),
+      h('div.section-head', h('span.label', t('mission.method'))),
       h('ol.steps', ...m.steps.map(s => h('li', s))),
 
-      h('div.section-head', h('span.label', 'Debrief')),
-      h('div.reveal', h('div.reveal__title', 'Answer this'), h('div', m.debrief)),
+      h('div.section-head', h('span.label', t('mission.debrief'))),
+      h('div.reveal', h('div.reveal__title', t('mission.answerThis')), h('div', m.debrief)),
 
       h('div', { style: { marginTop: '14px' } }, field),
       h('div', { style: { marginTop: '10px' } }, saveBtn),
       h('div', { style: { marginTop: '8px' } },
-        h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/log') }, 'Back')),
+        h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/log') }, t('mission.back'))),
     ),
-    { title: 'ASSIGNMENT', back: () => go('#/log') },
+    { title: t('title.mission'), back: () => go('#/log') },
   );
   setTab('#/log');
 }
@@ -417,13 +441,29 @@ function viewProfile() {
     const lv = levelFromXp(s.xp[key] || 0);
     return h(`div.meter.${meta.cls}`,
       h('span.meter__dot'),
-      h('span.meter__name', meta.name),
+      h('span.meter__name', dName(key)),
       h('span.meter__bar', h('span.meter__fill', { style: { width: `${Math.round(lv.pct * 100)}%` } })),
       h('span.meter__lv', `L${lv.level}`),
     );
   });
 
-  const exportBtn = h('button.btn.btn--ghost.btn--block', { type: 'button' }, 'Export progress');
+  // Language switcher. Repaints the static chrome and re-renders in place.
+  const langRow = h('div.row', { style: { gap: '8px', marginTop: '12px' } },
+    ...Object.entries(LANGS).map(([code, meta]) =>
+      h(`button.btn.btn--sm${getLang() === code ? '.btn--primary' : '.btn--ghost'}`,
+        {
+          type: 'button',
+          style: { flex: '1' },
+          onclick: () => {
+            if (getLang() === code) return;
+            setLang(code);
+            paintChrome();
+            viewProfile();
+          },
+        }, meta.name)),
+  );
+
+  const exportBtn = h('button.btn.btn--ghost.btn--block', { type: 'button' }, t('data.export'));
   exportBtn.addEventListener('click', () => {
     const text = exportJson();
     const blob = new Blob([text], { type: 'application/json' });
@@ -434,8 +474,8 @@ function viewProfile() {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
     navigator.clipboard?.writeText(text).then(
-      () => toast('Downloaded, and copied to the clipboard.'),
-      () => toast('Downloaded.'),
+      () => toast(t('data.downloadedCopied')),
+      () => toast(t('data.downloaded')),
     );
   });
 
@@ -447,56 +487,65 @@ function viewProfile() {
     if (!file) return;
     try {
       importJson(await file.text());
-      toast('Progress restored.');
+      toast(t('data.restored'));
       go('#/home');
     } catch (e) {
-      toast('That file is not a Cave backup.');
+      toast(t('data.badFile'));
     }
   });
 
   const importBtn = h('button.btn.btn--ghost.btn--block', {
     type: 'button', onclick: () => importInput.click(),
-  }, 'Restore from file');
+  }, t('data.restore'));
 
   // Destructive, so it is marked by a dashed edge rather than by colour.
   const resetBtn = h('button.btn.btn--ghost.btn--block', {
     type: 'button',
     style: { borderStyle: 'dashed', borderColor: 'var(--steel)', color: 'var(--steel)' },
     onclick: () => {
-      if (!confirm('Wipe all progress, logs and history? This cannot be undone.')) return;
+      if (!confirm(t('data.wipeConfirm'))) return;
       reset();
-      toast('Everything cleared.');
+      toast(t('data.wiped'));
       go('#/home');
     },
-  }, 'Wipe everything');
+  }, t('data.wipe'));
 
   render(
     h('div.fade-in',
       h('div.panel', { style: { textAlign: 'center', padding: '24px 18px' } },
-        h('div.label', 'Rank'),
-        h('h1', { style: { margin: '8px 0 4px', fontSize: '30px' } }, r.name),
-        h('div.faint.mono', { style: { fontSize: '12px' } }, `${r.total} XP total`),
+        h('div.label', t('progress.rank')),
+        h('h1', { style: { margin: '8px 0 4px', fontSize: '30px' } }, t(`rank.${r.name}`)),
+        h('div.faint.mono', { style: { fontSize: '12px' } }, t('progress.xpTotal', { n: r.total })),
         h('div.bar', { style: { margin: '16px 0 8px' } },
           h('div.bar__fill', { style: { width: `${Math.round(rankPct * 100)}%` } })),
-        h('div.label', r.next ? `${toNext} XP to ${r.next.name}` : 'Top rank held'),
+        h('div.label', r.next
+          ? t('progress.xpTo', { n: toNext, rank: t(`rank.${r.next.name}`) })
+          : t('progress.topRank')),
       ),
 
       h('div.result-grid', { style: { marginTop: '12px' } },
-        h('div.stat', h('div.stat__v', streak), h('div.stat__k', 'Day streak')),
-        h('div.stat', h('div.stat__v', s.streak.best || 0), h('div.stat__k', 'Best streak')),
-        h('div.stat', h('div.stat__v', runs), h('div.stat__k', 'Sessions')),
+        h('div.stat', h('div.stat__v', streak), h('div.stat__k', t('progress.dayStreak'))),
+        h('div.stat', h('div.stat__v', s.streak.best || 0), h('div.stat__k', t('progress.bestStreak'))),
+        h('div.stat', h('div.stat__v', runs), h('div.stat__k', t('progress.sessions'))),
       ),
 
-      h('div.section-head', h('span.label', 'Last 28 days')),
+      h('div.section-head', h('span.label', t('progress.last28'))),
       h('div.panel', activityStrip()),
 
-      h('div.section-head', h('span.label', 'Systems')),
+      h('div.section-head', h('span.label', t('progress.systems'))),
       h('div.panel', meters),
 
-      h('div.section-head', h('span.label', 'Drill by drill')),
+      h('div.section-head', h('span.label', t('progress.drillByDrill'))),
       ...DRILLS.map(drillProgressCard),
 
-      h('div.section-head', h('span.label', 'Recent')),
+      h('div.section-head', h('span.label', t('settings.label'))),
+      h('div.panel',
+        h('div.label', t('settings.language')),
+        langRow,
+        h('p.prose.faint', { style: { fontSize: '13px', marginTop: '12px' } }, t('settings.languageNote')),
+      ),
+
+      h('div.section-head', h('span.label', t('progress.recent'))),
       h('div.panel', s.history.length
         ? h('div', ...s.history.slice(-8).reverse().map(x => {
             const d = byId(x.drill);
@@ -506,19 +555,18 @@ function viewProfile() {
                 `${fmtDate(x.ts)} · ${Math.round(x.pct * 100)}%  +${x.xp}`),
             );
           }))
-        : h('div.empty', 'No sessions yet.')),
+        : h('div.empty', t('progress.noSessions'))),
 
-      h('div.section-head', h('span.label', 'Your data')),
+      h('div.section-head', h('span.label', t('data.label'))),
       h('div.panel',
-        h('p.prose', { style: { fontSize: '13.5px' } },
-          'Everything lives on this device only. Nothing is uploaded, and there is no account. That also means clearing your browser data clears this — export a copy if it matters to you.'),
+        h('p.prose', { style: { fontSize: '13.5px' } }, t('data.note')),
         h('div.stack', { style: { marginTop: '14px' } }, exportBtn, importBtn, importInput, resetBtn),
       ),
 
       h('div.center.faint.mono', { style: { marginTop: '22px', fontSize: '10.5px', letterSpacing: '.16em' } },
         'THE CAVE · v1.0'),
     ),
-    { title: 'PROGRESS' },
+    { title: t('title.progress') },
   );
   setTab('#/profile');
 }
@@ -543,8 +591,8 @@ function activityStrip() {
   return h('div',
     h('div.spark-grid', cells),
     h('div.row.row--between', { style: { marginTop: '12px' } },
-      h('span.label', `${active} of 28 days`),
-      h('span.label', `${total} session${total === 1 ? '' : 's'}`),
+      h('span.label', t('progress.ofDays', { n: active })),
+      h('span.label', t('progress.sessionCount', { n: total })),
     ),
   );
 }
@@ -564,37 +612,37 @@ function drillProgressCard(d) {
   if (!runs) {
     return h(`div.panel.${meta.cls}`,
       h('div.row',
-        h('span.drill__glyph', svg(d.icon, 20)),
-        h('span.grow', h('div.drill__name', d.name), h('div.drill__sub', 'Not attempted yet')),
-        h('span.chip', 'LV 1'),
+        h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
+        h('span.grow', h('div.drill__name', d.name), h('div.drill__sub', t('progress.notAttempted'))),
+        h('span.chip', t('train.lv', { n: 1 })),
       ),
     );
   }
 
   const arrow = tr === null ? null
-    : tr > 0.04 ? h('span', { style: { color: 'var(--silver-hi)' } }, '↑ improving')
-    : tr < -0.04 ? h('span', { style: { color: 'var(--steel)' } }, '↓ slipping')
-    : h('span.faint', '▬ steady');
+    : tr > 0.04 ? h('span', { style: { color: 'var(--silver-hi)' } }, t('progress.improving'))
+    : tr < -0.04 ? h('span', { style: { color: 'var(--steel)' } }, t('progress.slipping'))
+    : h('span.faint', t('progress.steady'));
 
   return h(`div.panel.${meta.cls}`,
     h('div.row',
-      h('span.drill__glyph', svg(d.icon, 20)),
+      h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
       h('span.grow',
         h('div.drill__name', d.name),
-        h('div.drill__sub', `${meta.name} · ${runs} run${runs === 1 ? '' : 's'}`),
+        h('div.drill__sub', `${dName(d.discipline)} · ${t('train.runs', { n: runs })}`),
       ),
       line,
     ),
     h('div.row', { style: { marginTop: '13px', gap: '8px' } },
-      h('span.chip.chip--accent', `LEVEL ${lvl}`),
-      best !== undefined ? h('span.chip', `best ${Math.round(best * 100)}%`) : null,
-      avg !== null ? h('span.chip', `last 5 ${Math.round(avg * 100)}%`) : null,
+      h('span.chip.chip--accent', t('train.lv', { n: lvl })),
+      best !== undefined ? h('span.chip', `${Math.round(best * 100)}%`) : null,
+      avg !== null ? h('span.chip', `⌀ ${Math.round(avg * 100)}%`) : null,
     ),
     h('div.row.row--between', { style: { marginTop: '11px', fontSize: '12.5px' } },
       h('span.faint',
         toNext === 0
-          ? `Level ${MAX_LEVEL} — the ceiling`
-          : `${toNext} more run${toNext === 1 ? '' : 's'} at ${Math.round(MASTERY * 100)}%+ to reach level ${lvl + 1}`),
+          ? t('progress.atCeiling', { max: MAX_LEVEL })
+          : t('progress.needMore', { n: toNext, mastery: Math.round(MASTERY * 100), lvl: lvl + 1 })),
       arrow,
     ),
     h('div.bar', { style: { marginTop: '9px' } },
@@ -617,7 +665,7 @@ function viewDrill(id) {
     title: d.name.toUpperCase(),
     focusMode: true,
     back: () => {
-      if (confirm('Leave the session? Progress in this run is lost.')) go('#/train');
+      if (confirm(t('result.leaveConfirm'))) go('#/train');
     },
   });
 
@@ -638,8 +686,8 @@ function progressStrip(d, outcome) {
   return h('div.panel', { style: { marginTop: '12px' } },
     h('div.row.row--between',
       h('div',
-        h('div.label', 'Difficulty'),
-        h('div', { style: { marginTop: '5px', fontSize: '15px' } }, `Level ${lvl} of ${MAX_LEVEL}`),
+        h('div.label', t('result.difficulty')),
+        h('div', { style: { marginTop: '5px', fontSize: '15px' } }, t('result.levelOf', { n: lvl, max: MAX_LEVEL })),
       ),
       line,
     ),
@@ -647,10 +695,10 @@ function progressStrip(d, outcome) {
       h('div.bar__fill', { style: { width: `${Math.round((lvl / MAX_LEVEL) * 100)}%` } })),
     h('div.faint', { style: { marginTop: '9px', fontSize: '12.5px' } },
       outcome.toNext === 0
-        ? 'You are at the ceiling for this drill.'
+        ? t('result.ceiling')
         : outcome.strongRun
-          ? `Counted as a strong run. ${outcome.toNext} more to level ${lvl + 1}.`
-          : `Below ${Math.round(MASTERY * 100)}%, so it does not count towards the next level. ${outcome.toNext} strong run${outcome.toNext === 1 ? '' : 's'} needed.`),
+          ? t('result.strongRun', { n: outcome.toNext, lvl: lvl + 1 })
+          : t('result.weakRun', { mastery: Math.round(MASTERY * 100), n: outcome.toNext })),
   );
 }
 
@@ -658,30 +706,30 @@ function showResult(d, result, outcome) {
   const meta = DISCIPLINES[d.discipline];
   const pctNum = Math.round(result.pct * 100);
   const verdict =
-    pctNum >= 90 ? 'Clean.' :
-    pctNum >= 70 ? 'Solid.' :
-    pctNum >= 45 ? 'Workable.' :
-    'Rough — which is the point of doing it again.';
+    pctNum >= 90 ? t('result.clean') :
+    pctNum >= 70 ? t('result.solid') :
+    pctNum >= 45 ? t('result.workable') :
+    t('result.rough');
 
   render(
     h(`div.fade-in.${meta.cls}`,
       h('div.panel', { style: { textAlign: 'center', padding: '26px 18px' } },
-        h('div.label', `${meta.name} · ${d.name}`),
+        h('div.label', `${dName(d.discipline)} · ${d.name}`),
         h('div.result-score', { style: { margin: '12px 0 4px' } }, `${pctNum}%`),
         h('div.dim', verdict),
         h('div', { style: { marginTop: '16px' } },
-          h('span.xp-pop', `+${outcome.xp} XP`),
+          h('span.xp-pop', t('result.xp', { n: outcome.xp })),
         ),
         outcome.drillLevelUp
           ? h('div', { style: { marginTop: '10px' } },
-              h('span.chip.chip--accent', `${d.name} is now level ${outcome.drillLevelUp} — it gets harder from here`))
+              h('span.chip.chip--accent', t('result.drillLevelUp', { name: d.name, n: outcome.drillLevelUp })))
           : null,
         outcome.levelUp
           ? h('div', { style: { marginTop: '10px' } },
-              h('span.chip.chip--accent', `${meta.name} reached level ${outcome.levelUp}`))
+              h('span.chip.chip--accent', t('result.disciplineLevelUp', { name: dName(d.discipline), n: outcome.levelUp })))
           : null,
         outcome.best && pctNum > 0
-          ? h('div', { style: { marginTop: '10px' } }, h('span.chip.chip--accent', 'Personal best'))
+          ? h('div', { style: { marginTop: '10px' } }, h('span.chip.chip--accent', t('result.personalBest')))
           : null,
       ),
 
@@ -694,22 +742,22 @@ function showResult(d, result, outcome) {
 
       result.note
         ? h('div.reveal', { style: { marginTop: '14px' } },
-            h('div.reveal__title', 'Take this with you'),
+            h('div.reveal__title', t('result.takeaway')),
             h('div', { html: mdish(result.note) }))
         : null,
 
       dailyComplete()
         ? h('div.panel', { style: { marginTop: '14px', textAlign: 'center' } },
-            h('div.label', { style: { color: 'var(--silver-hi)' } }, 'Protocol complete'),
-            h('p.prose', { style: { marginTop: '8px' } }, `Streak at ${outcome.streak} day${outcome.streak === 1 ? '' : 's'}.`))
+            h('div.label', { style: { color: 'var(--silver-hi)' } }, t('result.protocolComplete')),
+            h('p.prose', { style: { marginTop: '8px' } }, t('home.streakAt', { n: outcome.streak })))
         : null,
 
       h('div.stack', { style: { marginTop: '20px' } },
-        h('button.btn.btn--primary.btn--block', { type: 'button', onclick: () => go(`#/drill/${d.id}`) }, 'Run it again'),
-        h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/home') }, 'Back to the cave'),
+        h('button.btn.btn--primary.btn--block', { type: 'button', onclick: () => go(`#/drill/${d.id}`) }, t('result.again')),
+        h('button.btn.btn--ghost.btn--block', { type: 'button', onclick: () => go('#/home') }, t('result.backHome')),
       ),
     ),
-    { title: 'RESULT', focusMode: false },
+    { title: t('title.result'), focusMode: false },
   );
   setTab('#/home');
   buzz([12, 60, 12]);
@@ -767,6 +815,7 @@ document.querySelectorAll('.tab').forEach(t => {
 
 window.addEventListener('hashchange', route);
 
+paintChrome();
 if (!location.hash) location.hash = '#/home';
 route();
 

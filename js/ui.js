@@ -2,6 +2,8 @@
    ui.js — tiny DOM layer. No framework, no build step.
    ============================================================ */
 
+import { locale } from './i18n.js';
+
 /** Hyperscript: h('div.panel', {onclick}, 'text', child) */
 export function h(spec, props, ...kids) {
   const [tagPart, ...classes] = String(spec).split('.');
@@ -72,6 +74,50 @@ export const ICONS = {
   book:    '<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
   lock:    '<rect x="5" y="10.5" width="14" height="9.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="1.7"/>',
   empty:   '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>',
+};
+
+/**
+ * Discipline pictograms, drawn as one set: 24px grid, 1.6 stroke,
+ * a single solid element each so they read at 19px in gold.
+ */
+export const PICTOS = {
+  // An eye on a vertical axis — looking, deliberately.
+  observation:
+    '<path d="M2.2 12s3.6-5.8 9.8-5.8S21.8 12 21.8 12s-3.6 5.8-9.8 5.8S2.2 12 2.2 12z" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+    '<circle cx="12" cy="12" r="2.5" fill="currentColor"/>' +
+    '<path d="M12 2.6v2M12 19.4v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+
+  // An arch with stops along the floor — a route through a building.
+  memory:
+    '<path d="M4.5 20.5V10a7.5 7.5 0 0 1 15 0v10.5" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+    '<path d="M2.5 20.5h19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<circle cx="8.2" cy="16.4" r="1.35" fill="currentColor"/>' +
+    '<circle cx="12" cy="13.4" r="1.35" fill="currentColor"/>' +
+    '<circle cx="15.8" cy="16.4" r="1.35" fill="currentColor"/>',
+
+  // Two observations converging on one conclusion.
+  deduction:
+    '<circle cx="5.2" cy="6.4" r="2.1" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+    '<circle cx="5.2" cy="17.6" r="2.1" fill="none" stroke="currentColor" stroke-width="1.6"/>' +
+    '<circle cx="18.6" cy="12" r="2.6" fill="currentColor"/>' +
+    '<path d="M7.3 7.4 16.1 11M7.3 16.6 16.1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+
+  // A profile above a flat trace with one departure in it.
+  people:
+    '<path d="M16.4 20.6v-2.8c0-1.4.7-2.3 1.4-3.2.7-1 1.2-2 1.2-3.5A6.6 6.6 0 0 0 6 9.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<path d="M2.6 15.4h3.1l1.7-4 2.2 7.6 1.7-3.6h2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+
+  // Attention spreading from a single point.
+  influence:
+    '<circle cx="12" cy="12" r="1.9" fill="currentColor"/>' +
+    '<path d="M16.1 7.9a5.8 5.8 0 0 1 0 8.2M19 5a9.9 9.9 0 0 1 0 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<path d="M7.9 16.1a5.8 5.8 0 0 1 0-8.2M5 19A9.9 9.9 0 0 1 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+
+  // A plumb line, hanging dead still.
+  composure:
+    '<circle cx="12" cy="3.2" r="1.3" fill="currentColor"/>' +
+    '<path d="M12 4.5v8.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<path d="M12 12.7l2.9 4.5L12 21.2l-2.9-4z" fill="currentColor"/>',
 };
 
 /* ---------- toast ---------- */
@@ -145,7 +191,7 @@ export function sampleUnique(arr, n) {
 }
 
 export function fmtDate(ts) {
-  return new Date(ts).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(ts).toLocaleDateString(locale(), { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 /**

@@ -10,6 +10,7 @@
 
 import { h, ICONS, rand, shuffle, sampleUnique } from '../ui.js';
 import { hud, choices, nextBtn, countdown } from './shared.js';
+import { t } from '../i18n.js';
 
 const INK = '#f2f4f7';
 const VOID = '#08080a';
@@ -253,11 +254,11 @@ export default {
             h('p.prose', `A scene of ${scene.count} objects appears for ${(exposure / 1000).toFixed(1)} seconds. Then it is gone and the questions begin. You will not know in advance what is asked.`),
             h('p.prose', 'Objects differ by shape and by fill — solid, hollow, hatched, dotted, split, double.'),
             h('div.reveal',
-              h('div.reveal__title', 'Before you start'),
+              h('div.reveal__title', t('drill.beforeStart')),
               h('div', TIPS[rand(TIPS.length)]),
             ),
           ),
-          nextBtn('Begin', () => run()),
+          nextBtn(t('drill.begin'), () => run()),
         ),
       );
     }
@@ -296,7 +297,7 @@ export default {
       holder.appendChild(choices(q.options, (correct) => {
         results.push(correct);
         holder.appendChild(nextBtn(
-          i === questions.length - 1 ? 'See results' : 'Next',
+          i === questions.length - 1 ? t('drill.seeResults') : t('drill.next'),
           () => ask(i + 1, results),
         ));
       }));
