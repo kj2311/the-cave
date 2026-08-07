@@ -7,17 +7,10 @@
    ============================================================ */
 
 import { h, ICONS, shuffle, sampleUnique, pick } from '../ui.js';
-import { NOUNS, LOCI_ROUTES } from '../data/words.js';
+import { nouns, lociRoutes } from '../content.js';
 import { nextBtn, countdown } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
 
-const TIPS = [
-  'Absurd beats sensible. An anchor smashing through your front door survives; an anchor resting beside it does not.',
-  'Make the image interact with the place. Objects that merely sit somewhere vanish.',
-  'Add one non-visual sense — a sound, a smell, a texture. Multi-sensory images are far more durable.',
-  'Scale it. Enormous or tiny, never actual size.',
-  'If a link breaks on recall, do not force it. Move to the next locus and come back — the gap usually fills itself.',
-];
 
 export default {
   id: 'palace',
@@ -33,8 +26,8 @@ export default {
     const showMs = Math.max(700, 1800 - level * 150);
     const scaffold = level <= 2;
 
-    const items = sampleUnique(NOUNS, count);
-    const route = pick(LOCI_ROUTES);
+    const items = sampleUnique(nouns(), count);
+    const route = pick(lociRoutes());
     let cancelled = false;
     let stopCountdown = null;
     let timer = null;
@@ -45,12 +38,12 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Memory · The Palace'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${level} — ${count} items`),
-            h('p.prose', `Items appear one at a time, ${(showMs / 1000).toFixed(1)} seconds each. Afterwards you rebuild the sequence in order.`),
+            h('div.label', t('palace.head')),
+            h('h2', { style: { margin: '8px 0 10px' } }, t('palace.items', { lvl: level, n: count })),
+            h('p.prose', t('palace.intro', { s: (showMs / 1000).toFixed(1) })),
             h('p.prose', scaffold
-              ? 'Each item is paired with a place on a route. Put the item there as a picture — moving, absurd, interacting with the place.'
-              : 'No route is given this time. Use one of your own and place each item as you go.'),
+              ? t('palace.introScaffold')
+              : t('palace.introFree')),
             scaffold ? h('div.reveal',
               h('div.reveal__title', t('palace.route')),
               h('div', route.slice(0, count).join('  →  ')),
@@ -158,11 +151,11 @@ export default {
           nextBtn(t('drill.continue'), () => ctx.finish({
             pct: exact / items.length,
             stats: [
-              { k: 'In place', v: `${exact}/${items.length}` },
-              { k: 'Run', v: run },
-              { k: 'Level', v: level },
+              { k: t('stat.inPlace'), v: `${exact}/${items.length}` },
+              { k: t('stat.run'), v: run },
+              { k: t('stat.level'), v: level },
             ],
-            note: pick(TIPS),
+            note: pick(tips('palace')),
           })),
         ),
       );

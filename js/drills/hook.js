@@ -10,7 +10,7 @@ import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { coldReadItem, technique } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
@@ -34,12 +34,12 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Influence · The Hook'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} devices`),
-            h('p.prose', 'These are the mechanics behind psychics, fraudsters and bad-faith persuasion. They are taught here so that they can never be run on you unnoticed.'),
+            h('div.label', t('hook.head')),
+            h('h2', { style: { margin: '8px 0 10px' } }, t('hook.count', { lvl: ctx.level, n: items.length })),
+            h('p.prose', t('hook.intro')),
             h('div.reveal',
               h('div.reveal__title', t('hook.test')),
-              h('div', 'Could that statement have been visibly wrong? If not, no information passed — no matter how accurate it felt.'),
+              h('div', t('hook.testText')),
             ),
           ),
           nextBtn(t('drill.begin'), () => ask(0)),
@@ -81,11 +81,11 @@ export default {
       ctx.finish({
         pct: right / items.length,
         stats: [
-          { k: 'Correct', v: `${right}/${items.length}` },
-          { k: 'Devices', v: Object.keys(TECHNIQUES).length },
-          { k: 'Pool', v: COLDREADS.length },
+          { k: t('stat.correct'), v: `${right}/${items.length}` },
+          { k: t('stat.devices'), v: Object.keys(TECHNIQUES).length },
+          { k: t('stat.pool'), v: COLDREADS.length },
         ],
-        note: 'Would this still be acceptable to them if they could see exactly what you were doing? That is the whole ethics of it.',
+        note: tips('hook')[0],
       });
     }
 

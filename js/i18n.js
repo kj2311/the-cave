@@ -53,6 +53,67 @@ export function t(key, vars) {
 /** Dutch plurals are almost all -en/-s, so a simple chooser is enough. */
 const plural = (n, one, many) => (n === 1 ? one : many);
 
+/** Coaching lines shown after a run. Arrays, because they are picked at random. */
+export function tips(drill) {
+  const set = TIP_SETS[lang] || TIP_SETS.en;
+  return set[drill] || TIP_SETS.en[drill] || [];
+}
+
+const TIP_SETS = {
+  en: {
+    sweep: [
+      'Scan in a fixed order — left to right, top to bottom. A random scan loses most of the grid.',
+      'Name each object silently as you see it. Verbalising forces encoding; passive looking does not.',
+      'Count first, then detail. A total you are sure of anchors everything else.',
+      'Your first glance gets the least processing, not the most. Go back to where you started.',
+      'Group by fill rather than by position — a chunk of four hollows survives better than four coordinates.',
+    ],
+    palace: [
+      'Absurd beats sensible. An anchor smashing through your front door survives; an anchor resting beside it does not.',
+      'Make the image interact with the place. Objects that merely sit somewhere vanish.',
+      'Add one non-visual sense — a sound, a smell, a texture. Multi-sensory images are far more durable.',
+      'Scale it. Enormous or tiny, never actual size.',
+      'If a link breaks on recall, do not force it. Move to the next locus and come back — the gap usually fills itself.',
+    ],
+    still: [
+      'Slowing your breathing before a hard question buys you working memory. Four in, six or eight out.',
+      'The pause you are afraid of is about a quarter as long from the outside as it feels from the inside.',
+      'Putting a feeling into words measurably reduces its intensity. Naming it beats trying to suppress it.',
+      'Suppressing the obvious answer is the same muscle whether the pull is a word, a hunch, or a satisfying conclusion.',
+      'Speed without accuracy is not composure. Get it right, then get it quick.',
+    ],
+    chain: ['A conclusion is defensible when you can name the observation that would break it.'],
+    baseline: ['Baseline, cluster, timing. A signal has to clear all three before it is worth anything.'],
+    hook: ['Would this still be acceptable to them if they could see exactly what you were doing? That is the whole ethics of it.'],
+  },
+  nl: {
+    sweep: [
+      'Scan in een vaste volgorde — links naar rechts, boven naar beneden. Een willekeurige scan verliest het grootste deel van het veld.',
+      'Benoem elk object in stilte terwijl je het ziet. Verwoorden dwingt opslag af; passief kijken niet.',
+      'Tel eerst, ga dan op detail. Een totaal waar je zeker van bent verankert al het andere.',
+      'Je eerste blik krijgt de minste verwerking, niet de meeste. Ga terug naar waar je begon.',
+      'Groepeer op vulling in plaats van op positie — een blokje van vier holle vormen overleeft beter dan vier coördinaten.',
+    ],
+    palace: [
+      'Absurd verslaat verstandig. Een anker dat door je voordeur slaat blijft hangen; een anker dat ernaast staat niet.',
+      'Laat het beeld iets doen met de plek. Objecten die er alleen maar staan verdwijnen.',
+      'Voeg één niet-visueel zintuig toe — een geluid, een geur, een textuur. Meerzintuiglijke beelden zijn veel duurzamer.',
+      'Speel met schaal. Enorm of piepklein, nooit op ware grootte.',
+      'Breekt een schakel bij het ophalen, forceer dan niet. Ga naar de volgende plek en kom terug — het gat vult zichzelf meestal.',
+    ],
+    still: [
+      'Je ademhaling vertragen vóór een lastige vraag levert je werkgeheugen op. Vier tellen in, zes tot acht uit.',
+      'De stilte waar je bang voor bent duurt van buitenaf ongeveer een kwart van wat hij vanbinnen voelt.',
+      'Een gevoel in woorden vatten verlaagt meetbaar de intensiteit ervan. Benoemen verslaat onderdrukken.',
+      'Het voor de hand liggende antwoord onderdrukken is dezelfde spier, of de trek nu van een woord, een onderbuikgevoel of een bevredigende conclusie komt.',
+      'Snelheid zonder precisie is geen kalmte. Eerst goed, dan snel.',
+    ],
+    chain: ['Een conclusie is te verdedigen als je de waarneming kunt noemen die haar zou breken.'],
+    baseline: ['Basislijn, cluster, timing. Een signaal moet alle drie doorstaan voordat het iets waard is.'],
+    hook: ['Zou dit voor hen nog acceptabel zijn als ze precies konden zien wat je deed? Dat is de hele ethiek ervan.'],
+  },
+};
+
 /* ============================================================ */
 
 const STRINGS = {
@@ -245,6 +306,68 @@ const STRINGS = {
 
     'still.rule': ({ r }) => `RULE · ${r}`,
     'still.ruleChanged': ({ r }) => `RULE CHANGED → ${r}`,
+
+    /* --- drill intros --- */
+    'sweep.head': 'Observation · Sweep',
+    'sweep.intro': ({ n, s }) => `A scene of ${n} objects appears for ${s} seconds. Then it is gone and the questions begin. You will not know in advance what is asked.`,
+    'sweep.intro2': 'Objects differ by shape and by fill — solid, hollow, hatched, dotted, split, double.',
+    'palace.head': 'Memory · The Palace',
+    'palace.intro': ({ s }) => `Items appear one at a time, ${s} seconds each. Afterwards you rebuild the sequence in order.`,
+    'palace.introScaffold': 'Each item is paired with a place on a route. Put the item there as a picture — moving, absurd, interacting with the place.',
+    'palace.introFree': 'No route is given this time. Use one of your own and place each item as you go.',
+    'palace.items': ({ lvl, n }) => `Level ${lvl} — ${n} items`,
+    'chain.head': 'Deduction · The Chain',
+    'chain.intro': 'Each file gives you a scene and a handful of observations. Some of them are noise, deliberately.',
+    'chain.intro2': 'Choose the conclusion the evidence will actually support — not the most interesting one. Then name the observation that did the work.',
+    'chain.files': ({ lvl, n }) => `Level ${lvl} — ${n} case files`,
+    'baseline.head': 'Reading · Baseline',
+    'baseline.intro': 'You get a person\'s established normal, then a single moment. Identify what genuinely departed from the baseline.',
+    'baseline.rule': 'No behaviour means "lying". Several answers in this drill are the popular reading, and they are wrong. Deviation locates a topic; it never delivers a verdict.',
+    'baseline.count': ({ lvl, n }) => `Level ${lvl} — ${n} observations`,
+    'hook.head': 'Influence · The Hook',
+    'hook.intro': 'These are the mechanics behind psychics, fraudsters and bad-faith persuasion. They are taught here so that they can never be run on you unnoticed.',
+    'hook.testText': 'Could that statement have been visibly wrong? If not, no information passed — no matter how accurate it felt.',
+    'hook.count': ({ lvl, n }) => `Level ${lvl} — ${n} devices`,
+    'still.head': 'Composure · Stillness',
+    'still.count': ({ lvl, n }) => `Level ${lvl} — ${n} trials`,
+    'still.introA': 'A direction word appears above an arrow, and they usually disagree. Under the rule ',
+    'still.introB': ', answer where the arrow points and ignore the word.',
+    'still.switchA': 'From this level the rule switches without warning to ',
+    'still.switchB': ', where you answer what the word says and ignore the arrow. Watch the banner.',
+    'still.noSwitch': 'The rule stays on ARROW for the whole run at this level.',
+    'still.limit': ({ s }) => `${s} seconds per trial. A miss counts the same as a wrong answer.`,
+    'still.ARROW': 'ARROW',
+    'still.WORD': 'WORD',
+
+    /* --- stat labels --- */
+    'stat.correct': 'Correct', 'stat.objects': 'Objects', 'stat.exposure': 'Exposure',
+    'stat.inPlace': 'In place', 'stat.run': 'Run', 'stat.level': 'Level',
+    'stat.score': 'Score', 'stat.cases': 'Cases', 'stat.remaining': 'Remaining',
+    'stat.pool': 'Pool', 'stat.rule': 'Rule', 'stat.devices': 'Devices',
+    'stat.accuracy': 'Accuracy', 'stat.median': 'Median', 'stat.interference': 'Interference',
+
+    /* --- shapes and fills --- */
+    'shape.circle': 'Circle', 'shape.square': 'Square', 'shape.triangle': 'Triangle',
+    'shape.diamond': 'Diamond', 'shape.hexagon': 'Hexagon', 'shape.cross': 'Cross',
+    'fill.solid': 'Solid', 'fill.hollow': 'Hollow', 'fill.hatched': 'Hatched',
+    'fill.dotted': 'Dotted', 'fill.split': 'Split', 'fill.double': 'Double',
+    'dir.LEFT': 'LEFT', 'dir.RIGHT': 'RIGHT', 'dir.UP': 'UP', 'dir.DOWN': 'DOWN',
+
+    /* --- generated sweep questions --- */
+    // Plural and attributive forms are spelled out, not suffixed —
+    // "cross" + "s" is wrong in English and "hol" + "e" is wrong in Dutch.
+    'shapes.circle': 'circles', 'shapes.square': 'squares', 'shapes.triangle': 'triangles',
+    'shapes.diamond': 'diamonds', 'shapes.hexagon': 'hexagons', 'shapes.cross': 'crosses',
+    'filladj.solid': 'solid', 'filladj.hollow': 'hollow', 'filladj.hatched': 'hatched',
+    'filladj.dotted': 'dotted', 'filladj.split': 'split', 'filladj.double': 'double',
+
+    'q.total': 'How many objects were in the scene in total?',
+    'q.fillCount': ({ f }) => `How many ${f} objects were there?`,
+    'q.atCell': ({ r, c }) => `What was in row ${r}, column ${c}? (counting from the top left)`,
+    'q.absent': 'Which of these did NOT appear anywhere in the scene?',
+    'q.shapeCount': ({ s }) => `How many ${s} were there?`,
+    'q.ringed': 'One object was circled by a dashed ring. What shape was it?',
+    'q.commonFill': 'Which fill appeared most often?',
 
     'disc.observation': 'Observation',
     'disc.memory': 'Memory',
@@ -456,6 +579,68 @@ const STRINGS = {
 
     'still.rule': ({ r }) => `REGEL · ${r}`,
     'still.ruleChanged': ({ r }) => `REGEL GEWIJZIGD → ${r}`,
+
+    /* --- drill intros --- */
+    'sweep.head': 'Waarneming · Scan',
+    'sweep.intro': ({ n, s }) => `Een tafereel met ${n} objecten verschijnt ${s} seconden. Daarna is het weg en beginnen de vragen. Je weet vooraf niet wat er gevraagd wordt.`,
+    'sweep.intro2': 'Objecten verschillen in vorm en in vulling — massief, hol, gearceerd, gestippeld, half, dubbel.',
+    'palace.head': 'Geheugen · Het Paleis',
+    'palace.intro': ({ s }) => `Items verschijnen één voor één, elk ${s} seconden. Daarna bouw je de reeks op volgorde opnieuw op.`,
+    'palace.introScaffold': 'Elk item is gekoppeld aan een plek op een route. Zet het item daar neer als beeld — bewegend, absurd, in wisselwerking met de plek.',
+    'palace.introFree': 'Deze keer krijg je geen route. Gebruik er een van jezelf en plaats elk item onderweg.',
+    'palace.items': ({ lvl, n }) => `Niveau ${lvl} — ${n} items`,
+    'chain.head': 'Deductie · De Keten',
+    'chain.intro': 'Elk dossier geeft je een tafereel en een handvol waarnemingen. Sommige daarvan zijn met opzet ruis.',
+    'chain.intro2': 'Kies de conclusie die het bewijs werkelijk draagt — niet de interessantste. Benoem daarna de waarneming die het werk deed.',
+    'chain.files': ({ lvl, n }) => `Niveau ${lvl} — ${n} dossiers`,
+    'baseline.head': 'Mensen lezen · Basislijn',
+    'baseline.intro': 'Je krijgt het vastgestelde normaal van iemand, en daarna één moment. Bepaal wat werkelijk van de basislijn afweek.',
+    'baseline.rule': 'Geen enkel gedrag betekent "liegen". Meerdere antwoorden in deze oefening zijn de populaire lezing, en die is onjuist. Een afwijking wijst een onderwerp aan; nooit een oordeel.',
+    'baseline.count': ({ lvl, n }) => `Niveau ${lvl} — ${n} waarnemingen`,
+    'hook.head': 'Invloed · De Haak',
+    'hook.intro': 'Dit is de mechaniek achter mediums, oplichters en kwaadwillende overtuiging. Je leert ze hier zodat ze nooit ongemerkt op jou toegepast kunnen worden.',
+    'hook.testText': 'Had die uitspraak zichtbaar fout kunnen zijn? Zo niet, dan is er geen informatie overgedragen — hoe raak het ook voelde.',
+    'hook.count': ({ lvl, n }) => `Niveau ${lvl} — ${n} technieken`,
+    'still.head': 'Kalmte · Stilte',
+    'still.count': ({ lvl, n }) => `Niveau ${lvl} — ${n} rondes`,
+    'still.introA': 'Er verschijnt een richtingswoord boven een pijl, en meestal spreken ze elkaar tegen. Onder de regel ',
+    'still.introB': ' antwoord je waar de pijl heen wijst en negeer je het woord.',
+    'still.switchA': 'Vanaf dit niveau wisselt de regel zonder waarschuwing naar ',
+    'still.switchB': ', waarbij je antwoordt wat het woord zegt en de pijl negeert. Let op de banner.',
+    'still.noSwitch': 'Op dit niveau blijft de regel de hele run op PIJL staan.',
+    'still.limit': ({ s }) => `${s} seconden per ronde. Een gemiste ronde telt hetzelfde als een fout antwoord.`,
+    'still.ARROW': 'PIJL',
+    'still.WORD': 'WOORD',
+
+    /* --- stat labels --- */
+    'stat.correct': 'Goed', 'stat.objects': 'Objecten', 'stat.exposure': 'Duur',
+    'stat.inPlace': 'Op plek', 'stat.run': 'Reeks', 'stat.level': 'Niveau',
+    'stat.score': 'Score', 'stat.cases': 'Zaken', 'stat.remaining': 'Resterend',
+    'stat.pool': 'Voorraad', 'stat.rule': 'Regel', 'stat.devices': 'Technieken',
+    'stat.accuracy': 'Precisie', 'stat.median': 'Mediaan', 'stat.interference': 'Interferentie',
+
+    /* --- shapes and fills --- */
+    'shape.circle': 'Cirkel', 'shape.square': 'Vierkant', 'shape.triangle': 'Driehoek',
+    'shape.diamond': 'Ruit', 'shape.hexagon': 'Zeshoek', 'shape.cross': 'Kruis',
+    'fill.solid': 'Massief', 'fill.hollow': 'Hol', 'fill.hatched': 'Gearceerd',
+    'fill.dotted': 'Gestippeld', 'fill.split': 'Half', 'fill.double': 'Dubbel',
+    'dir.LEFT': 'LINKS', 'dir.RIGHT': 'RECHTS', 'dir.UP': 'BOVEN', 'dir.DOWN': 'ONDER',
+
+    /* --- generated sweep questions --- */
+    // Attributive adjectives and plurals are irregular enough in Dutch that
+    // suffixing breaks them: hol → holle, massief → massieve, half → halve.
+    'shapes.circle': 'cirkels', 'shapes.square': 'vierkanten', 'shapes.triangle': 'driehoeken',
+    'shapes.diamond': 'ruiten', 'shapes.hexagon': 'zeshoeken', 'shapes.cross': 'kruisen',
+    'filladj.solid': 'massieve', 'filladj.hollow': 'holle', 'filladj.hatched': 'gearceerde',
+    'filladj.dotted': 'gestippelde', 'filladj.split': 'halve', 'filladj.double': 'dubbele',
+
+    'q.total': 'Hoeveel objecten stonden er in totaal in het tafereel?',
+    'q.fillCount': ({ f }) => `Hoeveel ${f} objecten waren er?`,
+    'q.atCell': ({ r, c }) => `Wat stond er op rij ${r}, kolom ${c}? (geteld vanaf linksboven)`,
+    'q.absent': 'Welke hiervan kwam nergens in het tafereel voor?',
+    'q.shapeCount': ({ s }) => `Hoeveel ${s} waren er?`,
+    'q.ringed': 'Eén object had een stippelring eromheen. Welke vorm was dat?',
+    'q.commonFill': 'Welke vulling kwam het vaakst voor?',
 
     'disc.observation': 'Waarneming',
     'disc.memory': 'Geheugen',

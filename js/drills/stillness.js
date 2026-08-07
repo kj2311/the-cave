@@ -14,7 +14,7 @@
 
 import { h, ICONS, rand, pick } from '../ui.js';
 import { hud, nextBtn, countdown } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
 
 const DIRS = [
   { n: 'LEFT',  rot: 180 },
@@ -26,13 +26,6 @@ const DIRS = [
 /** The answer window closes faster as the level climbs. */
 const limitFor = (level) => Math.max(1300, 3200 - level * 200);
 
-const TIPS = [
-  'Slowing your breathing before a hard question buys you working memory. Four in, six or eight out.',
-  'The pause you are afraid of is about a quarter as long from the outside as it feels from the inside.',
-  'Putting a feeling into words measurably reduces its intensity. Naming it beats trying to suppress it.',
-  'Suppressing the obvious answer is the same muscle whether the pull is a word, a hunch, or a satisfying conclusion.',
-  'Speed without accuracy is not composure. Get it right, then get it quick.',
-];
 
 function arrowSvg(rot) {
   return `<svg viewBox="0 0 100 100" style="transform:rotate(${rot}deg)">
@@ -86,16 +79,14 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Composure · Stillness'),
-            h('h2', { style: { margin: '10px 0 12px' } }, `Level ${level} — ${trials} trials`),
-            h('p.prose', 'A direction word appears above an arrow, and they usually disagree. Under the rule ',
-              h('strong', 'ARROW'), ', answer where the arrow points and ignore the word.'),
+            h('div.label', t('still.head')),
+            h('h2', { style: { margin: '10px 0 12px' } }, t('still.count', { lvl: level, n: trials })),
+            h('p.prose', t('still.introA'), h('strong', t('still.ARROW')), t('still.introB')),
             switching
-              ? h('p.prose', 'From this level the rule switches without warning to ', h('strong', 'WORD'),
-                  ', where you answer what the word says and ignore the arrow. Watch the banner.')
-              : h('p.prose', 'The rule stays on ARROW for the whole run at this level.'),
+              ? h('p.prose', t('still.switchA'), h('strong', t('still.WORD')), t('still.switchB'))
+              : h('p.prose', t('still.noSwitch')),
             h('p.prose.faint', { style: { fontSize: '14px' } },
-              `${(LIMIT_MS / 1000).toFixed(1)} seconds per trial. A miss counts the same as a wrong answer.`),
+              t('still.limit', { s: (LIMIT_MS / 1000).toFixed(1) })),
           ),
           nextBtn(t('drill.begin'), () => run()),
         ),
@@ -112,27 +103,29 @@ export default {
       if (cancelled) return;
       if (i >= seq.length) return done();
 
-      const t = seq[i];
+      // Named `tr`, not `t` — `t` is the translation helper.
+      const tr = seq[i];
       bar.set(i);
-      const changed = lastRule !== null && lastRule !== t.rule;
-      lastRule = t.rule;
+      const changed = lastRule !== null && lastRule !== tr.rule;
+      lastRule = tr.rule;
 
+      const ruleLabel = t(`still.${tr.rule}`);
       const banner = h(`div.chip${changed ? '.chip--accent' : ''}`,
-        changed ? t('still.ruleChanged', { r: t.rule }) : t('still.rule', { r: t.rule }));
+        changed ? t('still.ruleChanged', { r: ruleLabel }) : t('still.rule', { r: ruleLabel }));
 
       const stage = h('div.stage',
         h('div.center',
-          h('div.conflict-word', t.word.n),
-          h('div.conflict-arrow', { style: { marginTop: '18px' }, html: arrowSvg(t.arrow.rot) }),
+          h('div.conflict-word', t(`dir.${tr.word.n}`)),
+          h('div.conflict-arrow', { style: { marginTop: '18px' }, html: arrowSvg(tr.arrow.rot) }),
         ),
       );
 
-      const correctName = t.rule === 'ARROW' ? t.arrow.n : t.word.n;
+      const correctName = tr.rule === 'ARROW' ? tr.arrow.n : tr.word.n;
       const shown = Date.now();
       let answered = false;
 
       const pad = h('div.swatches', ...DIRS.map(dir => {
-        const b = h('button.swatch', { type: 'button' }, dir.n);
+        const b = h('button.swatch', { type: 'button' }, t(`dir.${dir.n}`));
         b.addEventListener('click', () => answer(dir.n));
         return b;
       }));
@@ -154,7 +147,7 @@ export default {
         clearTimeout(timeoutId);
         const rt = Date.now() - shown;
         const ok = name === correctName;
-        results.push({ ok, rt, congruent: t.congruent, timedOut: name === null });
+        results.push({ ok, rt, congruent: tr.congruent, timedOut: name === null });
 
         // Feedback without colour: the frame either brightens or goes dim.
         stage.style.borderColor = ok ? 'var(--silver-hi)' : 'var(--rule)';
@@ -176,11 +169,11 @@ export default {
       ctx.finish({
         pct: hits.length / results.length,
         stats: [
-          { k: 'Accuracy', v: `${Math.round((hits.length / results.length) * 100)}%` },
-          { k: 'Median', v: `${median}ms` },
-          { k: 'Interference', v: cost === null ? '—' : `${cost > 0 ? '+' : ''}${cost}ms` },
+          { k: t('stat.accuracy'), v: `${Math.round((hits.length / results.length) * 100)}%` },
+          { k: t('stat.median'), v: `${median}ms` },
+          { k: t('stat.interference'), v: cost === null ? '—' : `${cost > 0 ? '+' : ''}${cost}ms` },
         ],
-        note: pick(TIPS),
+        note: pick(tips('still')),
       });
     }
 

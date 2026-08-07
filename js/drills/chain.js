@@ -11,7 +11,7 @@ import { CASES } from '../data/cases.js';
 import { pickUnseen } from '../store.js';
 import { caseFile } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
 
 /** More case files per sitting as the level climbs. */
 const perRunFor = (level) => (level >= 7 ? 5 : level >= 4 ? 4 : 3);
@@ -37,10 +37,10 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Deduction · The Chain'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${cases.length} case files`),
-            h('p.prose', 'Each file gives you a scene and a handful of observations. Some of them are noise, deliberately.'),
-            h('p.prose', 'Choose the conclusion the evidence will actually support — not the most interesting one. Then name the observation that did the work.'),
+            h('div.label', t('chain.head')),
+            h('h2', { style: { margin: '8px 0 10px' } }, t('chain.files', { lvl: ctx.level, n: cases.length })),
+            h('p.prose', t('chain.intro')),
+            h('p.prose', t('chain.intro2')),
           ),
           nextBtn(t('chain.open'), () => runCase(0)),
         ),
@@ -126,11 +126,11 @@ export default {
       ctx.finish({
         pct: score.got / score.of,
         stats: [
-          { k: 'Score', v: `${score.got}/${score.of}` },
-          { k: 'Cases', v: cases.length },
-          { k: 'Remaining', v: Math.max(0, CASES.length - cases.length) },
+          { k: t('stat.score'), v: `${score.got}/${score.of}` },
+          { k: t('stat.cases'), v: cases.length },
+          { k: t('stat.remaining'), v: Math.max(0, CASES.length - cases.length) },
         ],
-        note: 'A conclusion is defensible when you can name the observation that would break it.',
+        note: tips('chain')[0],
       });
     }
 

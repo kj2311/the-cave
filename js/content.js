@@ -17,6 +17,7 @@ import { MISSIONS_NL } from './data/missions.nl.js';
 import { CASES_NL } from './data/cases.nl.js';
 import { BASELINES_NL, COLDREADS_NL, TECHNIQUES_NL } from './data/people.nl.js';
 import { LESSONS_NL } from './data/lessons.nl.js';
+import { NOUNS, LOCI_ROUTES, NOUNS_NL, LOCI_ROUTES_NL } from './data/words.js';
 
 const OVERLAYS = {
   nl: {
@@ -72,4 +73,13 @@ export function technique(key, fallback) {
 export function lesson(l) {
   const p = patch('lessons', l.id);
   return p ? { ...l, ...p } : l;
+}
+
+/** Memory-drill vocabulary for the active language. */
+export function nouns() {
+  return getLang() === 'nl' ? NOUNS_NL : NOUNS;
+}
+
+export function lociRoutes() {
+  return getLang() === 'nl' ? LOCI_ROUTES_NL : LOCI_ROUTES;
 }

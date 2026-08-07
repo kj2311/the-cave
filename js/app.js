@@ -19,18 +19,32 @@ import { MISSIONS } from './data/missions.js';
 import { mission, lesson } from './content.js';
 import { mdish } from './drills/shared.js';
 
-const QUOTES = [
-  'Everyone is telling you something. Almost nobody is saying it.',
-  'The room was talking before anyone opened their mouth.',
-  'Certainty is a feeling. Evidence is a different thing entirely.',
-  'You are not bad at noticing. You have never been taught an order to notice in.',
-  'Learn what a person is like when nothing is at stake. That is the whole trick.',
-  'A conclusion you cannot break is not a conclusion.',
-  'Watch the people who are not being watched.',
-  'The pause does more work than the sentence.',
-  'What is missing has a shape. Learn to see the shape.',
-  'Being right is style. Being calm is the technique.',
-];
+const QUOTES = {
+  en: [
+    'Everyone is telling you something. Almost nobody is saying it.',
+    'The room was talking before anyone opened their mouth.',
+    'Certainty is a feeling. Evidence is a different thing entirely.',
+    'You are not bad at noticing. You have never been taught an order to notice in.',
+    'Learn what a person is like when nothing is at stake. That is the whole trick.',
+    'A conclusion you cannot break is not a conclusion.',
+    'Watch the people who are not being watched.',
+    'The pause does more work than the sentence.',
+    'What is missing has a shape. Learn to see the shape.',
+    'Being right is style. Being calm is the technique.',
+  ],
+  nl: [
+    'Iedereen vertelt je iets. Bijna niemand zegt het.',
+    'De zaal sprak al voordat er iemand zijn mond opendeed.',
+    'Zekerheid is een gevoel. Bewijs is iets heel anders.',
+    'Je bent niet slecht in opmerken. Je hebt nooit een volgorde geleerd om in op te merken.',
+    'Leer hoe iemand is als er niets op het spel staat. Dat is de hele truc.',
+    'Een conclusie die je niet kunt breken is geen conclusie.',
+    'Kijk naar de mensen naar wie niet gekeken wordt.',
+    'De stilte doet meer werk dan de zin.',
+    'Wat ontbreekt heeft een vorm. Leer die vorm te zien.',
+    'Gelijk hebben is stijl. Kalm blijven is de techniek.',
+  ],
+};
 
 let cleanup = null;
 
@@ -91,7 +105,7 @@ function viewHome() {
         }, `${done.size}/${daily.drills.length}`),
       ),
     ),
-    h('div.briefing__quote', pick(QUOTES)),
+    h('div.briefing__quote', pick(QUOTES[getLang()] || QUOTES.en)),
   );
 
   const protocol = daily.drills.map(id => {

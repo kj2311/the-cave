@@ -8,9 +8,13 @@
    app is monochrome, and fill is the harder discrimination.
    ============================================================ */
 
-import { h, ICONS, rand, shuffle, sampleUnique } from '../ui.js';
+import { h, ICONS, rand, pick, shuffle, sampleUnique } from '../ui.js';
 import { hud, choices, nextBtn, countdown } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
+
+/** Localised names for the two stimulus dimensions. */
+const shapeName = (s) => t(`shape.${s}`);
+const fillName = (f) => t(`fill.${f}`);
 
 const INK = '#f2f4f7';
 const VOID = '#08080a';
@@ -131,8 +135,6 @@ function numberOptions(correct, spread = 3) {
   return [...set].map(n => ({ t: String(n), ok: n === correct }));
 }
 
-const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-
 function buildQuestions(scene, level) {
   const { objects } = scene;
   const qs = [];
@@ -145,7 +147,7 @@ function buildQuestions(scene, level) {
   }
 
   qs.push({
-    stem: 'How many objects were in the scene in total?',
+    stem: t('q.total'),
     options: numberOptions(objects.length, 3),
   });
 
@@ -153,7 +155,7 @@ function buildQuestions(scene, level) {
   if (presentFills.length) {
     const f = presentFills[rand(presentFills.length)];
     qs.push({
-      stem: `How many ${f} objects were there?`,
+      stem: t('q.fillCount', { f: t(`filladj.${f}`) }),
       options: numberOptions(fillCounts[f], 3),
     });
   }
@@ -162,10 +164,10 @@ function buildQuestions(scene, level) {
     const o = objects[rand(objects.length)];
     const wrong = SHAPES.filter(s => s !== o.shape);
     qs.push({
-      stem: `What was in row ${o.row}, column ${o.col}? (counting from the top left)`,
+      stem: t('q.atCell', { r: o.row, c: o.col }),
       options: shuffle([
-        { t: cap(o.shape), ok: true },
-        ...sampleUnique(wrong, 3).map(s => ({ t: cap(s), ok: false })),
+        { t: shapeName(o.shape), ok: true },
+        ...sampleUnique(wrong, 3).map(s => ({ t: shapeName(s), ok: false })),
       ]),
     });
   }
@@ -174,10 +176,10 @@ function buildQuestions(scene, level) {
   const present = Object.keys(shapeCounts);
   if (absent.length && present.length >= 3) {
     qs.push({
-      stem: 'Which of these did NOT appear anywhere in the scene?',
+      stem: t('q.absent'),
       options: shuffle([
-        { t: cap(absent[rand(absent.length)]), ok: true },
-        ...sampleUnique(present, 3).map(s => ({ t: cap(s), ok: false })),
+        { t: shapeName(absent[rand(absent.length)]), ok: true },
+        ...sampleUnique(present, 3).map(s => ({ t: shapeName(s), ok: false })),
       ]),
     });
   }
@@ -185,7 +187,7 @@ function buildQuestions(scene, level) {
   if (present.length) {
     const s = present[rand(present.length)];
     qs.push({
-      stem: `How many ${s}s were there?`,
+      stem: t('q.shapeCount', { s: t(`shapes.${s}`) }),
       options: numberOptions(shapeCounts[s], 3),
     });
   }
@@ -194,10 +196,10 @@ function buildQuestions(scene, level) {
   if (marked) {
     const others = SHAPES.filter(s => s !== marked.shape);
     qs.push({
-      stem: 'One object was circled by a dashed ring. What shape was it?',
+      stem: t('q.ringed'),
       options: shuffle([
-        { t: cap(marked.shape), ok: true },
-        ...sampleUnique(others, 3).map(s => ({ t: cap(s), ok: false })),
+        { t: shapeName(marked.shape), ok: true },
+        ...sampleUnique(others, 3).map(s => ({ t: shapeName(s), ok: false })),
       ]),
     });
   }
@@ -205,10 +207,10 @@ function buildQuestions(scene, level) {
   const sortedFills = Object.entries(fillCounts).sort((a, b) => b[1] - a[1]);
   if (sortedFills.length >= 3 && sortedFills[0][1] > sortedFills[1][1]) {
     qs.push({
-      stem: 'Which fill appeared most often?',
+      stem: t('q.commonFill'),
       options: shuffle([
-        { t: cap(sortedFills[0][0]), ok: true },
-        ...sortedFills.slice(1, 4).map(([n]) => ({ t: cap(n), ok: false })),
+        { t: fillName(sortedFills[0][0]), ok: true },
+        ...sortedFills.slice(1, 4).map(([n]) => ({ t: fillName(n), ok: false })),
       ]),
     });
   }
@@ -216,13 +218,6 @@ function buildQuestions(scene, level) {
   return shuffle(qs).slice(0, Math.min(qs.length, 3 + Math.ceil(level / 2)));
 }
 
-const TIPS = [
-  'Scan in a fixed order — left to right, top to bottom. A random scan loses most of the grid.',
-  'Name each object silently as you see it. Verbalising forces encoding; passive looking does not.',
-  'Count first, then detail. A total you are sure of anchors everything else.',
-  'Your first glance gets the least processing, not the most. Go back to where you started.',
-  'Group by fill rather than by position — a chunk of four hollows survives better than four coordinates.',
-];
 
 /* ---------- drill ---------- */
 
@@ -249,13 +244,13 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Observation · Sweep'),
-            h('h2', { style: { margin: '10px 0 12px' } }, `Level ${level}`),
-            h('p.prose', `A scene of ${scene.count} objects appears for ${(exposure / 1000).toFixed(1)} seconds. Then it is gone and the questions begin. You will not know in advance what is asked.`),
-            h('p.prose', 'Objects differ by shape and by fill — solid, hollow, hatched, dotted, split, double.'),
+            h('div.label', t('sweep.head')),
+            h('h2', { style: { margin: '10px 0 12px' } }, t('train.level', { n: level })),
+            h('p.prose', t('sweep.intro', { n: scene.count, s: (exposure / 1000).toFixed(1) })),
+            h('p.prose', t('sweep.intro2')),
             h('div.reveal',
               h('div.reveal__title', t('drill.beforeStart')),
-              h('div', TIPS[rand(TIPS.length)]),
+              h('div', pick(tips('sweep'))),
             ),
           ),
           nextBtn(t('drill.begin'), () => run()),
@@ -308,11 +303,11 @@ export default {
       ctx.finish({
         pct: right / questions.length,
         stats: [
-          { k: 'Correct', v: `${right}/${questions.length}` },
-          { k: 'Objects', v: scene.count },
-          { k: 'Exposure', v: `${(exposure / 1000).toFixed(1)}s` },
+          { k: t('stat.correct'), v: `${right}/${questions.length}` },
+          { k: t('stat.objects'), v: scene.count },
+          { k: t('stat.exposure'), v: `${(exposure / 1000).toFixed(1)}s` },
         ],
-        note: TIPS[rand(TIPS.length)],
+        note: pick(tips('sweep')),
       });
     }
 

@@ -38,3 +38,41 @@ export const LOCI_ROUTES = [
   ['the bus stop', 'the corner shop', 'the crossing', 'the bakery', 'the bench', 'the postbox', 'the bridge', 'the station gate'],
   ['the car boot', 'the driver\'s seat', 'the dashboard', 'the mirror', 'the glovebox', 'the back seat', 'the bonnet', 'the wheel arch'],
 ];
+
+/* ------------------------------------------------------------
+   Dutch set. The words themselves are the drill material, so a
+   Dutch speaker needs Dutch nouns — an English word costs a
+   translation step before the image forms, which is exactly the
+   effort the method is supposed to remove.
+   ------------------------------------------------------------ */
+
+export const NOUNS_NL = [
+  'anker', 'lantaarn', 'viool', 'ketel', 'ladder', 'kompas', 'harpoen', 'spiegel',
+  'trompet', 'zadel', 'kaars', 'aambeeld', 'telescoop', 'paraplu', 'koevoet', 'bijenkorf',
+  'cactus', 'piano', 'vogelverschrikker', 'vuurtoren', 'kruiwagen', 'typemachine', 'vogelkooi', 'zonnewijzer',
+  'kroonluchter', 'accordeon', 'hangmat', 'periscoop', 'grammofoon', 'windmolen', 'hooivork', 'schelp',
+  'veter', 'heksenketel', 'domino', 'vlaggenmast', 'waterspuwer', 'mondharmonica', 'inktpot', 'kaakbeen',
+  'sleutelgat', 'kreeft', 'lucifersdoosje', 'notenkraker', 'obelisk', 'hangslot', 'pijlkoker', 'roeiboot',
+  'postkoets', 'tamboerijn', 'eenwieler', 'gier', 'walnoot', 'xylofoon', 'duimstok', 'zeppelin',
+  'ton', 'beitel', 'dolk', 'schildersezel', 'fontein', 'skibril', 'bijl', 'iglo',
+  'legpuzzel', 'kajak', 'zeeduivel', 'muizenval', 'strop', 'octopus', 'slinger', 'ganzenveer',
+  'radiator', 'stopwatch', 'vingerhoed', 'urn', 'vaas', 'garde', 'blaasbalg', 'spinnenweb',
+  'ophaalbrug', 'eierschaal', 'haardvuur', 'kas', 'hoefijzer', 'ijsberg', 'jukebox', 'caleidoscoop',
+  'lampenkap', 'megafoon', 'nachtegaal', 'poef', 'parachute', 'steengroeve', 'dakpan', 'sextant',
+  'valluik', 'ukelele', 'fluweel', 'wagen', 'juk', 'rits', 'abrikoos', 'verrekijker',
+  'doodskist', 'halter', 'envelop', 'veerboot', 'gondel', 'zandloper', 'klimop', 'kurkentrekker',
+];
+
+export const SHORT_NOUNS_NL = [
+  'bijl', 'bel', 'kooi', 'dobbelsteen', 'paling', 'waaier', 'edelsteen', 'haak',
+  'ijs', 'pot', 'sleutel', 'lamp', 'kaart', 'net', 'roeispaan', 'speld',
+  'touw', 'zaag', 'blik', 'urn', 'busje', 'pruik', 'garen', 'zink',
+  'bot', 'kurk', 'trom', 'varen', 'hek', 'hoorn', 'vlieger', 'blad',
+  'masker', 'spijker', 'oven', 'pijp', 'hark', 'sok', 'tent', 'golf',
+];
+
+export const LOCI_ROUTES_NL = [
+  ['je voordeur', 'de gang', 'de keukenkraan', 'de koelkast', 'de bank', 'de televisie', 'de badkamerspiegel', 'je bed'],
+  ['de bushalte', 'de buurtwinkel', 'het zebrapad', 'de bakker', 'het bankje', 'de brievenbus', 'de brug', 'het stationshek'],
+  ['de kofferbak', 'de bestuurdersstoel', 'het dashboard', 'de spiegel', 'het handschoenenvakje', 'de achterbank', 'de motorkap', 'de wielkast'],
+];

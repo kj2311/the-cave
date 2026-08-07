@@ -11,7 +11,7 @@ import { BASELINES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
 import { baselineItem } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
-import { t } from '../i18n.js';
+import { t, tips } from '../i18n.js';
 
 const perRunFor = (level) => (level >= 5 ? 5 : 4);
 
@@ -35,12 +35,12 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Reading · Baseline'),
-            h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} observations`),
-            h('p.prose', 'You get a person\'s established normal, then a single moment. Identify what genuinely departed from the baseline.'),
+            h('div.label', t('baseline.head')),
+            h('h2', { style: { margin: '8px 0 10px' } }, t('baseline.count', { lvl: ctx.level, n: items.length })),
+            h('p.prose', t('baseline.intro')),
             h('div.reveal.reveal--myth',
               h('div.reveal__title', t('baseline.groundRule')),
-              h('div', 'No behaviour means "lying". Several answers in this drill are the popular reading, and they are wrong. Deviation locates a topic; it never delivers a verdict.'),
+              h('div', t('baseline.rule')),
             ),
           ),
           nextBtn(t('drill.begin'), () => ask(0)),
@@ -85,11 +85,11 @@ export default {
       ctx.finish({
         pct: right / items.length,
         stats: [
-          { k: 'Correct', v: `${right}/${items.length}` },
-          { k: 'Pool', v: BASELINES.length },
-          { k: 'Rule', v: 'B·C·T' },
+          { k: t('stat.correct'), v: `${right}/${items.length}` },
+          { k: t('stat.pool'), v: BASELINES.length },
+          { k: t('stat.rule'), v: 'B·C·T' },
         ],
-        note: 'Baseline, cluster, timing. A signal has to clear all three before it is worth anything.',
+        note: tips('baseline')[0],
       });
     }
 
