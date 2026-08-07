@@ -108,16 +108,49 @@ function viewHome() {
     h('div.briefing__quote', pick(QUOTES[getLang()] || QUOTES.en)),
   );
 
-  const protocol = daily.drills.map(id => {
+  // The first unfinished drill of the day is the one thing to do next.
+  const nextId = daily.drills.find(id => !done.has(id)) || null;
+  const nextDrill = nextId ? byId(nextId) : null;
+
+  const protocol = daily.drills.map((id, i) => {
     const d = byId(id);
-    return d ? drillCard(d, done.has(id)) : null;
+    return d ? drillCard(d, done.has(id), i + 1, id === nextId) : null;
   }).filter(Boolean);
 
-  const nodes = [
-    briefing,
+  // One primary action, always. Never make someone choose where to start.
+  const cta = nextDrill
+    ? h('button.btn.btn--primary.btn--block', {
+        type: 'button',
+        onclick: () => go(`#/drill/${nextDrill.id}`),
+      }, done.size === 0
+        ? t('home.beginWith', { name: drillName(nextDrill), len: nextDrill.length })
+        : t('home.continueWith', { name: drillName(nextDrill), len: nextDrill.length }))
+    : h('button.btn.btn--ghost.btn--block', {
+        type: 'button', onclick: () => go('#/train'),
+      }, t('home.extra'));
+
+  const nodes = [briefing, cta];
+
+  // Shown until the first session is finished, then never again.
+  const totalRuns = Object.values(s.runs).reduce((a, b) => a + b, 0);
+  if (totalRuns === 0) {
+    nodes.push(
+      h('div.panel', { style: { marginTop: '12px' } },
+        h('div.label', t('home.newTitle')),
+        h('ul.how', { style: { marginTop: '12px' } },
+          h('li', { html: mdish(t('home.new1')) }),
+          h('li', { html: mdish(t('home.new2')) }),
+          h('li', { html: mdish(t('home.new3')) }),
+        ),
+        h('p.faint', { style: { fontSize: '12.5px', marginTop: '12px' } }, t('home.newHint')),
+      ),
+    );
+  }
+
+  nodes.push(
     h('div.section-head', h('span.label', t('home.protocol'))),
     ...protocol,
-  ];
+  );
 
   if (complete) {
     nodes.push(h('div.panel', { style: { marginTop: '12px' } },
@@ -155,13 +188,17 @@ function hashDay() {
   return dayKey().split('-').reduce((a, n) => a * 31 + Number(n), 11);
 }
 
-function drillCard(d, isDone) {
+function drillCard(d, isDone, step = null, isNext = false) {
   const lvl = drillLevel(d.id);
-  return h(`button.drill.${DISCIPLINES[d.discipline].cls}${isDone ? '.is-done' : ''}`,
+  return h(`button.drill.${DISCIPLINES[d.discipline].cls}${isDone ? '.is-done' : ''}${isNext ? '.is-next' : ''}`,
     { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
+    step ? h('span.drill__step', String(step).padStart(2, '0')) : null,
     h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
     h('span.grow',
-      h('div.drill__name', drillName(d)),
+      h('div.row',
+        h('div.drill__name.grow', drillName(d)),
+        isNext ? h('span.chip.chip--accent', t('home.next')) : null,
+      ),
       h('div.drill__sub', `${dName(d.discipline)} · ${t('train.level', { n: lvl })} · ${d.length}`),
     ),
     isDone

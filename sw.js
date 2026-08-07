@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v9';
+const CACHE = 'cave-v10';
 
 const SHELL = [
   './',

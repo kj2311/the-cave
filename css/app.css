@@ -328,6 +328,42 @@ p:last-child { margin-bottom: 0; }
 .drill__chev { color: var(--faint); flex: none; }
 .drill__tick { color: var(--silver-hi); flex: none; }
 
+/* Step number, so the day reads as an ordered list rather than a menu. */
+.drill__step {
+  flex: none;
+  width: 18px;
+  margin-right: -4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+/* The one you should do now. */
+.drill.is-next { border-color: var(--silver-hi); background: var(--surface-2); }
+.drill.is-next .drill__step { color: var(--silver-hi); }
+
+/* First-run explainer. */
+.how { list-style: none; margin: 0; padding: 0; }
+.how li {
+  position: relative;
+  padding: 9px 0 9px 20px;
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--dim);
+  border-top: 1px solid var(--rule);
+}
+.how li:first-child { border-top: 0; padding-top: 2px; }
+.how li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 17px;
+  width: 7px; height: 1px;
+  background: var(--steel);
+}
+.how li:first-child::before { top: 10px; }
+.how strong { color: var(--silver-hi); font-weight: 600; }
+
 /* Disciplines step down a silver scale rather than changing hue. */
 .d-observation { --accent: #f2f4f7; }
 .d-memory      { --accent: #dadee4; }
