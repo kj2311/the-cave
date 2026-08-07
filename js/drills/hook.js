@@ -8,6 +8,7 @@
 import { h, ICONS } from '../ui.js';
 import { COLDREADS, TECHNIQUES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
+import { coldReadItem, technique } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
 import { t } from '../i18n.js';
 
@@ -22,7 +23,7 @@ export default {
   length: '4 min',
 
   mount(root, ctx) {
-    const items = pickUnseen('coldreads', COLDREADS, perRunFor(ctx.level));
+    const items = pickUnseen('coldreads', COLDREADS, perRunFor(ctx.level)).map(coldReadItem);
     const bar = hud(items.length);
     let right = 0;
     let cancelled = false;
@@ -37,7 +38,7 @@ export default {
             h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} devices`),
             h('p.prose', 'These are the mechanics behind psychics, fraudsters and bad-faith persuasion. They are taught here so that they can never be run on you unnoticed.'),
             h('div.reveal',
-              h('div.reveal__title', 'The test that matters'),
+              h('div.reveal__title', t('hook.test')),
               h('div', 'Could that statement have been visibly wrong? If not, no information passed — no matter how accurate it felt.'),
             ),
           ),
@@ -51,7 +52,7 @@ export default {
       if (i >= items.length) return done();
 
       const it = items[i];
-      const tech = TECHNIQUES[it.tech];
+      const tech = technique(it.tech, TECHNIQUES[it.tech]);
       bar.set(i);
       const holder = h('div');
 
@@ -59,7 +60,7 @@ export default {
         h('div.fade-in.stack',
           bar.el,
           h('div.panel',
-            h('div.label', 'Subject'),
+            h('div.label', t('hook.subject')),
             h('p.case-scene', { style: { marginTop: '9px' } }, it.subject),
           ),
           h('div.panel', h('h3', it.question)),
@@ -71,7 +72,7 @@ export default {
         if (correct) right += 1;
         bar.set(i + 1);
         if (tech) holder.appendChild(reveal(tech.name, tech.note));
-        holder.appendChild(reveal('Why it works', it.explain));
+        holder.appendChild(reveal(t('hook.why'), it.explain));
         holder.appendChild(nextBtn(i === items.length - 1 ? t('drill.seeResults') : t('drill.next'), () => ask(i + 1)));
       }));
     }

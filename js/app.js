@@ -16,7 +16,7 @@ import {
 import { DRILLS, byId, drillIds } from './drills/index.js';
 import { LESSONS } from './data/lessons.js';
 import { MISSIONS } from './data/missions.js';
-import { mission } from './content.js';
+import { mission, lesson } from './content.js';
 import { mdish } from './drills/shared.js';
 
 const QUOTES = [
@@ -34,9 +34,11 @@ const QUOTES = [
 
 let cleanup = null;
 
-/** Discipline display name for the active language. */
+/** Discipline and drill display names for the active language. */
 const dName = (key) => t(`disc.${key}`);
 const dTag = (key) => t(`disc.${key}.tag`);
+const drillName = (d) => t(`drill.${d.id}.name`);
+const drillBlurb = (d) => t(`drill.${d.id}.blurb`);
 
 /** Static chrome lives in index.html, so it is painted from JS on boot
     and again whenever the language changes. */
@@ -145,7 +147,7 @@ function drillCard(d, isDone) {
     { type: 'button', onclick: () => go(`#/drill/${d.id}`) },
     h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
     h('span.grow',
-      h('div.drill__name', d.name),
+      h('div.drill__name', drillName(d)),
       h('div.drill__sub', `${dName(d.discipline)} · ${t('train.level', { n: lvl })} · ${d.length}`),
     ),
     isDone
@@ -203,10 +205,10 @@ function viewTrain() {
           h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
           h('span.grow',
             h('div.row',
-              h('div.drill__name.grow', d.name),
+              h('div.drill__name.grow', drillName(d)),
               h('span.chip.chip--accent', t('train.lv', { n: lvl })),
             ),
-            h('div.drill__sub', d.blurb),
+            h('div.drill__sub', drillBlurb(d)),
             h('div.drill__sub', { style: { marginTop: '4px', opacity: .8 } },
               t('train.runs', { n: runs }),
               best !== undefined ? t('train.best', { p: Math.round(best * 100) }) : '',
@@ -235,16 +237,14 @@ function viewCodex() {
       h('div.label', t('codex.label')),
       h('h2', { style: { margin: '8px 0 8px' } }, t('codex.heading')),
       h('p.prose', t('codex.intro')),
-      getLang() !== 'en'
-        ? h('p.prose.faint', { style: { fontSize: '13.5px' } }, t('codex.englishOnly'))
-        : null,
     ),
     h('div.section-head', h('span.label', t('codex.entries', { n: LESSONS.length }))),
-    ...LESSONS.map(l => {
-      const meta = DISCIPLINES[l.discipline];
-      const isRead = s.read.includes(l.id);
+    ...LESSONS.map(raw => {
+      const l = lesson(raw);
+      const meta = DISCIPLINES[raw.discipline];
+      const isRead = s.read.includes(raw.id);
       return h(`button.lesson-card.${meta.cls}${isRead ? '.is-read' : ''}`,
-        { type: 'button', onclick: () => go(`#/codex/${l.id}`) },
+        { type: 'button', onclick: () => go(`#/codex/${raw.id}`) },
         h('div.lesson-card__t', l.title),
         h('div.lesson-card__d', l.teaser),
         h('div.lesson-card__m',
@@ -260,10 +260,11 @@ function viewCodex() {
 }
 
 function viewLesson(id) {
-  const l = LESSONS.find(x => x.id === id);
-  if (!l) return go('#/codex');
-  const meta = DISCIPLINES[l.discipline];
-  markRead(l.id);
+  const raw = LESSONS.find(x => x.id === id);
+  if (!raw) return go('#/codex');
+  const l = lesson(raw);
+  const meta = DISCIPLINES[raw.discipline];
+  markRead(raw.id);
 
   const blocks = l.body.map(b => {
     if (b.h) return h('h2', b.h);
@@ -275,8 +276,8 @@ function viewLesson(id) {
     return null;
   }).filter(Boolean);
 
-  const idx = LESSONS.indexOf(l);
-  const next = LESSONS[idx + 1];
+  const idx = LESSONS.indexOf(raw);
+  const next = LESSONS[idx + 1] ? lesson(LESSONS[idx + 1]) : null;
 
   render(
     h(`div.fade-in.${meta.cls}`,
@@ -613,7 +614,7 @@ function drillProgressCard(d) {
     return h(`div.panel.${meta.cls}`,
       h('div.row',
         h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
-        h('span.grow', h('div.drill__name', d.name), h('div.drill__sub', t('progress.notAttempted'))),
+        h('span.grow', h('div.drill__name', drillName(d)), h('div.drill__sub', t('progress.notAttempted'))),
         h('span.chip', t('train.lv', { n: 1 })),
       ),
     );
@@ -628,7 +629,7 @@ function drillProgressCard(d) {
     h('div.row',
       h('span.drill__glyph', svg(PICTOS[d.discipline], 20)),
       h('span.grow',
-        h('div.drill__name', d.name),
+        h('div.drill__name', drillName(d)),
         h('div.drill__sub', `${dName(d.discipline)} · ${t('train.runs', { n: runs })}`),
       ),
       line,
@@ -662,7 +663,7 @@ function viewDrill(id) {
   const level = drillLevel(d.id);
 
   render(root, {
-    title: d.name.toUpperCase(),
+    title: drillName(d).toUpperCase(),
     focusMode: true,
     back: () => {
       if (confirm(t('result.leaveConfirm'))) go('#/train');
@@ -714,7 +715,7 @@ function showResult(d, result, outcome) {
   render(
     h(`div.fade-in.${meta.cls}`,
       h('div.panel', { style: { textAlign: 'center', padding: '26px 18px' } },
-        h('div.label', `${dName(d.discipline)} · ${d.name}`),
+        h('div.label', `${dName(d.discipline)} · ${drillName(d)}`),
         h('div.result-score', { style: { margin: '12px 0 4px' } }, `${pctNum}%`),
         h('div.dim', verdict),
         h('div', { style: { marginTop: '16px' } },
@@ -722,7 +723,7 @@ function showResult(d, result, outcome) {
         ),
         outcome.drillLevelUp
           ? h('div', { style: { marginTop: '10px' } },
-              h('span.chip.chip--accent', t('result.drillLevelUp', { name: d.name, n: outcome.drillLevelUp })))
+              h('span.chip.chip--accent', t('result.drillLevelUp', { name: drillName(d), n: outcome.drillLevelUp })))
           : null,
         outcome.levelUp
           ? h('div', { style: { marginTop: '10px' } },

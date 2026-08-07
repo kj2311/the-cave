@@ -118,7 +118,7 @@ export default {
       lastRule = t.rule;
 
       const banner = h(`div.chip${changed ? '.chip--accent' : ''}`,
-        changed ? `RULE CHANGED → ${t.rule}` : `RULE · ${t.rule}`);
+        changed ? t('still.ruleChanged', { r: t.rule }) : t('still.rule', { r: t.rule }));
 
       const stage = h('div.stage',
         h('div.center',

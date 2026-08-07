@@ -52,7 +52,7 @@ export default {
               ? 'Each item is paired with a place on a route. Put the item there as a picture — moving, absurd, interacting with the place.'
               : 'No route is given this time. Use one of your own and place each item as you go.'),
             scaffold ? h('div.reveal',
-              h('div.reveal__title', 'Your route'),
+              h('div.reveal__title', t('palace.route')),
               h('div', route.slice(0, count).join('  →  ')),
             ) : null,
           ),
@@ -88,7 +88,7 @@ export default {
       const pool = h('div.token-pool');
       const submit = h('button.btn.btn--primary.btn--block', {
         type: 'button', disabled: true, style: { marginTop: '18px' },
-      }, 'Submit sequence');
+      }, t('palace.submit'));
 
       const poolBtns = shuffle(items).map(word => {
         const b = h('button.token', { type: 'button' }, word);
@@ -115,7 +115,7 @@ export default {
           });
           return tok;
         }));
-        if (!chosen.length) slots.replaceChildren(h('div.token.token--slot', 'tap the words below, in order'));
+        if (!chosen.length) slots.replaceChildren(h('div.token.token--slot', t('palace.slot')));
         submit.disabled = chosen.length !== items.length;
       }
       paint();
@@ -125,9 +125,9 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'Recall'),
-            h('h3', { style: { margin: '8px 0 4px' } }, 'Rebuild the sequence, in order'),
-            h('p.prose', { style: { fontSize: '13.5px' } }, 'Tap a placed word to take it back.'),
+            h('div.label', t('palace.recall')),
+            h('h3', { style: { margin: '8px 0 4px' } }, t('palace.rebuild')),
+            h('p.prose', { style: { fontSize: '13.5px' } }, t('palace.takeBack')),
           ),
           h('div.panel', slots),
           h('div.panel', pool),
@@ -152,7 +152,7 @@ export default {
       root.replaceChildren(
         h('div.fade-in.stack',
           h('div.panel',
-            h('div.label', 'The sequence was'),
+            h('div.label', t('palace.was')),
             h('div', { style: { marginTop: '12px' } }, list),
           ),
           nextBtn(t('drill.continue'), () => ctx.finish({

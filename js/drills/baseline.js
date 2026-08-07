@@ -9,6 +9,7 @@
 import { h, ICONS } from '../ui.js';
 import { BASELINES } from '../data/people.js';
 import { pickUnseen } from '../store.js';
+import { baselineItem } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
 import { t } from '../i18n.js';
 
@@ -23,7 +24,7 @@ export default {
   length: '4 min',
 
   mount(root, ctx) {
-    const items = pickUnseen('baselines', BASELINES, perRunFor(ctx.level));
+    const items = pickUnseen('baselines', BASELINES, perRunFor(ctx.level)).map(baselineItem);
     const bar = hud(items.length);
     let right = 0;
     let cancelled = false;
@@ -38,7 +39,7 @@ export default {
             h('h2', { style: { margin: '8px 0 10px' } }, `Level ${ctx.level} — ${items.length} observations`),
             h('p.prose', 'You get a person\'s established normal, then a single moment. Identify what genuinely departed from the baseline.'),
             h('div.reveal.reveal--myth',
-              h('div.reveal__title', 'Ground rule'),
+              h('div.reveal__title', t('baseline.groundRule')),
               h('div', 'No behaviour means "lying". Several answers in this drill are the popular reading, and they are wrong. Deviation locates a topic; it never delivers a verdict.'),
             ),
           ),
@@ -59,11 +60,11 @@ export default {
         h('div.fade-in.stack',
           bar.el,
           h('div.panel',
-            h('div.label', 'Baseline'),
+            h('div.label', t('baseline.baseline')),
             h('p.case-scene', { style: { marginTop: '9px' } }, it.baseline),
           ),
           h('div.panel',
-            h('div.label', { style: { color: 'var(--silver-hi)' } }, 'The moment'),
+            h('div.label', { style: { color: 'var(--silver-hi)' } }, t('baseline.moment')),
             h('p.case-scene', { style: { marginTop: '9px' } }, it.moment),
           ),
           h('div.panel', h('h3', it.question)),
@@ -74,8 +75,8 @@ export default {
       holder.appendChild(choices(it.options, (correct) => {
         if (correct) right += 1;
         bar.set(i + 1);
-        holder.appendChild(reveal('Reading', it.explain));
-        if (it.myth) holder.appendChild(reveal('The popular version is wrong', it.myth, 'reveal--myth'));
+        holder.appendChild(reveal(t('baseline.reading'), it.explain));
+        if (it.myth) holder.appendChild(reveal(t('baseline.mythTitle'), it.myth, 'reveal--myth'));
         holder.appendChild(nextBtn(i === items.length - 1 ? t('drill.seeResults') : t('drill.next'), () => ask(i + 1)));
       }));
     }

@@ -9,7 +9,9 @@
 import { h, ICONS, buzz } from '../ui.js';
 import { CASES } from '../data/cases.js';
 import { pickUnseen } from '../store.js';
+import { caseFile } from '../content.js';
 import { hud, choices, reveal, nextBtn } from './shared.js';
+import { t } from '../i18n.js';
 
 /** More case files per sitting as the level climbs. */
 const perRunFor = (level) => (level >= 7 ? 5 : level >= 4 ? 4 : 3);
@@ -23,7 +25,7 @@ export default {
   length: '5 min',
 
   mount(root, ctx) {
-    const cases = pickUnseen('cases', CASES, perRunFor(ctx.level));
+    const cases = pickUnseen('cases', CASES, perRunFor(ctx.level)).map(caseFile);
     const bar = hud(cases.length * 2);
     let step = 0;
     const score = { got: 0, of: cases.length * 2 };
@@ -40,7 +42,7 @@ export default {
             h('p.prose', 'Each file gives you a scene and a handful of observations. Some of them are noise, deliberately.'),
             h('p.prose', 'Choose the conclusion the evidence will actually support — not the most interesting one. Then name the observation that did the work.'),
           ),
-          nextBtn('Open the first file', () => runCase(0)),
+          nextBtn(t('chain.open'), () => runCase(0)),
         ),
       );
     }
@@ -59,7 +61,7 @@ export default {
         h('div.fade-in.stack',
           bar.el,
           h('div.panel',
-            h('div.label', `Case ${i + 1} — ${c.title}`),
+            h('div.label', t('chain.case', { n: i + 1, title: c.title })),
             h('p.case-scene', { style: { marginTop: '10px' } }, c.scene),
             factList,
           ),
@@ -72,7 +74,7 @@ export default {
         if (correct) score.got += 1;
         step += 1;
         bar.set(step);
-        holder.appendChild(nextBtn('Now — which one carried it?', () => askKey(i, factList)));
+        holder.appendChild(nextBtn(t('chain.whichCarried'), () => askKey(i, factList)));
       }));
     }
 
@@ -92,9 +94,9 @@ export default {
         h('div.fade-in.stack',
           bar.el,
           h('div.panel',
-            h('div.label', `Case ${i + 1} — ${c.title}`),
-            h('h3', { style: { margin: '8px 0 4px' } }, 'Which observation was decisive?'),
-            h('p.prose', { style: { fontSize: '13.5px' } }, 'The one that, on its own, the claim cannot survive.'),
+            h('div.label', t('chain.case', { n: i + 1, title: c.title })),
+            h('h3', { style: { margin: '8px 0 4px' } }, t('chain.decisive')),
+            h('p.prose', { style: { fontSize: '13.5px' } }, t('chain.decisiveSub')),
             list,
           ),
           holder,
@@ -113,9 +115,9 @@ export default {
         bar.set(step);
 
         holder.replaceChildren(
-          reveal(right ? 'Correct — observation ' + (c.key + 1) : 'The decisive one was observation ' + (c.key + 1), c.explain),
-          reveal('Principle', c.principle),
-          nextBtn(i === cases.length - 1 ? 'See results' : 'Next case', () => runCase(i + 1)),
+          reveal(right ? t('chain.correct', { n: c.key + 1 }) : t('chain.wasObs', { n: c.key + 1 }), c.explain),
+          reveal(t('chain.principle'), c.principle),
+          nextBtn(i === cases.length - 1 ? t('drill.seeResults') : t('chain.nextCase'), () => runCase(i + 1)),
         );
       }
     }
