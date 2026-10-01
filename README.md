@@ -1,8 +1,9 @@
 # THE CAVE
 
 A private cognitive-training app — observation, memory, deduction, reading people,
-influence and composure. Installable on iPhone as a home-screen app (PWA), works
-offline, stores everything on-device.
+influence and composure — with a physical programme alongside it in the **Body**
+tab. Installable on iPhone as a home-screen app (PWA), works offline, stores
+everything on-device.
 
 No account, no server, no analytics. Nothing leaves the phone.
 
@@ -97,6 +98,7 @@ js/
   app.js                router + every view
   ui.js                 hyperscript helper, toast, timers, small utilities
   store.js              persistence, XP, levels, streak, daily protocol
+  body.js               the Body tab: session logger, tests, progress, rules
   drills/
     index.js            drill registry
     shared.js           hud, multiple choice, reveal panel, countdown
@@ -112,6 +114,8 @@ js/
     lessons.js          14 codex articles
     missions.js         29 real-world field assignments, tiered
     words.js            concrete nouns + loci routes for memory drills
+    body.js             the physical programme (8 weeks), English
+    body.nl.js          Dutch overlay for it
 tools/
   serve.ps1             static server (no Node/Python on this machine)
   make-icons.ps1        regenerates the icon set via System.Drawing
@@ -197,6 +201,35 @@ follow:
   writes a tagged entry to the log.
 - Tier I is doable today, Tier II needs a real conversation or a full day, Tier III
   takes a week or touches something that matters.
+
+## Body
+
+The sixth tab is the physical side: Phase 1, eight weeks of strength, speed,
+power, running and skills trained together. Monday power and legs, Tuesday
+upper A plus an easy run, Wednesday the quality run, Thursday upper B, Saturday
+speed plus an easy run; Friday and Sunday are rest, and Friday holds the tests
+in weeks 1 and 8. Week 4 is a deload.
+
+- **Logging.** Each session is a sheet: one panel per exercise, sets as columns.
+  Last session's numbers sit in the empty fields as placeholders, and when every
+  set reached the top of its rep range the card says to go heavier (double
+  progression). Finishing today's session touches the streak, so the top-bar
+  counter means "trained", mind or body.
+- **Storage.** Everything is in `state.body` inside the normal state, keyed
+  `w<week>-<day>` (`w3-mon`). Export, restore and wipe include it.
+- **Paces are computed, not stored.** The quality and easy runs show paces
+  derived on the device from the user's own 8 km time (entered under Tests) with
+  the VDOT formula of Daniels and Gilbert: easy 64–72% of VDOT, threshold 88%,
+  interval 97.5%, rounded to 5 s. After the week-8 test they update from that.
+  No personal figure is in the code.
+- **Tests and progress** fill in from the log; the 8 km baseline is the only
+  number typed in by hand. Better results invert to a solid chip, worse ones
+  are dashed and hatched — the same no-colour rule as the drills.
+- **Rules and sources** are an article in the tab itself, with the studies
+  behind each choice linked at the bottom. Same standard as the codex: if a
+  claim goes in, a source goes with it.
+
+No Batman naming here either: the programme is "Phase 1", nothing more.
 
 ## The dossier
 

@@ -39,6 +39,10 @@ function blankState() {
     read: [],      // lesson ids
     missions: [],  // completed mission ids
     seen: {},      // content ids already served, so items do not repeat
+    // The physical programme (js/body.js): start date, 8 km baseline and
+    // one log per session, keyed "w<week>-<day>". Kept here so export,
+    // restore and wipe cover it like everything else.
+    body: { start: null, base8k: '', logs: {} },
   };
 }
 

@@ -18,6 +18,9 @@ import { LESSONS } from './data/lessons.js';
 import { MISSIONS } from './data/missions.js';
 import { mission, lesson } from './content.js';
 import { mdish } from './drills/shared.js';
+import {
+  initBody, viewBody, viewBodyTests, viewBodyProgress, viewBodyRules, bodyHomeNodes,
+} from './body.js';
 
 const QUOTES = {
   en: [
@@ -58,14 +61,22 @@ const drillBlurb = (d) => t(`drill.${d.id}.blurb`);
     and again whenever the language changes. */
 function paintChrome() {
   const labels = {
-    '#/home': 'tab.home', '#/train': 'tab.train', '#/codex': 'tab.codex',
-    '#/log': 'tab.field', '#/profile': 'tab.you',
+    '#/home': 'tab.home', '#/train': 'tab.train', '#/body': 'tab.body',
+    '#/codex': 'tab.codex', '#/log': 'tab.field', '#/profile': 'tab.you',
   };
   document.querySelectorAll('.tab').forEach(tab => {
     const key = labels[tab.dataset.route];
     if (key) tab.querySelector('span').textContent = t(key);
   });
   document.documentElement.lang = getLang();
+}
+
+/** The streak counter in the top bar. Cold when no day is running. */
+function paintStreak() {
+  const n = liveStreak();
+  const num = document.getElementById('streakNum');
+  if (num) num.textContent = String(n);
+  document.getElementById('topStreak')?.classList.toggle('is-cold', n === 0);
 }
 
 /* ============================================================
@@ -160,6 +171,9 @@ function viewHome() {
       ),
     ));
   }
+
+  // The physical session for today sits beside the mental protocol.
+  nodes.push(...bodyHomeNodes());
 
   const todays = MISSIONS[hashDay() % MISSIONS.length];
   const tm = mission(todays);
@@ -817,6 +831,7 @@ function showResult(d, result, outcome) {
     { title: t('title.result'), focusMode: false },
   );
   setTab('#/home');
+  paintStreak();
   buzz([12, 60, 12]);
 }
 
@@ -833,6 +848,10 @@ const ROUTES = [
   [/^#\/mission\/(.+)$/,   (m) => viewMission(m[1])],
   [/^#\/profile$/,         () => viewProfile()],
   [/^#\/drill\/(.+)$/,     (m) => viewDrill(m[1])],
+  [/^#\/body$/,            () => viewBody()],
+  [/^#\/body\/tests$/,     () => viewBodyTests()],
+  [/^#\/body\/progress$/,  () => viewBodyProgress()],
+  [/^#\/body\/rules$/,     () => viewBodyRules()],
 ];
 
 /** Navigating to the hash you are already on still re-runs the view,
@@ -844,6 +863,7 @@ function go(hash) {
 
 function route() {
   if (cleanup) { try { cleanup(); } catch {} cleanup = null; }
+  paintStreak();
   const hash = location.hash || '#/home';
   for (const [re, fn] of ROUTES) {
     const m = hash.match(re);
@@ -872,6 +892,7 @@ document.querySelectorAll('.tab').forEach(t => {
 
 window.addEventListener('hashchange', route);
 
+initBody({ go, setTab, paintStreak });
 paintChrome();
 if (!location.hash) location.hash = '#/home';
 route();

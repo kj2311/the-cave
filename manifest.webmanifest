@@ -19,6 +19,7 @@
   "shortcuts": [
     { "name": "Today's protocol", "url": "./#/home" },
     { "name": "Training", "url": "./#/train" },
+    { "name": "Body", "url": "./#/body" },
     { "name": "Field log", "url": "./#/log" }
   ]
 }

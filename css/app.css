@@ -164,7 +164,7 @@ p, li, .selectable, .prose, textarea, input { -webkit-user-select: text; user-se
   height: calc(var(--tabbar-h) + var(--safe-b));
   padding-bottom: var(--safe-b);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   background: var(--black);
   border-top: 1px solid var(--rule);
 }
@@ -994,6 +994,340 @@ mark, .hl {
   color: var(--dim);
 }
 .install-note b { color: var(--silver-hi); font-weight: 600; }
+
+/* ============================================================
+   BODY — the physical programme.
+
+   Same instrument rules as everything else: no radius, no hue,
+   hairlines for structure, mono for anything measured. The week
+   and day strips are one machined plate cut into cells; the
+   selected cell inverts, the way the primary button does.
+   ============================================================ */
+
+.d-body { --accent: #e6e9ee; }
+
+.bbrief h1 { margin-bottom: 0; }
+.bbrief__chips { margin-top: 14px; gap: 6px; flex-wrap: wrap; }
+
+.bnav {
+  margin-top: 12px;
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.bweeks { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 1px; }
+.bdays  { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; }
+
+.bweek, .bday {
+  position: relative;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 9px 0 7px;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  background: var(--surface-1);
+  color: var(--silver);
+  font-family: var(--mono);
+  cursor: pointer;
+}
+.bweek b {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--silver-hi);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
+}
+.bweek span {
+  min-height: 10px;
+  font-size: 7px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.bday b {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--silver-hi);
+}
+.bday span { min-height: 13px; font-size: 11px; line-height: 13px; color: var(--silver); }
+.bday.is-rest b { color: var(--dim); }
+.bweek:active, .bday:active { background: var(--surface-2); }
+
+/* Logged weeks get a rule under the number. */
+.bweek.has-data b { border-bottom-color: var(--steel); }
+
+/* Selected: the cell inverts. */
+.bweek[aria-pressed="true"], .bday[aria-pressed="true"] { background: var(--silver-hi); }
+.bweek[aria-pressed="true"] b,
+.bweek[aria-pressed="true"] span,
+.bday[aria-pressed="true"] b,
+.bday[aria-pressed="true"] span { color: var(--black); }
+.bweek[aria-pressed="true"].has-data b { border-bottom-color: var(--black); }
+
+/* Today: a square notch in the corner, like the slug in the top bar. */
+.bweek.is-now::after, .bday.is-now::after {
+  content: "";
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 5px; height: 5px;
+  background: var(--silver-hi);
+}
+.bweek[aria-pressed="true"].is-now::after,
+.bday[aria-pressed="true"].is-now::after { background: var(--black); }
+
+.bstatus { margin-top: 12px; flex-wrap: wrap; }
+
+details.bwarm {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--rule);
+  background: var(--surface-1);
+}
+details.bwarm summary { cursor: pointer; list-style: none; }
+details.bwarm summary::-webkit-details-marker { display: none; }
+details.bwarm summary::before {
+  content: "+";
+  display: inline-block;
+  width: 14px;
+  font-family: var(--mono);
+  color: var(--steel);
+}
+details.bwarm[open] summary::before { content: "−"; }
+details.bwarm p { margin-top: 10px; font-size: 15px; }
+
+/* One exercise. */
+.bx__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }
+.bx__tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--silver-hi);
+  border: 1px solid var(--rule-hi);
+  padding: 1px 6px;
+}
+.bx__name { font-size: 16px; }
+.bx__presc {
+  margin: 8px 0 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--steel);
+}
+.bx__presc + .bx__presc { margin-top: 2px; }
+.bx__note {
+  margin: 6px 0 0;
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--dim);
+}
+.bx__hint {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--steel);
+}
+.bx__hint.is-up { color: var(--silver-hi); }
+/* "Go heavier" is the one thing on the card that should catch the eye. */
+.bx__up {
+  padding: 2px 7px;
+  background: var(--silver-hi);
+  color: var(--black);
+  font-weight: 700;
+}
+.bx__lvl { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
+.bsel {
+  flex: 1;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 10px 12px;
+  border: 1px solid var(--rule-hi);
+  background: var(--black);
+  color: var(--silver-hi);
+  font-family: var(--mono);
+  font-size: 16px;
+}
+.bsel:focus { outline: none; border-color: var(--silver-hi); }
+.bx__alt, .bx__check { margin-top: 12px; }
+/* Optional work is marked by a dashed edge, never by colour. */
+.bx.is-optional { border-style: dashed; }
+
+/* Sets: a legend column, then one column per set. */
+.bsets {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 34px repeat(var(--n), minmax(0, 1fr));
+  align-items: center;
+  gap: 6px;
+  max-width: 420px;
+}
+.bsets__hd, .bsets__lg, .bcell__k {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.bsets__hd { text-align: center; }
+.bcells {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+}
+.bcells--wide { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); max-width: 420px; }
+.bcells--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; }
+.bcell { display: grid; gap: 4px; min-width: 0; }
+.bcell__k { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bcell.is-strong .bcell__k { color: var(--silver-hi); }
+
+.num {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid var(--rule-hi);
+  background: var(--black);
+  color: var(--silver-hi);
+  font-family: var(--mono);
+  font-size: 16px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.num::placeholder { color: var(--faint); }
+.num:not(:placeholder-shown) { border-color: var(--steel); }
+.num:focus { outline: none; border-color: var(--silver-hi); background: var(--surface-1); }
+.num--inline { width: 6.5em; padding-inline: 10px; text-align: left; }
+
+.bdate {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid var(--rule-hi);
+  background: var(--black);
+  color: var(--silver-hi);
+  font-family: var(--mono);
+  font-size: 16px;
+}
+.bdate:focus { outline: none; border-color: var(--silver-hi); }
+
+.bx__live { margin: 10px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--steel); }
+
+.bdone { margin-top: 16px; }
+.bdone__note { margin: 8px 0 0; font-size: 12.5px; }
+
+/* Tests. */
+.btable-wrap { padding: 0; overflow-x: auto; }
+.btable { width: 100%; border-collapse: collapse; }
+.btable th, .btable td {
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 10px;
+  border-top: 1px solid var(--rule);
+}
+.btable thead th {
+  border-top: 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.btable tbody th { font-size: 14px; font-weight: 600; color: var(--silver-hi); }
+.btable tbody th small {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  color: var(--dim);
+}
+.btable td {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--silver);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.btable th:first-child, .btable td:first-child { padding-left: 14px; }
+.btable th:last-child, .btable td:last-child { padding-right: 14px; }
+.btable--weeks td { text-align: right; }
+.bstack { display: grid; justify-items: start; gap: 6px; }
+
+/* Deltas. Better inverts to solid; worse is dashed, hatched and dimmer. */
+.chip--better { background: var(--silver-hi); border-color: var(--silver-hi); color: var(--black); }
+.chip--worse {
+  border-style: dashed;
+  border-color: var(--steel);
+  color: var(--steel);
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 6px);
+}
+
+/* Progress. */
+.bmetric__right { justify-items: end; flex: none; }
+.bmetric__v {
+  font-family: var(--mono);
+  font-size: 17px;
+  color: var(--silver-hi);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.bspark { display: block; width: 100%; height: auto; margin-top: 12px; overflow: visible; }
+.bspark__base, .bspark__tick { stroke: var(--rule-hi); stroke-width: 1; }
+.bspark__line { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.bspark__pt { fill: var(--steel); }
+.bspark__pt.is-last { fill: var(--silver-hi); }
+.baxis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+details.ball { margin-top: 12px; border: 1px solid var(--rule); background: var(--surface-1); }
+details.ball summary { padding: 13px 14px; cursor: pointer; list-style: none; }
+details.ball summary::-webkit-details-marker { display: none; }
+details.ball .btable-wrap { border-top: 1px solid var(--rule); }
+
+/* Rules: sources set as a ruled list. */
+.bsources { list-style: none; margin: 0; padding: 0; }
+.bsources li { padding: 10px 0; border-top: 1px solid var(--rule); font-size: 14.5px; line-height: 1.55; }
+.bsources a, .bsources__a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: var(--silver-hi);
+  text-underline-offset: 3px;
+}
+
+.sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 
 .fade-in { animation: fade-in .18s var(--ease); }
 @keyframes fade-in {

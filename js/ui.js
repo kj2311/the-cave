@@ -118,6 +118,11 @@ export const PICTOS = {
     '<circle cx="12" cy="3.2" r="1.3" fill="currentColor"/>' +
     '<path d="M12 4.5v8.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
     '<path d="M12 12.7l2.9 4.5L12 21.2l-2.9-4z" fill="currentColor"/>',
+
+  // A kettlebell: the physical programme.
+  body:
+    '<path d="M8.6 9.8V8.2a3.4 3.4 0 0 1 6.8 0v1.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<path d="M6.2 14.6a5.8 5.8 0 0 1 11.6 0c0 2.4-.9 4.6-2.2 6.1H8.4c-1.3-1.5-2.2-3.7-2.2-6.1z" fill="currentColor"/>',
 };
 
 /* ---------- toast ---------- */
