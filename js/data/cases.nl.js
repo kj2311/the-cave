@@ -9,7 +9,7 @@
 export const CASES_NL = {
   chef: {
     title: 'De sollicitant',
-    scene: 'Een man solliciteert als chef-kok. Hij zegt dat hij elf jaar lang professionele keukens heeft geleid.',
+    scene: 'Een man solliciteert als chef-kok. Hij zegt dat hij elf jaar lang zelf heeft gekookt in drukke restaurantkeukens.',
     facts: [
       'Op zijn onderarmen en de bovenkant van zijn handen zitten geen sporen. Geen brandlittekens, geen oude sneetjes van een mes.',
       'Op de vingertoppen van zijn linkerhand zit dik eelt. De nagels van zijn rechterhand zijn lang en gevijld.',
@@ -23,7 +23,7 @@ export const CASES_NL = {
       'Hij is eigenlijk patissier, geen gewone kok.',
       'Niets hier spreekt zijn verhaal tegen.',
     ],
-    explain: 'Elf jaar aan het fornuis laat sporen na. Denk aan brandplekken van ovenroosters op je onderarmen en sneetjes in je linkerhand. Bij hem ontbreken ze helemaal, en dat botst met zijn verhaal. Daarom geeft aanwijzing 1 de doorslag. Aanwijzing 2 laat zien wat hij *wel* heeft gedaan. Eelt op de vingertoppen links, lange nagels rechts. Zo ziet de hand van een klassiek gitarist eruit. Die bouw je in jaren op. Aanwijzing 4 doet je misschien twijfelen, maar is zwak. Genoeg koks eten zelf vreemd. Aanwijzing 3 is ruis: die zegt niets.',
+    explain: 'Wie elf jaar in een drukke keuken kookt, houdt daar sporen aan over: brandplekken van ovenroosters op de onderarmen en sneetjes op de linkerhand. Die sporen ontbreken helemaal. Dat is de tegenspraak, dus aanwijzing 1 doet het werk. "Vooral leidinggegeven" redt zijn verhaal niet, want hij zegt dat hij zelf heeft gekookt. Aanwijzing 2 vertelt wat hij wél heeft gedaan. Eelt op de linkervingertoppen en lange nagels rechts horen bij een klassiek gitarist. Zo\'n hand bouw je in jaren op. Aanwijzing 4 is een hint, maar zwak: genoeg koks eten vreemd. Aanwijzing 3 zegt niets.',
     principle: 'Wat ontbreekt, is ook bewijs. Vraag je af welke sporen het verhaal zou achterlaten als het waar was, en zoek die.',
   },
 
@@ -31,7 +31,7 @@ export const CASES_NL = {
     title: 'Kamer 412',
     scene: 'Een hotelgast zegt dat ze "ongeveer een uur geleden" heeft ingecheckt. Volgens haar is ze sindsdien niet van de kamer af geweest.',
     facts: [
-      'In de ijsemmer op het bureau zit water en één dun stukje ijs.',
+      'Ze zegt dat ze de ijsemmer vulde toen ze aankwam. Nu zit er water in, en nog één dun stukje ijs.',
       'Haar koffer staat open en haar kleren hangen in de kast.',
       'De tv staat uit, en de achterkant is warm.',
       'Het gratis flesje water van het hotel is nog dicht.',
@@ -43,7 +43,7 @@ export const CASES_NL = {
       'Ze is de kamer uit geweest en kort geleden teruggekomen.',
       'De tijden kloppen met haar verhaal.',
     ],
-    explain: 'Een volle emmer ijs smelt bij kamertemperatuur in ongeveer drie uur tot dunne stukjes. Aanwijzing 1 is dus een klok die ze niet kan terugzetten. De warme tv (aanwijzing 3) wijst ook op een lang verblijf, maar is zwakker bewijs. Een tv koelt langzaam af, en ook na één uur kan ze hem net hebben uitgezet. Aanwijzing 2 past bij elk verblijf van meer dan tien minuten. Aanwijzing 4 zegt helemaal niets.',
+    explain: 'Een volle ijsemmer heeft bij kamertemperatuur ongeveer drie uur nodig om tot één stukje te smelten. En ze vulde hem zelf toen ze aankwam. Aanwijzing 1 is dus een klok die zij zelf startte en niet kan terugzetten. De warme tv (aanwijzing 3) past bij een langer verblijf, maar is zwakker: een tv koelt langzaam af, en ze kan hem net hebben uitgezet. Aanwijzing 2 past bij elk verblijf langer dan tien minuten. Aanwijzing 4 zegt helemaal niets.',
     principle: 'Een kamer zit vol klokken: smeltend ijs, drankjes die afkoelen, natte kringen die opdrogen, stof dat neerdaalt. Zoek de klok voordat je een tijdlijn gelooft.',
   },
 
@@ -52,9 +52,9 @@ export const CASES_NL = {
     scene: 'Een man verkoopt zelf zijn auto. Hij zegt dat hij de auto al drie jaar heeft en er elke dag in rijdt.',
     facts: [
       'Het rubber op het rempedaal is gladgesleten, iets meer links dan rechts.',
-      'Alle opgeslagen radiozenders zijn nog de standaardzenders uit de fabriek.',
+      'Hij zegt dat hij er net zelf mee hierheen reed. Maar als hij achter het stuur zit, ziet hij in de binnenspiegel alleen het dak. De spiegel staat goed voor iemand die een kop groter is.',
       'De vloermatten zijn nieuw. Binnen ruikt het naar schoonmaakmiddel voor de bekleding.',
-      'De stoel van de bestuurder staat ver naar achteren. Hij is zelf niet lang.',
+      'Alle opgeslagen radiozenders zijn nog de standaardzenders uit de fabriek.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
@@ -63,35 +63,35 @@ export const CASES_NL = {
       'Hij heeft de auto drie jaar, maar heeft er bijna niet in gereden.',
       'De auto heeft een ongeluk gehad, en dat verzwijgt hij.',
     ],
-    explain: 'Aanwijzing 1 bewijst dat er veel in de auto is gereden. De auto is dus niet nieuw. Aanwijzing 2 botst met zijn verhaal. Niemand rijdt drie jaar elke dag zonder ooit een zender op te slaan. Aanwijzing 4 steunt dat: de stoel staat afgesteld op iemand die langer is dan hij. Veel mensen springen meteen op aanwijzing 3. Maar die bewijst alleen dat hij de auto heeft schoongemaakt voor de verkoop. Dat doet elke eerlijke verkoper ook.',
+    explain: 'Aanwijzing 1 bewijst dat er veel met de auto is gereden. Hij is dus niet nieuw. Aanwijzing 2 is de tegenspraak. Wie rijdt, zet de spiegel goed voor zijn eigen lengte, en hij zegt dat hij net zelf reed. Wie hier elke dag in rijdt, is een kop groter dan hij. Aanwijzing 4 wijst dezelfde kant op, maar is zwak: veel mensen streamen muziek en raken de radio nooit aan. Op aanwijzing 3 springen de meeste mensen. Maar die bewijst alleen dat hij de auto heeft schoongemaakt voor de verkoop. Dat doet elke eerlijke verkoper ook.',
     principle: 'Spullen verraden de gewoontes van hun eigenaar. Gewoontes groeien langzaam, zijn moeilijk na te doen en bijna nooit ingestudeerd.',
   },
 
   run: {
     title: 'Het ochtendrondje',
-    scene: 'Tot twintig minuten geleden regende het hard. Je collega komt binnen en zegt dat hij net tien kilometer heeft hardgelopen.',
+    scene: 'Het regende de hele ochtend hard. Twintig minuten geleden stopte het, en overal liggen nog plassen. Je collega komt binnen en zegt dat hij net tien kilometer buiten heeft hardgelopen.',
     facts: [
-      'Zijn shirt is op zijn borst en rug overal even vochtig.',
-      'Zijn hardloopschoenen en sokken zijn droog, en de veters zijn schoon.',
+      'Hij heeft zijn hardloopschoenen nog aan. Die en zijn sokken zijn kurkdroog, en de veters zijn schoon.',
+      'Zijn shirt is overal even vochtig, voor en achter precies hetzelfde.',
       'Hij ademt normaal en praat in hele zinnen.',
-      'Hij houdt een waterfles vast die nog bijna vol is.',
+      'Zijn waterfles is nog bijna vol.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
-      'Hij heeft niet hardgelopen. Zijn shirt is op een andere manier vochtig geworden.',
-      'Hij heeft wel hardgelopen, maar veel minder dan tien kilometer.',
-      'Hij heeft binnen op een loopband gelopen.',
-      'Hij heeft hardgelopen voordat de regen begon.',
+      'Hij heeft vanochtend geen tien kilometer buiten gelopen.',
+      'Hij liep wel buiten, maar veel minder dan tien kilometer.',
+      'Hij liep buiten voordat de regen begon.',
+      'Alles hier past bij zijn verhaal.',
     ],
-    explain: 'Aanwijzing 2 geeft de doorslag, en die kun je bijna niet wegpraten. Je kunt niet over natte grond lopen zonder dat je schoenen nat worden. Aanwijzing 3 en 4 zijn op zichzelf zwak. Getrainde lopers herstellen snel, en sommigen nemen water mee dat ze niet drinken. Let op: het antwoord "loopband" zou de droge schoenen wel verklaren. Daarom telt aanwijzing 1 mee als steun. Na echt hardlopen zit het zweet vooral bij je kraag en langs je ruggengraat. Overal even vochtig: zo ziet een shirt eruit dat is natgespoten of natgespetterd.',
-    principle: 'Zoek de verklaring die ook de *volgende* vraag overleeft. Droge schoenen wegen zwaarder dan een vochtig shirt.',
+    explain: 'Aanwijzing 1 beslist het, en die is bijna niet weg te redeneren. Je kunt niet over natte paden vol plassen rennen en toch droge schoenen en sokken houden. Ook niet voor één kilometer. "Voor de regen" helpt ook niet: het regende de hele ochtend. Dan was hij uren geleden klaar, niet net. Aanwijzing 2 laat het verhaal echt lijken. Maar zweet maakt een shirt niet overal even nat. Het zit vooral op je borst, je rug en onder je armen. Aanwijzing 3 en 4 zijn zwak: fitte lopers zijn snel hersteld, en sommigen nemen water mee dat ze niet drinken. Let op wat je níét weet: of hij ergens anders liep, bijvoorbeeld op een loopband. Je weet alleen dat die tien kilometer buiten niet gebeurd zijn.',
+    principle: 'Test een verhaal aan de sporen die het had moeten achterlaten. Natte paden geven natte schoenen, en dat weegt zwaarder dan een vochtig shirt.',
   },
 
   interp: {
     title: 'De tolk',
     scene: 'Je verhoort een getuige via een tolk. Hij houdt vol dat hij helemaal geen Engels spreekt.',
     facts: [
-      'Je noemt een straatnaam. Zijn ogen schieten naar jou, nog voordat de tolk begint te praten.',
+      'Eén keer vertaalt de tolk een van je langere vragen verkeerd. De getuige beantwoordt de vraag die jij echt stelde, niet de vraag die hij te horen kreeg.',
       'Hij beantwoordt elke vraag volledig en zonder te aarzelen.',
       'Na elk antwoord dat hij geeft, kijkt hij even naar de tolk.',
       'Tijdens het verhoor van een uur vraagt hij twee keer om water.',
@@ -99,12 +99,12 @@ export const CASES_NL = {
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
       'Hij verstaat Engels en verbergt dat.',
-      'Hij herkende alleen die straatnaam, maar verder kent hij geen Engels.',
+      'Hij kent een paar woorden Engels, maar meer niet.',
       'Hij leest je lichaamstaal, niet je woorden.',
       'De tolk zegt hem voor.',
     ],
-    explain: 'Aanwijzing 1 is een timingfout: hij reageert te vroeg. Zo\'n snelle reactie kun je bijna niet tegenhouden. Hij begrijpt jou al voordat de vertaling er is. En ogen bewegen zodra je iets begrijpt. Aanwijzing 3 is het opmerken waard. Wie na zijn antwoord naar de tolk kijkt, controleert misschien de vertaling. Maar het kan ook onschuldig zijn. Aanwijzing 4 is ruis: die zegt niets. En lichaamstaal kan geen straatnaam doorgeven.',
-    principle: 'Let op het moment van een reactie, niet op de inhoud. Mensen oefenen wat ze gaan zeggen, maar nooit wanneer ze reageren.',
+    explain: 'Aanwijzing 1 beslist het. Hij kreeg de verkeerde vraag, maar gaf antwoord op de goede. Dan moet hij jouw Engels hebben verstaan. Het gaat om een hele vraag, niet om een paar woorden. Lichaamstaal kan geen vraag overbrengen. En de tolk kan hem niet hebben voorgezegd, want de tolk vertaalde juist verkeerd. Aanwijzing 3 past er ook bij: na je antwoord naar de tolk kijken lijkt op controleren of hij goed vertaalt. Maar het kan ook onschuldig zijn. Aanwijzing 2 en 4 zeggen niets.',
+    principle: 'Zoek een reactie op informatie die iemand niet zou mogen hebben. Eén zo\'n slip weegt zwaarder dan al het zenuwachtige gedrag bij elkaar.',
   },
 
   tanline: {
@@ -129,9 +129,9 @@ export const CASES_NL = {
 
   switch: {
     title: 'Voor het eerst hier',
-    scene: 'Een gast wordt een huis binnengelaten. Ze zegt dat ze hier voor het eerst is.',
+    scene: 'Een gast wordt een huis binnengelaten. Ze zegt dat ze hier voor het eerst is. Vorig jaar hebben de bewoners de gang verbouwd. Het lichtknopje zit sindsdien op een vreemde plek: laag, achter de kapstok.',
     facts: [
-      'In de schemerige gang gaat haar hand naar het lichtknopje, zonder dat ze ernaar zoekt.',
+      'In de donkere gang gaat haar hand meteen naar dat knopje, zonder dat ze ernaar zoekt.',
       'Ze geeft een compliment over de schilderijen in de woonkamer.',
       'Voor een glas opent ze het tweede kastje. Daar staan de glazen.',
       'Ze slaat een rondleiding over de bovenverdieping af.',
@@ -143,7 +143,7 @@ export const CASES_NL = {
       'Ze woonde zelf in een huis met precies dezelfde indeling.',
       'Iemand heeft haar van tevoren verteld waar alles is.',
     ],
-    explain: 'Aanwijzing 1 is spiergeheugen, geen kennis. Waar de glazen staan, kan iemand je vertellen. Daarom is aanwijzing 3 alleen steun. Maar niemand kan je vertellen hoe je hand blind het knopje vindt. Die beweging leer je door herhaling: in het donker, zonder na te denken. Aanwijzing 4 is het interessantste gedrag, maar bewijst niets. Er zijn heel veel onschuldige redenen om een rondleiding af te slaan.',
+    explain: 'Aanwijzing 1 beslist het. Blind in het donker naar een knopje grijpen is spiergeheugen. Dat bouw je op door het vaak te doen, niet doordat iemand het je vertelt. En dit knopje zit pas sinds vorig jaar op die vreemde plek. Een huis met dezelfde indeling of een oude plattegrond verklaart die greep dus ook niet. Aanwijzing 3 steunt het, maar waar de glazen staan, kan iemand je vertellen. Aanwijzing 4 is interessant, maar bewijst niets. Er zijn tientallen onschuldige redenen om een rondleiding over te slaan.',
     principle: 'Houd uit elkaar wat iemand weet en wat zijn lichaam weet. Dat laatste is veel moeilijker te faken en verraadt veel meer.',
   },
 
@@ -171,19 +171,19 @@ export const CASES_NL = {
     title: 'De hele avond alleen',
     scene: 'Een vrouw zegt dat ze de hele avond alleen thuis was.',
     facts: [
-      'Op het afdruiprek staan twee schone mokken.',
-      'De suikerpot staat op het aanrecht, met een theelepeltje erin.',
-      'Ze drinkt haar koffie zwart en zonder suiker. Dat heb je al vaak gezien.',
+      'Op het aanrecht staan twee gebruikte mokken.',
+      'Eén ervan is nog een beetje warm. Onderin ligt suiker die niet is opgelost.',
+      'Ze neemt nooit suiker, niet in koffie en niet in thee. Je kent haar al jaren.',
       'De tv-gids ligt open bij de programma\'s van gisteravond.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
-      'Er was nog iemand in huis, en die kreeg iets te drinken.',
+      'Er was vanavond nog iemand in huis, en die heeft hier iets gedronken.',
       'Ze had bezoek en is vergeten dat te zeggen.',
       'Ze heeft die avond twee drankjes voor zichzelf gemaakt.',
-      'De mokken zijn al op een eerdere dag afgewassen.',
+      'De mokken staan er nog van een eerdere dag.',
     ],
-    explain: 'Twee mokken (aanwijzing 1) zeggen op zich weinig. Iedereen kan op een avond twee mokken gebruiken. De suikerpot geeft de doorslag. Leg aanwijzing 2 naast aanwijzing 3. Samen zeggen ze: de suiker stond klaar voor iemand met een andere smaak dan zij. Het antwoord "ze had bezoek en is vergeten dat te zeggen" *klinkt* waar. Toch is het zwakker dan "er was nog iemand in huis". "Vergeten" is een aanname over waarom ze het bezoek niet noemde. Daar zegt het bewijs niets over.',
+    explain: 'Twee gebruikte mokken (aanwijzing 1) zeggen op zich weinig. Iedereen kan op een avond twee mokken gebruiken. Aanwijzing 2 breekt het verhaal, maar alleen samen met aanwijzing 3. De mok is nog warm, dus hij is vanavond gebruikt. Er zat een zoet drankje in. En zij neemt nooit suiker. Dus heeft iemand anders er vanavond uit gedronken. Het antwoord "ze had bezoek en is het vergeten" klinkt goed, maar is zwakker. "Vergeten" is een gok naar waarom ze niets zei, en dat laat het bewijs niet zien. Aanwijzing 4 zegt niets.',
     principle: 'Eén afwijking is een vraag. Een afwijking plus een bekende basislijn (hoe iemand normaal doet) is een antwoord.',
   },
 
@@ -192,8 +192,8 @@ export const CASES_NL = {
     scene: 'Een collega vertelt dat hij twee jaar geleden is gestopt met roken.',
     facts: [
       'Als een vergadering gespannen wordt, gaat zijn hand naar zijn linkerborstzak en stopt daar.',
+      'Als hij zijn mouwen opstroopt, zie je een nicotinepleister op zijn bovenarm.',
       'Hij heeft een aansteker bij zich, maar geen sigaretten.',
-      'Hij drinkt zijn koffie buiten, in zijn eentje.',
       'Zijn tanden zijn niet verkleurd.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
@@ -203,8 +203,8 @@ export const CASES_NL = {
       'Hij is twee jaar geleden gestopt, precies zoals hij zegt.',
       'Hij heeft nooit gerookt en verzint het hele verhaal.',
     ],
-    explain: 'Aanwijzing 1 is een spookbeweging: de gewoonte is weg, de greep naar de zak nog niet. Maar zo\'n greep blijft geen jaren hangen: hij slijt. Aanwijzing 2 bevestigt dat. De aansteker hoort nog bij wat hij standaard bij zich heeft. Zo\'n overblijfsel past bij twee weken, niet bij twee jaar. Aanwijzing 3 is typisch voor een roker, maar kan ook onschuldig zijn. Aanwijzing 4 maakt *heel zwaar* roken iets minder waarschijnlijk. Over wanneer hij stopte, zegt het niets.',
-    principle: 'Gewoontes laten een spoor na dat langzaam vervaagt. Hoe vers het spoor is, vertelt je wanneer iets veranderde.',
+    explain: 'Aanwijzing 2 beslist het. Een nicotinepleister is een hulpmiddel om te stoppen. Meestal gebruik je die een paar maanden na je laatste sigaret, niet twee jaar later. Aanwijzing 1 wijst dezelfde kant op: zijn hand zoekt sigaretten die er niet meer zijn. Maar zo\'n gewoonte kan lang blijven hangen, dus op zich zegt die niets over wanneer hij stopte. De aansteker (aanwijzing 3) past bij pas gestopt, al hebben sommige mensen er gewoon een bij zich. Schone tanden (aanwijzing 4) pleiten tegen jarenlang zwaar roken, niet tegen pas gestopt zijn.',
+    principle: 'Sommige sporen bestaan maar kort na een verandering. Vind er zo een, en je weet wanneer de verandering was.',
   },
 
   flowers: {
@@ -252,7 +252,7 @@ export const CASES_NL = {
     scene: 'Op een feest spreek je twee mensen, los van elkaar. Allebei zeggen ze dat ze elkaar nog nooit hebben ontmoet.',
     facts: [
       'Als hij zijn gewicht verplaatst, doet zij dat binnen een seconde of twee ook. Steeds weer.',
-      'Hij stapt opzij om haar door te laten, zonder eerst om te kijken.',
+      'Zijn telefoon licht op, op de tafel naast je. Op het vergrendelscherm staat een foto van hen samen, jaren jonger, op een strand.',
       'Zij gebruikt een ongewoon stopwoordje. Twintig minuten later gebruikt hij het ook.',
       'Ze staan aan de twee uiteinden van de kamer.',
     ],
@@ -263,8 +263,8 @@ export const CASES_NL = {
       'Hij valt op haar en doet haar onbewust na.',
       'Het zijn collega\'s, maar geen goede vrienden.',
     ],
-    explain: 'Aanwijzing 1 en 3 laten zien dat ze elkaars houding en woorden overnemen. Dat ontstaat al binnen één gesprek. Op zich passen ze dus bij het antwoord dat ze elkaar eerder vanavond hebben ontmoet. Aanwijzing 2 past daar niet bij. Opzij stappen zonder te kijken waar iemand is? Dat lukt alleen als je weet hoe juist die persoon beweegt. Dat leer je in maanden, niet in minuten. Aanwijzing 4 is alleen decor.',
-    principle: 'Vraag je af hoe lang het duurt voordat zo\'n gedrag ontstaat. Zo lang kennen ze elkaar dan minstens.',
+    explain: 'Aanwijzing 1 en 3, de nagedane houding en het overgenomen stopwoordje, kunnen ontstaan in één gesprek. Op zich passen ze dus bij twee mensen die elkaar eerder vanavond ontmoetten. Aanwijzing 2 niet. Een foto van hen samen, jaren jonger, als het plaatje dat hij elke dag ziet: daar zijn jaren en een goede band voor nodig. Collega\'s die niet close zijn, zetten elkaar niet op hun vergrendelscherm. Aanwijzing 4 is decor.',
+    principle: 'Vraag je bij elke aanwijzing af hoe lang die nodig had om te ontstaan. De traagste bepaalt hoe lang ze elkaar minstens kennen.',
   },
 
   photo: {
