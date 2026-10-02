@@ -5,3 +5,6 @@ the-cave-site.zip
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Python bytecode from tools/halftone.py
+__pycache__/
