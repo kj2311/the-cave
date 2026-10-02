@@ -11,6 +11,7 @@ export const LESSONS_NL = {
   'l-baseline': {
     title: 'Lees de verandering, niet de mens',
     teaser: 'Alles wat je hoorde over mensen lezen, staat op zijn kop. Tot je dit ene ding snapt.',
+    caption: 'Een strook van een leugendetector. Die meet spanning, geen leugens. Alleen de verandering zegt iets.',
     body: [
       { p: 'Bijna iedereen die mensen probeert te lezen, maakt dezelfde fout. Ze zoeken naar gedrag dat iets *betekent*. Armen over elkaar? Dan ben je gesloten. Aan je neus zitten? Dan lieg je. Naar linksboven kijken? Dan verzin je iets. Geen van die regels klopt als je het onderzoekt.' },
       { myth: 'Veel mensen denken dat je aan gedrag kunt zien of iemand liegt. Maar het grootste overzicht van onderzoek naar deze vraag bundelt 206 studies. Daarin moesten in totaal 24.483 mensen inschatten of iemand loog. Gemiddeld hadden ze het in 54% van de gevallen goed. Dat is nauwelijks beter dan kop of munt. Politiemensen, rechters en douaniers doen het ongeveer even goed als studenten. Door training worden mensen zekerder van hun zaak. Maar ze hebben het niet vaker goed.' },
@@ -37,6 +38,7 @@ export const LESSONS_NL = {
   'l-loci': {
     title: 'Bouw een paleis in je hoofd',
     teaser: 'De methode van elke geheugenkampioen. Hij is 2.500 jaar oud en je leert hem in ongeveer twintig minuten.',
+    caption: 'Een gang vol deuren: elke deur is een plek om iets neer te zetten dat je wilt onthouden.',
     body: [
       { p: 'Je geheugen voor willekeurige lijstjes is slecht. Je geheugen voor plekken is juist geweldig. Zelfs een huis waar je twintig jaar geleden bent weggegaan, kun je in gedachten nog doorlopen. Je noemt de kamers zo op volgorde. Het *geheugenpaleis* laat dat sterke plekkengeheugen het werk doen van je zwakke lijstjesgeheugen. Een andere naam is de loci-methode (loci = plekken).' },
       { h: 'Stap één: bouw de route' },
@@ -65,6 +67,7 @@ export const LESSONS_NL = {
   'l-room': {
     title: 'Lees een kamer in tien seconden',
     teaser: 'Een vaste manier van kijken. Kijk je zomaar rond, dan mis je het meeste van wat er voor je neus stond.',
+    caption: 'Een lege kamer vertelt nog steeds iets: een kopje, een jas aan de haak, een klok.',
     body: [
       { p: 'Zonder training kijk je willekeurig rond. Je oog springt naar wat fel is, wat beweegt of wat op een gezicht lijkt. De rest van de kamer wordt nooit opgeslagen. Je bent het dus niet vergeten. Het is er nooit in gekomen.' },
       { p: '==De oplossing is saai: kijk elke keer in dezelfde volgorde.== Dan hangt wat je ziet niet meer af van wat toevallig je aandacht trekt.' },
@@ -92,6 +95,7 @@ export const LESSONS_NL = {
   'l-chain': {
     title: 'De keten en zijn zwakste schakel',
     teaser: 'Wat de meeste mensen redeneren noemen, is vooral zelfverzekerd gokken. Zo doe je het echt.',
+    caption: 'Een redenering is zo sterk als haar zwakste schakel.',
     body: [
       { p: 'Beroemde detectives uit boeken en series redeneren eigenlijk niet. Ze springen naar de beste verklaring die er is. En ze hebben altijd gelijk, omdat de schrijver dat zo besloot. In het echt maak je dezelfde sprong. Maar dan staat er geen schrijver aan jouw kant.' },
       { p: 'Echt redeneren gaat langzamer. Het heeft drie onderdelen.' },
@@ -119,6 +123,7 @@ export const LESSONS_NL = {
   'l-barnum': {
     title: 'De Barnum-machine',
     teaser: 'Zo werkt cold reading: doen alsof je iemand doorziet, met trucjes. Na dit stuk werkt het nooit meer op jou.',
+    caption: 'Iedereen krijgt hetzelfde "persoonlijke" profiel, en bijna iedereen vindt het raak.',
     body: [
       { p: 'In 1949 liet een psycholoog 39 studenten een persoonlijkheidstest maken. Daarna kreeg iedere student een eigen profiel. Gemiddeld gaven ze een 4,26 uit 5 voor hoe goed het klopte. Maar iedereen had precies dezelfde tekst gekregen. De psycholoog had die samengesteld uit dertien zinnen uit een astrologieboekje van de kiosk.' },
       { p: 'Dat effect is de motor achter helderzienden, nep-mediums, veel werving en selectie, en verrassend veel gewone gesprekken. De onderdelen leer je in tien minuten. Juist daarom moet je ze kennen.' },
@@ -151,6 +156,7 @@ export const LESSONS_NL = {
   'l-attention': {
     title: 'Wie stuurt jouw ogen?',
     teaser: 'Afleiding draait niet om snelheid. Het draait om waar het belangrijke lijkt te gebeuren.',
+    caption: 'Je ogen gaan naar de munt. De andere hand doet het werk.',
     body: [
       { p: 'Een beginner leidt af met snelle handen. Een professional doet het omgekeerde. De geheime beweging is traag, gewoon en verwacht. Ondertussen zit ieders aandacht ergens anders. Die blijft daar, omdat iedereen denkt dat er zo meteen iets gaat gebeuren.' },
       { h: 'Wat iemands ogen stuurt' },
@@ -178,6 +184,7 @@ export const LESSONS_NL = {
   'l-blindness': {
     title: 'Waarom je dingen mist',
     teaser: 'Je ogen zijn prima. Het probleem zit ergens anders.',
+    caption: 'Tel de passes, en je kunt een gorilla missen die er dwars doorheen loopt.',
     body: [
       { p: 'Je hebt het gevoel dat je een rijk, compleet en doorlopend beeld ziet. Dat klopt niet. Alleen het midden van wat je ziet is scherp. De rand is vaag. En je brein vult de rest in met wat het verwacht. Daarna doet het alsof je dat echt gezien hebt.' },
       { p: 'Dat heeft twee gevolgen voor je training.' },
@@ -200,6 +207,7 @@ export const LESSONS_NL = {
   'l-still': {
     title: 'Van slag? Dan werkt niets',
     teaser: 'Spanning pakt als eerste je werkgeheugen af. En juist daar gebeurt alles uit deze app.',
+    caption: 'In stil water zie je elke druppel.',
     body: [
       { p: 'Elke vaardigheid in deze app draait op je werkgeheugen: het kladblok in je hoofd. Daarin houd je een basislijn vast (hoe iemand normaal doet) terwijl je vergelijkt. Daarin houd je drie verklaringen tegelijk open. Daarmee loop je een route terwijl je er beelden neerzet. En je werkgeheugen is ook het eerste wat stress je afpakt.' },
       { p: 'Daarom is kalmte hier iets wat je traint, geen karaktertrek. Het gaat er niet om dat je kalm lijkt. Het gaat erom dat je je denkwerk beschermt.' },
@@ -222,6 +230,7 @@ export const LESSONS_NL = {
   'l-jane': {
     title: 'Wat Jane echt doet',
     teaser: 'Zijn methode uit elkaar gehaald. Ook de delen die de schrijvers gratis krijgen, en jij niet.',
+    caption: 'Achter het doek: één stoel en één lamp. De rest is toneel.',
     body: [
       { p: 'Jane is het bestuderen waard, want zijn methode zit logisch in elkaar. Maar kijk wel goed, want ongeveer een derde ervan is verzonnen. Echt en verzonnen uit elkaar halen: daar leer je het meest van.' },
       { h: 'Wat echt is en wat je kunt trainen' },
@@ -255,6 +264,7 @@ export const LESSONS_NL = {
   'l-names': {
     title: 'Zo onthoud je wél een naam',
     teaser: 'Je bent niet slecht in namen. Je hebt ze gewoon nooit opgeslagen.',
+    caption: 'Een naam hoor je één keer. Je onthoudt hem alleen als je er iets mee doet.',
     body: [
       { p: '"Ik ben slecht in namen" gaat bijna altijd over aandacht, niet over geheugen. Als iemand zijn naam zegt, denken de meeste mensen aan wat ze zelf gaan zeggen. De naam wordt dus nooit opgeslagen. Er valt later ook niets terug te halen.' },
       { h: 'De oefening in vier stappen' },
@@ -275,6 +285,7 @@ export const LESSONS_NL = {
   'l-ethics': {
     title: 'Mag de ander meekijken?',
     teaser: 'Eén vraag die bijna altijd beslist of je iets uit deze app mag gebruiken.',
+    caption: 'Zou het nog oké zijn als de ander kon meekijken? Dat is de toets.',
     body: [
       { p: 'De meeste technieken hier werken doordat niemand ze opmerkt. Dat is geen toeval. Zo werken ze nu eenmaal. Een Barnum-uitspraak die zichzelf aankondigt, werkt niet meer. En afleiding die je ziet, is gewoon een hand die beweegt.' },
       { p: 'Dat geeft je een simpele toets: de transparantietoets. Het is niet "wordt er iemand geschaad?" en ook niet "is het technisch waar?" Het is deze vraag:' },
@@ -301,6 +312,7 @@ export const LESSONS_NL = {
   'l-toolkit': {
     title: 'De trucs van Jane: echt of nep?',
     teaser: 'Elke truc die Jane gebruikt: hoe die echt heet, en of die klopt volgens onderzoek.',
+    caption: 'Kaarten, een blinddoek, een notitieboekje: wat is methode en wat is show?',
     body: [
       { p: 'De methode van Jane zit logisch genoeg in elkaar om uit elkaar te halen. Ongeveer de helft is echte techniek, met een echte naam en echt onderzoek erachter. De andere helft is toneel. Of erger: iets wat wetenschappelijk klinkt, maar het niet is. Echt en nep scheiden is het nuttigste uur dat je hieraan kunt besteden.' },
 
@@ -341,6 +353,7 @@ export const LESSONS_NL = {
   'l-interview': {
     title: 'Waarom onschuldige mensen bekennen',
     teaser: 'Een hard verhoor levert bekentenissen op van onschuldige mensen. Er is een betere methode, en die is geen geheim.',
+    caption: 'Een verhoorkamer. In zulke kamers hebben ook onschuldige mensen bekend.',
     body: [
       { p: 'Het klassieke harde verhoor gaat zo: beschuldigen, druk opvoeren, een uitweg bieden, wachten tot iemand breekt. Dat heet de **Reid-methode**. De methode is met opzet beschuldigend. En de verhoorder mag liegen tegen de verdachte. Hij mag zelfs bewijs laten zien dat niet bestaat.' },
       { myth: 'Veel mensen denken dat een hard verhoor de schuldigen eruit haalt. Maar in experimenten bekende ongeveer 50% van de onschuldige deelnemers iets wat ze niet hadden gedaan. Dat gebeurde bij een verhoor in Reid-stijl. Met de methode hieronder was dat 0%. De Reid-methode scheidt dus niet schuldig van onschuldig. Ze scheidt mensen die stevig in hun schoenen staan van mensen die snel meegaan.' },
@@ -371,6 +384,7 @@ export const LESSONS_NL = {
   'l-sources': {
     title: 'Waar dit vandaan komt',
     teaser: 'De onderzoeken achter de beweringen. Ook de onderzoeken die oude ideeën uit deze app onderuit haalden.',
+    caption: 'Waar de beweringen in dit archief vandaan komen: stapels onderzoek, één voor één nagekeken.',
     body: [
       { p: 'Deze app zegt dat er voor het meeste populaire advies hierover geen bewijs is. Dan moet je dat ook zelf kunnen controleren. Dit zijn de belangrijkste bronnen.' },
       { h: 'Leugens herkennen' },

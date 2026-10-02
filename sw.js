@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v15';
+const CACHE = 'cave-v16';
 
 const SHELL = [
   './',
@@ -47,6 +47,22 @@ const SHELL = [
   'fonts/old-standard-tt-700.woff2',
   'img/grain.png',
   'img/wear.png',
+  // Archive thumbnails, so the clippings are complete offline. The full-size
+  // prints are cached the first time an article is opened.
+  'img/codex/l-baseline-s.webp',
+  'img/codex/l-loci-s.webp',
+  'img/codex/l-room-s.webp',
+  'img/codex/l-chain-s.webp',
+  'img/codex/l-barnum-s.webp',
+  'img/codex/l-attention-s.webp',
+  'img/codex/l-blindness-s.webp',
+  'img/codex/l-still-s.webp',
+  'img/codex/l-jane-s.webp',
+  'img/codex/l-names-s.webp',
+  'img/codex/l-ethics-s.webp',
+  'img/codex/l-toolkit-s.webp',
+  'img/codex/l-interview-s.webp',
+  'img/codex/l-sources-s.webp',
 ];
 
 self.addEventListener('install', (e) => {

@@ -1070,6 +1070,41 @@ button.clip:active { transform: rotate(var(--rot, 0deg)) translateY(1px); }
   color: var(--ink-2);
 }
 .clip__foot { display: flex; align-items: center; gap: 10px; margin-top: 12px; min-height: 26px; }
+
+/* Press photos are halftone prints in ink on a transparent ground, so the
+   newsprint shows through the dots exactly as it would on a real page. */
+.clip__row { display: flex; align-items: flex-start; gap: 12px; margin-top: 8px; }
+.clip__row .clip__deck { flex: 1; min-width: 0; margin: 0; }
+.clip__thumb {
+  flex: none;
+  display: block;
+  width: 108px;
+  height: 72px;
+  margin-top: 3px;
+  border: 1px solid var(--ink-black);
+}
+.news-photo { margin: 16px 0 0; }
+.news-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  border: 1px solid var(--ink-black);
+}
+.news-photo figcaption {
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--ink-2);
+}
+.news-photo__credit {
+  margin-left: 7px;
+  font-family: var(--type);
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
 .clip__foot .stamp { margin-left: auto; --rot: -8deg; }
 .clip__mins { font-family: var(--type); font-size: 12px; color: var(--ink-3); }
 .clip.is-read .clip__paper { background-color: #cfcabd; }

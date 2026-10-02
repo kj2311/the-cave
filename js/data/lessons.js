@@ -13,6 +13,7 @@ export const LESSONS = [
     discipline: 'people',
     mins: 4,
     teaser: 'Everything you have been told about reading people is backwards until you fix this one thing.',
+    caption: 'A polygraph strip. It records arousal, not lies: the only thing worth reading is the change.',
     body: [
       { p: 'Almost everyone who tries to read people makes the same mistake: they look for behaviours that *mean* something. Arms folded means closed. Touching the nose means lying. Looking up and left means fabricating. None of it survives contact with evidence.' },
       { myth: 'The largest synthesis of this question — 206 studies, 24,483 judges — puts average accuracy at 54%, barely above a coin toss. Police officers, judges and customs agents score about the same as students. Confidence rises with training. Accuracy does not.' },
@@ -42,6 +43,7 @@ export const LESSONS = [
     discipline: 'memory',
     mins: 5,
     teaser: 'The method every memory champion uses. It is 2,500 years old and takes about twenty minutes to learn.',
+    caption: 'A corridor of doors: each one a place to leave something you want to remember.',
     body: [
       { p: 'Your memory for arbitrary lists is poor. Your memory for places is extraordinary — you can walk through a house you left twenty years ago and describe the rooms in order. The method of loci hijacks the second system to do the first system\'s job.' },
       { h: 'Step one: build the route' },
@@ -73,6 +75,7 @@ export const LESSONS = [
     discipline: 'observation',
     mins: 4,
     teaser: 'A fixed scan protocol. Random looking loses most of what was in front of you.',
+    caption: 'An empty room still talks: a cup, a coat on the hook, a clock.',
     body: [
       { p: 'Untrained observation is a random walk. The eye jumps to whatever is bright, moving, or face-shaped, and the rest of the room is never encoded at all. You did not forget it. It was never recorded.' },
       { p: 'The fix is unglamorous: use a fixed order, every time, so coverage does not depend on what happens to catch your attention.' },
@@ -103,6 +106,7 @@ export const LESSONS = [
     discipline: 'deduction',
     mins: 5,
     teaser: 'Why "deduction" as popularly practised is mostly confident guessing — and how to do the real thing.',
+    caption: 'A chain of reasoning holds no better than its weakest link.',
     body: [
       { p: 'The famous fictional detectives do not deduce. They abduce: they leap to the best available explanation and are always right because the author decided so. In life the leap is the same, but the author is not on your side.' },
       { p: 'Real inference is slower and has three moving parts.' },
@@ -133,6 +137,7 @@ export const LESSONS = [
     discipline: 'influence',
     mins: 5,
     teaser: 'How cold reading works, taught so it can never be done to you again.',
+    caption: 'The same "personal" profile for everyone, and almost everyone finds it accurate.',
     body: [
       { p: 'In 1949 a psychologist gave 39 students a personality test and handed each of them an individual profile. They rated the accuracy at 4.26 out of 5. Every student had received the identical text, which he had assembled from thirteen lines of a newsstand astrology book.' },
       { p: 'That effect powers psychics, fraudulent mediums, a great deal of recruitment, and a surprising amount of ordinary conversation. Its components are learnable in ten minutes, which is exactly why you should learn them.' },
@@ -161,6 +166,7 @@ export const LESSONS = [
     discipline: 'influence',
     mins: 4,
     teaser: 'Misdirection is not about speed. It is about where significance appears to be.',
+    caption: 'Your eyes go to the coin. The other hand does the work.',
     body: [
       { p: 'Amateur misdirection is fast hands. Professional misdirection is the opposite: the secret move is slow, ordinary, and expected, while attention is somewhere else entirely — held there by the belief that something is about to happen.' },
       { h: 'What steers a person\'s eyes' },
@@ -191,6 +197,7 @@ export const LESSONS = [
     discipline: 'observation',
     mins: 3,
     teaser: 'Your eyes are fine. The bottleneck is somewhere else entirely.',
+    caption: 'Count the passes and you can miss a gorilla walking straight through.',
     body: [
       { p: 'You have the impression of seeing a rich, complete, continuous scene. You do not. You have a narrow high-resolution centre, a vague periphery, and a brain that fills the rest with what it expects and presents the result as perception.' },
       { p: 'Two consequences matter for training.' },
@@ -216,6 +223,7 @@ export const LESSONS = [
     discipline: 'composure',
     mins: 3,
     teaser: 'Arousal costs you working memory first, and working memory is where all of this happens.',
+    caption: 'In still water you see every drop.',
     body: [
       { p: 'Every skill in this app runs on working memory: holding a baseline while comparing against it, keeping three competing explanations alive at once, walking a route while placing images on it. Working memory is also the first thing stress takes away.' },
       { p: 'This is why composure is a training discipline here rather than a personality note. It is not about appearing calm. It is about protecting the machinery.' },
@@ -239,6 +247,7 @@ export const LESSONS = [
     discipline: 'deduction',
     mins: 5,
     teaser: 'Deconstructing the method — including the parts the writers get for free and you do not.',
+    caption: 'Behind the curtain: one chair and one light. The rest is theatre.',
     body: [
       { p: 'The character is worth studying because the method is coherent, and it is worth studying carefully because roughly a third of it is fiction. Separating the two is the useful exercise.' },
       { h: 'What is real and trainable' },
@@ -269,6 +278,7 @@ export const LESSONS = [
     discipline: 'memory',
     mins: 3,
     teaser: 'You are not bad with names. You were never encoding them in the first place.',
+    caption: 'You hear a name once. You keep it only if you do something with it.',
     body: [
       { p: '"I am terrible with names" is almost always a description of attention, not memory. At the moment a name is said, most people are thinking about what they will say next. The name is never encoded, so there is nothing to fail to retrieve.' },
       { h: 'The four-step drill' },
@@ -292,6 +302,7 @@ export const LESSONS = [
     discipline: 'influence',
     mins: 2,
     teaser: 'One question that settles nearly every use of what is in this app.',
+    caption: 'Would it still be fine if the other person could watch? That is the test.',
     body: [
       { p: 'Most of these techniques work by being unnoticed. That is not incidental, it is the mechanism — a Barnum statement that announces itself stops functioning, and misdirection that is visible is just a hand moving.' },
       { p: 'Which gives you a clean test, and it is not "is anyone harmed" or "is it technically true".' },
@@ -321,6 +332,7 @@ export const LESSONS = [
     discipline: 'deduction',
     mins: 7,
     teaser: 'Every technique the character uses, what it is actually called, and whether it survives contact with evidence.',
+    caption: 'Cards, a blindfold, a notebook: which part is method and which is show?',
     body: [
       { p: 'The character\'s method is coherent enough to take apart. Roughly half of it is real technique with a real name and a real literature. The other half is either stagecraft or, worse, something that sounds scientific and is not. Sorting the two is the most useful hour you can spend on this.' },
 
@@ -362,6 +374,7 @@ export const LESSONS = [
     discipline: 'influence',
     mins: 5,
     teaser: 'Confrontation produces confessions from innocent people. There is a better method and it is not a secret.',
+    caption: 'An interview room. Innocent people have confessed in rooms like this.',
     body: [
       { p: 'The dramatic interrogation — accuse, apply pressure, offer a way out, wait for the break — is called the **Reid technique**. It is accusatory by design, and it permits the interviewer to deceive the suspect, including presenting evidence that does not exist.' },
       { myth: 'In experimental work, innocent participants falsely confessed at around 50% under Reid-style interrogation, against 0% under the alternative below. The technique does not separate the guilty from the innocent. It separates the resistant from the suggestible.' },
@@ -387,6 +400,7 @@ export const LESSONS = [
     discipline: 'deduction',
     mins: 3,
     teaser: 'The studies behind the claims, including the ones that killed ideas this app used to contain.',
+    caption: 'Where the claims in this archive come from: stacks of studies, checked one by one.',
     body: [
       { p: 'An app that tells you most popular advice in this area is unsupported owes you the ability to check it. These are the main sources.' },
       { h: 'Detecting deception' },

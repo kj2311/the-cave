@@ -357,6 +357,7 @@ const STRINGS = {
     'codex.next': ({ title }) => `Next — ${title}`,
     'codex.back': 'Back to the codex',
     'codex.myth': 'Myth',
+    'codex.photoCredit': 'Illustration',
     'codex.englishOnly': 'This article is available in English only for now.',
 
     'field.label': 'Field work',
@@ -821,6 +822,7 @@ const STRINGS = {
     'codex.next': ({ title }) => `Volgende: ${title}`,
     'codex.back': 'Terug naar het archief',
     'codex.myth': 'Klopt niet',
+    'codex.photoCredit': 'Illustratie',
     'codex.englishOnly': 'Dit artikel is er voorlopig alleen in het Engels.',
 
     'field.label': 'Veldwerk',

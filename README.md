@@ -106,6 +106,12 @@ a wrong pick is struck through, a done item gets a rubber stamp.
 - **Three paper faces.** *Special Elite* (typewriter) for typed headers, labels and
   numbers; *Old Standard TT* bold for headlines; Times for text. The two web fonts
   are self-hosted in `fonts/` with their licences (Apache 2.0 and OFL).
+- **Press photos in the archive.** Every codex article has a newspaper photo
+  with a caption, credited as an illustration. The originals were generated as
+  black-and-white photos (ChatGPT) and then screened into 45° halftone prints,
+  ink on a transparent ground (`img/codex/<id>.webp`, and `-s` for the list
+  thumbnail), so the newsprint shows through the dots. `tools/halftone.py`
+  does the screening; run every new image through it so they stay one style.
 - **The Body tab and the chrome stay instruments.** Nothing in the paperwork
   section styles a shared class globally; drill paperwork is scoped under `.case`.
 
@@ -146,9 +152,11 @@ js/
     body.nl.js          Dutch overlay for it
 fonts/                  Special Elite + Old Standard TT bold, with licences
 img/                    grain.png (paper fibre), wear.png (stamp wear mask)
+  codex/                halftone press photos for the archive (+ -s thumbnails)
 tools/
   serve.ps1             static server (no Node/Python on this machine)
   make-icons.ps1        regenerates the icon set via System.Drawing
+  halftone.py           screens a photo into a newspaper print (Python)
 ```
 
 ## Adding a drill
