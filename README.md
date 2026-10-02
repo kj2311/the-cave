@@ -89,6 +89,26 @@ an interface look generated rather than designed.
 No Batman iconography — no bat shapes, no cowl, no yellow oval, no Gotham/Wayne
 naming.
 
+**The mind side is paperwork on a black desk.** Home, Training, the archive (codex),
+Field, the personnel file (You) and every drill render as physical objects: typed
+sheets with punch holes, index cards in folders, assignment slips torn off a pad
+along the perforation, a ruled logbook, and newspaper clippings torn out and taped
+down (`PAPERWORK` in `css/app.css`, `js/paper.js`). The rules still hold on paper:
+no radius, ink is black, gold is only the pictograms and the highlighter, and
+state is shown by ink rather than hue — a right answer is inked in and highlighted,
+a wrong pick is struck through, a done item gets a rubber stamp.
+
+- **Tears are for newspaper clippings only** (the codex and the day's quote). They
+  are generated per item from a seeded polygon, so a clipping always tears the
+  same way; a pale rim layer shows the fibre along the tear.
+- **Stamps mark a change of state** — done, read, filed, level up, the verdict on
+  a report. Never decoration. Worn through `img/wear.png`.
+- **Three paper faces.** *Special Elite* (typewriter) for typed headers, labels and
+  numbers; *Old Standard TT* bold for headlines; Times for text. The two web fonts
+  are self-hosted in `fonts/` with their licences (Apache 2.0 and OFL).
+- **The Body tab and the chrome stay instruments.** Nothing in the paperwork
+  section styles a shared class globally; drill paperwork is scoped under `.case`.
+
 Two drills were rebuilt to survive the monochrome rule. **Sweep** varies objects by
 fill (solid, hollow, hatched, dotted, split, double) rather than by colour. **Stillness**
 replaced the Stroop task, which is colour-dependent by definition, with a
@@ -104,6 +124,7 @@ css/app.css             the whole visual system
 js/
   app.js                router + every view
   ui.js                 hyperscript helper, toast, timers, small utilities
+  paper.js              torn clippings, tape, stamps, label tape (seeded)
   store.js              persistence, XP, levels, streak, daily protocol
   body.js               the Body tab: session logger, tests, progress, rules
   drills/
@@ -123,6 +144,8 @@ js/
     words.js            concrete nouns + loci routes for memory drills
     body.js             the physical programme (8 weeks), English
     body.nl.js          Dutch overlay for it
+fonts/                  Special Elite + Old Standard TT bold, with licences
+img/                    grain.png (paper fibre), wear.png (stamp wear mask)
 tools/
   serve.ps1             static server (no Node/Python on this machine)
   make-icons.ps1        regenerates the icon set via System.Drawing
@@ -252,16 +275,16 @@ Case files, subject files and mission briefs render as a physical document
 rather than as UI (`.dossier` in `css/app.css`, `dossier()` in
 `js/drills/shared.js`).
 
-It is the **one light surface in the app** and the only place colour appears
-beyond the pictograms. That is deliberate: everywhere else you are operating an
-instrument, and here you are being handed a piece of paper. Bone stock, black
-ink, a newspaper serif (`--news`), filing holes punched down the left edge, a
-rotated rubber stamp, and a small-caps lead-in on the opening paragraph only.
+It was the first piece of paper in the app; the whole mind side now follows it
+(see **The look**). Bone stock, black ink, a newspaper serif (`--news`), filing
+holes punched down the left edge, a rotated rubber stamp, and a small-caps
+lead-in on the opening paragraph only.
 
 The highlighter is the same gold as the pictograms and is **earned, not
 decorative**: in The Chain it swipes across the decisive observation at the
 moment the case resolves, while a wrong pick is ruled out in pen. `mdish()`
-also supports `==text==` for marking phrases inline in authored content.
+also supports `==text==` for marking phrases inline in authored content; each
+Dutch codex article marks exactly one line, the one to remember.
 
-Keep the paper confined to documents. A light panel anywhere else destroys the
-contrast this depends on.
+Paper stays on the mind side. The Body tab and the chrome are instruments, and a
+light panel there would break the contrast both depend on.

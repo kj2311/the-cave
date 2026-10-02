@@ -14,7 +14,7 @@
 
 import { h, ICONS, rand, pick } from '../ui.js';
 import { hud, nextBtn, countdown } from './shared.js';
-import { t, tips } from '../i18n.js';
+import { t, tips, dec } from '../i18n.js';
 
 const DIRS = [
   { n: 'LEFT',  rot: 180 },
@@ -86,7 +86,7 @@ export default {
               ? h('p.prose', t('still.switchA'), h('strong', t('still.WORD')), t('still.switchB'))
               : h('p.prose', t('still.noSwitch')),
             h('p.prose.faint', { style: { fontSize: '14px' } },
-              t('still.limit', { s: (LIMIT_MS / 1000).toFixed(1) })),
+              t('still.limit', { s: dec(LIMIT_MS / 1000) })),
           ),
           nextBtn(t('drill.begin'), () => run()),
         ),
@@ -94,7 +94,7 @@ export default {
     }
 
     function run() {
-      const stage = h('div.stage');
+      const stage = h('div.stage.stage--card');
       root.replaceChildren(h('div.fade-in.stack', stage));
       stopCountdown = countdown(stage, 3, () => trial(0));
     }
@@ -113,7 +113,7 @@ export default {
       const banner = h(`div.chip${changed ? '.chip--accent' : ''}`,
         changed ? t('still.ruleChanged', { r: ruleLabel }) : t('still.rule', { r: ruleLabel }));
 
-      const stage = h('div.stage',
+      const stage = h('div.stage.stage--card',
         h('div.center',
           h('div.conflict-word', t(`dir.${tr.word.n}`)),
           h('div.conflict-arrow', { style: { marginTop: '18px' }, html: arrowSvg(tr.arrow.rot) }),

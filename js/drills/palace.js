@@ -9,7 +9,7 @@
 import { h, ICONS, shuffle, sampleUnique, pick } from '../ui.js';
 import { nouns, lociRoutes } from '../content.js';
 import { nextBtn, countdown } from './shared.js';
-import { t, tips } from '../i18n.js';
+import { t, tips, dec } from '../i18n.js';
 
 
 export default {
@@ -40,7 +40,7 @@ export default {
           h('div.panel',
             h('div.label', t('palace.head')),
             h('h2', { style: { margin: '8px 0 10px' } }, t('palace.items', { lvl: level, n: count })),
-            h('p.prose', t('palace.intro', { s: (showMs / 1000).toFixed(1) })),
+            h('p.prose', t('palace.intro', { s: dec(showMs / 1000) })),
             h('p.prose', scaffold
               ? t('palace.introScaffold')
               : t('palace.introFree')),
@@ -55,7 +55,7 @@ export default {
     }
 
     function run() {
-      const stage = h('div.stage.stage--tall');
+      const stage = h('div.stage.stage--tall.stage--card');
       root.replaceChildren(h('div.fade-in.stack', stage));
       stopCountdown = countdown(stage, 3, () => show(stage, 0));
     }

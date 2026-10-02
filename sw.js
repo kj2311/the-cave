@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v12';
+const CACHE = 'cave-v13';
 
 const SHELL = [
   './',
@@ -17,6 +17,7 @@ const SHELL = [
   'js/store.js',
   'js/i18n.js',
   'js/content.js',
+  'js/paper.js',
   'js/body.js',
   'js/data/body.js',
   'js/data/body.nl.js',
@@ -42,6 +43,10 @@ const SHELL = [
   'icons/icon-512.png',
   'icons/icon-maskable-512.png',
   'icons/apple-touch-icon.png',
+  'fonts/special-elite.woff2',
+  'fonts/old-standard-tt-700.woff2',
+  'img/grain.png',
+  'img/wear.png',
 ];
 
 self.addEventListener('install', (e) => {

@@ -10,7 +10,7 @@
 
 import { h, ICONS, rand, pick, shuffle, sampleUnique } from '../ui.js';
 import { hud, choices, nextBtn, countdown } from './shared.js';
-import { t, tips } from '../i18n.js';
+import { t, tips, dec } from '../i18n.js';
 
 /** Localised names for the two stimulus dimensions. */
 const shapeName = (s) => t(`shape.${s}`);
@@ -246,7 +246,7 @@ export default {
           h('div.panel',
             h('div.label', t('sweep.head')),
             h('h2', { style: { margin: '10px 0 12px' } }, t('train.level', { n: level })),
-            h('p.prose', t('sweep.intro', { n: scene.count, s: (exposure / 1000).toFixed(1) })),
+            h('p.prose', t('sweep.intro', { n: scene.count, s: dec(exposure / 1000) })),
             h('p.prose', t('sweep.intro2')),
             h('div.reveal',
               h('div.reveal__title', t('drill.beforeStart')),
@@ -259,7 +259,8 @@ export default {
     }
 
     function run() {
-      const stage = h('div.stage.stage--tall');
+      // The exposure is an evidence photo lying on the desk.
+      const stage = h('div.stage.stage--tall.stage--photo', { 'data-caption': t('sweep.photo', { s: dec(exposure / 1000) }) });
       root.replaceChildren(h('div.fade-in.stack', stage));
       stopCountdown = countdown(stage, 3, () => expose(stage));
     }
@@ -305,7 +306,7 @@ export default {
         stats: [
           { k: t('stat.correct'), v: `${right}/${questions.length}` },
           { k: t('stat.objects'), v: scene.count },
-          { k: t('stat.exposure'), v: `${(exposure / 1000).toFixed(1)}s` },
+          { k: t('stat.exposure'), v: `${dec(exposure / 1000)}s` },
         ],
         note: pick(tips('sweep')),
       });

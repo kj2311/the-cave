@@ -30,6 +30,12 @@ function load() {
 }
 
 export function getLang() { return lang; }
+
+/** A decimal in the active language: 6,4 in Dutch, 6.4 in English. */
+export function dec(n, digits = 1) {
+  const s = Number(n).toFixed(digits);
+  return lang === 'nl' ? s.replace('.', ',') : s;
+}
 export function locale() { return LANGS[lang].locale; }
 
 export function setLang(next) {
@@ -158,6 +164,23 @@ const STRINGS = {
     'home.new3': '**The codex explains why.** Read it whenever you want — nothing is locked.',
     'home.newHint': 'Everything stays on this device. Start with the button above.',
     'home.body': 'Body today',
+    'home.memo': 'Daily report',
+    'home.streakShort': ({ n }) => `streak ${n} ${plural(n, 'day', 'days')}`,
+    'train.count': ({ n }) => `${n} drills`,
+    'codex.no': ({ n }) => `clipping ${n}`,
+    'field.logbook': 'Log',
+    'pf.title': 'Personnel file',
+    'pf.no': 'No.',
+    'progress.dayCount': ({ d, n }) => `${d}: ${n} ${plural(n, 'session', 'sessions')}`,
+    'progress.inkKey': 'darker = more sessions',
+    'progress.best': 'best',
+    'progress.avg': 'average',
+    'result.report': 'Report',
+    'result.s.clean': 'Clean',
+    'result.s.solid': 'Solid',
+    'result.s.workable': 'Workable',
+    'result.s.rough': 'Again',
+    'sweep.photo': ({ s }) => `Evidence photo · ${s} s`,
 
     /* --- body: the physical programme --- */
     'body.phase': 'Phase 1 · 8 weeks',
@@ -598,6 +621,23 @@ const STRINGS = {
     'home.new3': '**Het archief legt uit waarom.** Lees het wanneer je wilt. Alles is meteen open.',
     'home.newHint': 'Alles blijft op deze telefoon. Begin met de knop hierboven.',
     'home.body': 'Lichaam vandaag',
+    'home.memo': 'Dagrapport',
+    'home.streakShort': ({ n }) => `reeks: ${n} ${plural(n, 'dag', 'dagen')}`,
+    'train.count': ({ n }) => `${n} oefeningen`,
+    'codex.no': ({ n }) => `knipsel ${n}`,
+    'field.logbook': 'Logboek',
+    'pf.title': 'Persoonsdossier',
+    'pf.no': 'Nr.',
+    'progress.dayCount': ({ d, n }) => `${d}: ${n} ${plural(n, 'ronde', 'rondes')}`,
+    'progress.inkKey': 'donkerder = meer rondes',
+    'progress.best': 'beste',
+    'progress.avg': 'gemiddeld',
+    'result.report': 'Rapport',
+    'result.s.clean': 'Foutloos',
+    'result.s.solid': 'Goed',
+    'result.s.workable': 'Redelijk',
+    'result.s.rough': 'Nog eens',
+    'sweep.photo': ({ s }) => `Bewijsfoto · ${s} s`,
 
     /* --- lichaam: het fysieke programma --- */
     'body.phase': 'Fase 1 · 8 weken',

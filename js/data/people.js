@@ -34,7 +34,7 @@ export const BASELINES = [
       { t: 'Volunteering extra detail is a classic sign of a rehearsed story.', ok: false },
       { t: 'Nothing — she knows this topic well, so fluency is expected.', ok: false },
     ],
-    explain: 'The direction of the deviation does not matter; the fact of it does. For Marcus the tell was going still, for Priya it is going fluent. This is why baselines are per-person: the same behaviour is a signal in one and noise in another. Note that option 4 is a real possibility — but you establish that by asking, not by assuming.',
+    explain: 'The direction of the deviation does not matter; the fact of it does. For Marcus the tell was going still, for Priya it is going fluent. This is why baselines are per-person: the same behaviour is a signal in one and noise in another. Note that "she knows this topic well" is a real possibility — but you establish that by asking, not by assuming.',
     myth: '"Too much detail means rehearsed" and "too little means evasive" cannot both be reliable. Any rule that fires in both directions is not a rule.',
   },
   {
@@ -90,7 +90,7 @@ export const BASELINES = [
       { t: 'She is secretly pleased about the outcome.', ok: false },
       { t: 'She is hiding anger.', ok: false },
     ],
-    explain: 'The *dynamics* — onset speed, duration, how it decays — are the part with reasonable support, and they are off her own baseline of quick-on, quick-off. That earns you "this one is different", which is a modest claim. It does not earn you "fake", and it certainly does not tell you which feeling sits underneath. Notice how tempting option 2 is, and how much it assumes.',
+    explain: 'The *dynamics* — onset speed, duration, how it decays — are the part with reasonable support, and they are off her own baseline of quick-on, quick-off. That earns you "this one is different", which is a modest claim. It does not earn you "fake", and it certainly does not tell you which feeling sits underneath. Notice how tempting "a fake smile" is, and how much it assumes.',
     myth: 'The famous test — a real smile crinkles the eyes, a fake one does not — does not hold. The eye muscle turns out to be voluntarily controllable by most people, and studies find the "genuine" marker present in somewhere between 56% and 71% of deliberately posed smiles. It is one of the most confidently repeated and least reliable cues in circulation.',
   },
   {
@@ -104,7 +104,7 @@ export const BASELINES = [
       { t: 'He does not remember the evening clearly.', ok: false },
       { t: 'He is protecting someone else who was present.', ok: false },
     ],
-    explain: 'What you can say is narrow and it is the only thing worth saying: his register changed at a specific point in the account. That is an observation about *language*, and it marks which minutes to go back to. Options 2, 3 and 4 all leap to a cause, and the evidence does not reach any of them.',
+    explain: 'What you can say is narrow and it is the only thing worth saying: his register changed at a specific point in the account. That is an observation about *language*, and it marks which minutes to go back to. Lying, a hazy memory and protecting someone all leap to a cause, and the evidence does not reach any of them.',
     myth: 'You will read that liars drop first-person pronouns to distance themselves. The literature is far shakier than the confident version suggests: results are inconsistent across studies, several find no significant pronoun effect at all, and there is real concern that earlier successes were artefacts of particular datasets rather than a genuine signal. Treat a shift in register as a place to ask another question — never as a cue to deception.',
   },
   {
@@ -146,7 +146,7 @@ export const BASELINES = [
       { t: 'Nothing happened in that window worth describing.', ok: false },
       { t: 'She is compressing a boring administrative task, which is normal.', ok: false },
     ],
-    explain: 'Detail density is a channel most people never think to control, so it varies honestly — and a sharp local drop against a rich baseline is a real anomaly. Options 3 and 4 are entirely plausible explanations *for* that anomaly, which is the point: you have found a question, not an answer. The correct next move is to ask her to walk through those twenty minutes again, in reverse.',
+    explain: 'Detail density is a channel most people never think to control, so it varies honestly — and a sharp local drop against a rich baseline is a real anomaly. "Nothing worth describing" and "a boring task, compressed" are entirely plausible explanations *for* that anomaly, which is the point: you have found a question, not an answer. The correct next move is to ask her to walk through those twenty minutes again, in reverse.',
     myth: 'Asking for the account again in reverse order is a good move — but for a duller reason than you will read elsewhere. Early studies suggested it exposed liars by loading them cognitively; later replications did not reproduce the effect, and meta-analytic work does not support it as a lie-detection technique. It survives because it is a genuine memory aid: a different retrieval route surfaces detail the first pass missed.',
   },
 ];

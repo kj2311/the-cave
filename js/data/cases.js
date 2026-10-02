@@ -194,7 +194,7 @@ export const CASES = [
       { t: 'The mugs were washed from an earlier day.', ok: false },
     ],
     key: 1,
-    explain: 'Two mugs (fact 1) is weak on its own — anyone can use two mugs in an evening. The sugar bowl is what breaks it: fact 2 combined with fact 3 means the sugar was put out for someone whose taste is not hers. Note option 2 is *true-sounding* but weaker than option 1; "forgotten to mention" imports a motive the evidence has not earned.',
+    explain: 'Two mugs (fact 1) is weak on its own — anyone can use two mugs in an evening. The sugar bowl is what breaks it: fact 2 combined with fact 3 means the sugar was put out for someone whose taste is not hers. Note that "a visitor she has forgotten to mention" is *true-sounding* but weaker than "someone else was served a drink": "forgotten to mention" imports a motive the evidence has not earned.',
     principle: 'One anomaly is a question. An anomaly plus a known baseline is an answer.',
   },
   {
@@ -236,7 +236,7 @@ export const CASES = [
       { t: 'There is no anniversary; he is inventing one.', ok: false },
     ],
     key: 0,
-    explain: 'Everything here dates the *purchase*, not the motive. Fact 1 is decisive: an occasion known in advance gets bought in advance, somewhere better, further away. Facts 2 and 4 corroborate improvisation. Options 2 and 3 are both plausible stories and that is exactly the problem — the evidence cannot choose between them, so neither is defensible yet.',
+    explain: 'Everything here dates the *purchase*, not the motive. Fact 1 is decisive: an occasion known in advance gets bought in advance, somewhere better, further away. Facts 2 and 4 corroborate improvisation. The forgotten anniversary and the apology are both plausible stories, and that is exactly the problem — the evidence cannot choose between them, so neither is defensible yet.',
     principle: 'When two stories fit equally well, you have not solved it. Name what you actually know and go looking for the fact that separates them.',
   },
   {
@@ -257,7 +257,7 @@ export const CASES = [
       { t: 'The search was staged after the fact.', ok: false },
     ],
     key: 0,
-    explain: 'Fact 1 is a negative print — dust accumulates around what covers it, so the shape is a record of the missing object and roughly of how long it stood there. That is all it proves. Fact 2 says a search happened. Fact 3 says a window is unlatched, nothing more; entry is an assumption. Option 2 may well be true, but the evidence given cannot reach a motive.',
+    explain: 'Fact 1 is a negative print — dust accumulates around what covers it, so the shape is a record of the missing object and roughly of how long it stood there. That is all it proves. Fact 2 says a search happened. Fact 3 says a window is unlatched, nothing more; entry is an assumption. Lying to protect the value may well be true, but the evidence given cannot reach a motive.',
     principle: 'Negative space is data. What is *not* there, and the shape of its absence, is often the cleanest fact in the room.',
   },
   {
@@ -278,7 +278,7 @@ export const CASES = [
       { t: 'They are colleagues but not close.', ok: false },
     ],
     key: 1,
-    explain: 'Facts 1 and 3 — postural mirroring and verbal convergence — build within a single conversation, so on their own they are consistent with option 2. Fact 2 is not: moving out of someone\'s path without checking where they are requires a learned model of how that specific person moves. That is months, not minutes. Fact 4 is set dressing.',
+    explain: 'Facts 1 and 3 — postural mirroring and verbal convergence — build within a single conversation, so on their own they are consistent with having met earlier this evening. Fact 2 is not: moving out of someone\'s path without checking where they are requires a learned model of how that specific person moves. That is months, not minutes. Fact 4 is set dressing.',
     principle: 'Ask how long a behaviour takes to build. That duration is your lower bound on the relationship.',
   },
   {
@@ -299,7 +299,7 @@ export const CASES = [
       { t: 'The wrist brace dates it, since the injury is known.', ok: false },
     ],
     key: 1,
-    explain: 'This case is about knowing what each fact can and cannot carry. Short shadows give you time of day. Full leaf gives you season. Neither gives a year, so option 3 is *almost* right and fails only because fact 2 exists. A dated poster is an external clock — it anchors the image to a real calendar. Option 4 assumes knowledge the scene never gave you.',
+    explain: 'This case is about knowing what each fact can and cannot carry. Short shadows give you time of day. Full leaf gives you season. Neither gives a year, so "midday in a warm month, year unknowable" is *almost* right and fails only because fact 2 exists. A dated poster is an external clock — it anchors the image to a real calendar. Dating it by the wrist brace assumes knowledge the scene never gave you.',
     principle: 'Before combining facts, ask of each one: what class of question can this answer? Time, place, duration, identity? Mismatched facts do not stack.',
   },
 ];
