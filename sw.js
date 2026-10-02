@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v11';
+const CACHE = 'cave-v12';
 
 const SHELL = [
   './',
@@ -48,8 +48,10 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE)
       // addAll is all-or-nothing; add individually so one bad path
-      // cannot break the whole install.
-      .then(c => Promise.all(SHELL.map(u => c.add(u).catch(err => console.warn('[sw] skip', u, err)))))
+      // cannot break the whole install. `cache: 'reload'` skips the HTTP
+      // cache, so a new version can never precache a stale copy of a file.
+      .then(c => Promise.all(SHELL.map(u =>
+        c.add(new Request(u, { cache: 'reload' })).catch(err => console.warn('[sw] skip', u, err)))))
       .then(() => self.skipWaiting()),
   );
 });

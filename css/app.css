@@ -1147,6 +1147,32 @@ details.bwarm p { margin-top: 10px; font-size: 15px; }
   font-weight: 700;
 }
 .bx__lvl { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
+
+/* Warm-up sets: a row of small plates. Tapped = done, which inverts,
+   the same way a selected week or day does. They are never inputs. */
+.bwu { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--rule-hi); }
+.bwu__k { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.bwu__note { font-family: var(--mono); font-size: 10.5px; line-height: 1.45; color: var(--dim); }
+.bwu__sets { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.bwu__set {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule-hi);
+  background: var(--black);
+  color: var(--silver);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.bwu__set:active { background: var(--surface-2); }
+.bwu__set[aria-pressed="true"] { background: var(--silver-hi); border-color: var(--silver-hi); color: var(--black); }
+.bwu__tick { font-weight: 700; }
 .bsel {
   flex: 1;
   min-width: 0;

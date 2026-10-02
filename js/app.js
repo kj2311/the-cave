@@ -337,7 +337,7 @@ function viewLesson(id) {
     if (b.ul) return h('ul', ...b.ul.map(li => h('li', { html: mdish(li) })));
     if (b.pull) return h('div.pull', { html: mdish(b.pull) });
     if (b.myth) return h('div.reveal.reveal--myth',
-      h('div.reveal__title', 'Correction'), h('div', { html: mdish(b.myth) }));
+      h('div.reveal__title', t('codex.myth')), h('div', { html: mdish(b.myth) }));
     return null;
   }).filter(Boolean);
 
@@ -621,7 +621,7 @@ function viewProfile() {
         ? h('div', ...s.history.slice(-8).reverse().map(x => {
             const d = byId(x.drill);
             return h('div.row.row--between', { style: { padding: '7px 0' } },
-              h('span', { style: { fontSize: '14px' } }, d ? d.name : x.drill),
+              h('span', { style: { fontSize: '14px' } }, d ? drillName(d) : x.drill),
               h('span.mono.faint', { style: { fontSize: '12px' } },
                 `${fmtDate(x.ts)} · ${Math.round(x.pct * 100)}%  +${x.xp}`),
             );

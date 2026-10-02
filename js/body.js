@@ -105,7 +105,8 @@ const filled = (v) => v !== '' && v != null && v !== false;
 function hasData(en) {
   if (!en) return false;
   return Object.keys(en).some((k) => {
-    if (k === 'alt' || k === 'level') return false;
+    // Warm-up ticks are not training data: they never make a session count.
+    if (k === 'alt' || k === 'level' || k === 'wu') return false;
     const v = en[k];
     if (Array.isArray(v)) {
       return v.some((s) => s != null && (typeof s === 'object' ? Object.values(s).some(filled) : filled(s)));
@@ -686,6 +687,13 @@ function exPanel(ex, w, d) {
     kids.push(row);
   }
 
+  // Heavy lifts get their ramp-up sets, worked out from the working weight.
+  if (o.type === 'load' && o.compound) {
+    const wu = warmBlock(o, w, d, key, r.altOn, () => workKg(o, entry(w, d, key) || {}, prev, hint));
+    live.push(wu.paint);
+    kids.push(wu.el);
+  }
+
   if (o.levels) {
     const cur = en.level || (pe && pe.level) || '';
     levelSel = h('select.bsel', { 'aria-label': t('body.variant') },
@@ -709,6 +717,105 @@ function exPanel(ex, w, d) {
   kids.push(inputsFor(o, en, pe, w, d, key, onChange, live));
   panel = h(`div.panel.bx${o.optional ? '.is-optional' : ''}`, kids);
   return panel;
+}
+
+/* ---------- warm-up sets ---------- */
+
+/*
+  Ramp-up sets before a heavy lift: rising weight, falling reps, nothing
+  tiring. Barbell lifts start at the empty bar (squat at 80 kg:
+  bar × 8 → 40 × 5 → 55 × 3 → 67.5 × 1–2, as in the rules); the trap bar
+  starts at about 40%; weighted pull-ups and dips start at bodyweight and
+  ramp the added kilos. Without a working weight the sheet shows the
+  percentages instead.
+*/
+const BAR = 20;
+const roundTo = (x, step) => Math.round(x / step) * step;
+
+const WU_SCHEMES = {
+  barbell: [[0, '8'], [0.5, '5'], [0.7, '3'], [0.85, '1–2']],   // 0 = the empty bar
+  trapbar: [[0.4, '5'], [0.6, '3'], [0.8, '1–2']],
+  rdl:     [[0, '8'], [0.5, '5'], [0.75, '3']],
+  plus:    [[0, '5'], [0.5, '3'], [0.8, '1']],                  // 0 = bodyweight
+};
+
+function wuKind(o, altOn) {
+  if (o.plus) return 'plus';
+  if (o.id === 'tbdl') return altOn ? 'rdl' : 'trapbar';
+  return 'barbell';
+}
+
+/** The weight the warm-up climbs towards: today's heaviest typed set, else
+    last time's top set, plus a step when the hint says go heavier. */
+function workKg(o, en, prev, hint) {
+  const kgs = (s) => (s || []).map((x) => (x ? num(x.kg) : null)).filter((v) => v != null);
+  const now = kgs(en.s);
+  if (now.length) return Math.max(...now);
+  if (!prev) return null;
+  const then = kgs(prev.en.s);
+  if (!then.length) return null;
+  let k = Math.max(...then);
+  if (hint && hint.up && Array.isArray(o.step)) k += o.step[0];
+  return k;
+}
+
+function warmupSets(kind, work) {
+  const scheme = WU_SCHEMES[kind];
+  const plus = kind === 'plus';
+  const base = plus ? 'BW' : t('body.wu.bar');
+  if (work == null) {
+    return scheme.map(([f, reps]) => ({
+      txt: `${f === 0 ? base : `${plus ? '+' : ''}${Math.round(f * 100)}%`} × ${reps}`,
+    }));
+  }
+  const step = plus ? 1.25 : 2.5;
+  const out = [];
+  let last = null;
+  for (const [f, reps] of scheme) {
+    if (f === 0) {
+      // At or below the empty bar, one easy set is the whole warm-up.
+      if (!plus && work <= BAR) return [{ txt: `${base} × 10` }];
+      out.push({ txt: `${base} × ${reps}` });
+      last = plus ? 0 : BAR;
+      continue;
+    }
+    const kg = roundTo(work * f, step);
+    if (plus ? kg < 2.5 : kg < BAR) continue;   // lighter than the bar, or a token plate
+    if (last != null && kg <= last) continue;    // no repeated weights
+    if (kg >= work) continue;                    // never at working weight
+    last = kg;
+    out.push({ txt: `${plus ? '+' : ''}${nf(kg)} kg × ${reps}` });
+  }
+  return out.length ? out : [{ txt: `${base} × 10` }];
+}
+
+/** A row of tappable warm-up sets. Ticks are kept, but never count as data. */
+function warmBlock(o, w, d, key, altOn, getWork) {
+  const wrap = h('div.bwu');
+  const paint = () => {
+    const work = getWork();
+    const sets = warmupSets(wuKind(o, altOn), work);
+    const ticks = (entry(w, d, key) || {}).wu || [];
+    wrap.replaceChildren(
+      h('div.bwu__k',
+        h('span.label', t('body.wu')),
+        h('span.bwu__note', work == null ? t('body.wu.need') : t('body.wu.note'))),
+      h('div.bwu__sets', sets.map((s, i) => {
+        const on = !!ticks[i];
+        const b = h('button.bwu__set', { type: 'button', 'aria-pressed': String(on) },
+          on ? h('span.bwu__tick', '✓') : null, s.txt);
+        b.addEventListener('click', () => {
+          const cur = !!((entry(w, d, key) || {}).wu || [])[i];
+          setVal(w, d, ['ex', key, 'wu', i], !cur);
+          buzz(8);
+          paint();
+        });
+        return b;
+      })),
+    );
+  };
+  paint();
+  return { el: wrap, paint };
 }
 
 /** Copy last session's weights into the empty kg fields. Reps stay blank. */

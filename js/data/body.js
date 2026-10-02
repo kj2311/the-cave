@@ -159,7 +159,7 @@ export const RULES = [
     '**RIR** (reps in reserve) is how many more reps you could have done. Weeks 1–2: heavy compounds at 2–3 RIR. From week 3: the RIR given in the session. No grinders.',
     '**Double progression.** When every set reaches the top of the range with the same technique, the weight goes up and you start again at the bottom. With 4 × 4–6: 5/5/4/4 → 6/5/5/5 → 6/6/6/5 → 6/6/6/6 → heavier.',
     '**Steps.** Weighted pull-up and dip +1.25–2.5 kg · bench +1–2.5 kg · squat and deadlift +2.5–5 kg · accessories the smallest step available.',
-    '**Warm-up sets.** 3–4 rising sets, fewer reps as it gets heavier. Squat at 80 kg: bar × 8 → 40 × 5 → 55 × 3 → 67.5 × 1–2 → work sets. Accessories need 0–1.',
+    '**Warm-up sets.** 3–4 rising sets, fewer reps as it gets heavier. Squat at 80 kg: bar × 8 → 40 × 5 → 55 × 3 → 67.5 × 1–2 → work sets. For the heavy lifts the session sheet works them out from your working weight; tick them off as you go. They should never tire you, and they do not count as work sets. Accessories need 0–1.',
     '**Supersets (A1 ⇄ A2).** Set A1, 60–90 s rest, set A2, 60–90 s, back to A1. For heavy compounds 90–120 s. Each exercise still gets about 3 minutes between its own sets, in far less time. Gym too busy? Do them separately with about 3 minutes rest.',
     '**Skills first and often.** 5–10 minutes of handstand in every strength session. Short and frequent learns faster than long and rare. Stop as soon as your balance clearly gets worse.',
     '**Autoregulation.** Slept badly or feeling ill: drop the last set of each exercise and sprint at 90% at most. Sprint time or jump distance clearly dropping: stop that block. Sharp or joint pain: stop that exercise; muscle soreness is fine. Fever: no training.',
@@ -187,5 +187,6 @@ export const RULES = [
     { t: 'In adults under 65 who lift, extra protein added measurable lean mass from about 1.6 g/kg a day.', a: 'Nunes et al., 2022', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8978023/' },
     { t: 'Teenagers aged 13–18 should sleep 8–10 hours per 24 hours.', a: 'Paruthi et al., 2016 (AASM)', u: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5866' },
     { t: 'Running paces come from your own 8 km time through the VDOT formula of Daniels and Gilbert.', a: 'Daniels\' Running Formula', u: null },
+    { t: 'Warm-ups with heavy, dynamic sets improved upper-body strength and power; short static stretching did nothing for power (31 studies).', a: 'McCrary et al., 2015', u: 'https://bjsm.bmj.com/content/49/14/935' },
   ] },
 ];

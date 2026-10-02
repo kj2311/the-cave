@@ -107,7 +107,7 @@ export const BODY_NL = {
       '**RIR** (reps in reserve) is hoeveel reps je nog had gekund. Week 1–2: zware compounds op 2–3 RIR. Vanaf week 3: de RIR die bij de oefening staat. Geen grinders.',
       '**Dubbele progressie.** Haal je op álle sets de bovenkant van de range met dezelfde techniek, dan gaat het gewicht omhoog en begin je weer onderaan. Bij 4 × 4–6: 5/5/4/4 → 6/5/5/5 → 6/6/6/5 → 6/6/6/6 → zwaarder.',
       '**Stappen.** Weighted pull-up en dip +1,25–2,5 kg · bench +1–2,5 kg · squat en deadlift +2,5–5 kg · accessoires de kleinste stap die er is.',
-      '**Opwarmsets.** 3–4 oplopende sets, minder reps naarmate het zwaarder wordt. Squat met 80 kg: bar × 8 → 40 × 5 → 55 × 3 → 67,5 × 1–2 → werksets. Accessoires: 0–1.',
+      '**Opwarmsets.** 3–4 oplopende sets, minder reps naarmate het zwaarder wordt. Squat met 80 kg: bar × 8 → 40 × 5 → 55 × 3 → 67,5 × 1–2 → werksets. Bij de zware lifts rekent het logboek ze uit vanaf je werkgewicht; vink ze af terwijl je gaat. Ze mogen je nooit moe maken en tellen niet als werkset. Accessoires: 0–1.',
       '**Supersets (A1 ⇄ A2).** Set A1, 60–90 s rust, set A2, 60–90 s, terug naar A1. Bij zware compounds 90–120 s. Elke oefening heeft zo nog ±3 minuten tussen z\'n eigen sets, in veel minder tijd. Te druk in de gym? Doe ze los met ±3 minuten rust.',
       '**Skills eerst en vaak.** 5–10 minuten handstand in elke krachtsessie. Kort en vaak leert sneller dan lang en weinig. Stop zodra je balans duidelijk slechter wordt.',
       '**Autoregulatie.** Slecht geslapen of ziekig: schrap de laatste set van elke oefening en sprint op max 90%. Sprinttijd of sprongafstand zakt merkbaar: stop dat blok. Scherpe pijn of gewrichtspijn: stop die oefening; spierpijn is oké. Koorts: niet trainen.',
@@ -135,6 +135,7 @@ export const BODY_NL = {
       { t: 'Bij volwassenen onder 65 die krachttrainen gaf extra eiwit pas vanaf ±1,6 g/kg per dag meetbaar meer spiermassa.' },
       { t: 'Tieners van 13–18 jaar horen 8–10 uur per 24 uur te slapen.' },
       { t: 'Je looppaces komen uit je eigen 8 km-tijd via de VDOT-formule van Daniels en Gilbert.' },
+      { t: 'Opwarmen met zware, dynamische sets verbeterde kracht en explosiviteit van het bovenlichaam; kort statisch rekken deed niets voor explosiviteit (31 studies).' },
     ] },
   ],
 };

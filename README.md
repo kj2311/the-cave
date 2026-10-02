@@ -39,6 +39,13 @@ checks the repo out and uploads it unchanged — no build step, nothing to hang.
 Source must be set to "GitHub Actions"** in repository settings for this to be used;
 switching it back to "Deploy from a branch" reintroduces Jekyll and the problem.
 
+**Updates reach a phone in two launches.** Navigations are network-first but every
+other file is cache-first, so the first launch after a deploy still runs the old
+JavaScript next to the new `index.html` while the new worker installs; the second
+launch runs the new version. Keep `index.html` compatible with the previous app.js
+for that one launch, and always bump `CACHE`. The worker precaches with
+`cache: 'reload'`, so it can never store a stale copy from the HTTP cache.
+
 Every path in the project is relative (`./`, `css/app.css`, `sw.js`), and the manifest
 uses `"start_url": "./"` with `"scope": "./"`, so the app works from a subpath such as
 `https://user.github.io/the-cave/` without changes.
@@ -215,6 +222,14 @@ in weeks 1 and 8. Week 4 is a deload.
   set reached the top of its rep range the card says to go heavier (double
   progression). Finishing today's session touches the streak, so the top-bar
   counter means "trained", mind or body.
+- **Warm-up sets.** The heavy lifts (squat, trap-bar deadlift or RDL, bench,
+  weighted pull-up and dip) show their ramp-up sets above the work sets,
+  worked out from today's heaviest typed set or, failing that, last time's
+  top set (plus a step when the card says go heavier): bar × 8 → 50% × 5 →
+  70% × 3 → 85% × 1–2, rounded to 2.5 kg (1.25 kg of added weight for
+  pull-ups and dips). With no weight known they show the percentages.
+  Tapping one ticks it off (`wu` in the exercise's log); ticks never make a
+  session count as logged.
 - **Storage.** Everything is in `state.body` inside the normal state, keyed
   `w<week>-<day>` (`w3-mon`). Export, restore and wipe include it.
 - **Paces are computed, not stored.** The quality and easy runs show paces
