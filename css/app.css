@@ -1281,6 +1281,17 @@ button.clip:active { transform: rotate(var(--rot, 0deg)) translateY(1px); }
 }
 .folder__b { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--ink-rule); font-size: 15.5px; line-height: 1.5; }
 .folder__m { margin-top: 8px; font-family: var(--type); font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+/* A pencilled note on the card: the skill as the character uses it. */
+.folder__jane {
+  margin-top: 10px;
+  padding: 8px 0 0 12px;
+  border-top: 1px dashed var(--ink-rule);
+  border-left: 2px solid var(--ink-rule);
+  font-size: 14.5px;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--ink-2);
+}
 
 /* ---------- logbook ---------- */
 

@@ -194,6 +194,7 @@ function viewTrain() {
     h('section.paper.sheet',
       h('header.sheet__head', h('span', t('train.label')), h('span', t('train.count', { n: DRILLS.length }))),
       h('h1.sheet__title', t('train.heading')),
+      h('p.sheet__text', t('train.jane')),
       h('p.sheet__text', t('train.intro', { max: MAX_LEVEL, mastery: Math.round(MASTERY * 100) })),
       h('p.sheet__small', t('train.intro2')),
     ),
@@ -217,6 +218,8 @@ function viewTrain() {
           h('span.folder__lvl', t('train.lv', { n: lvl })),
         ),
         h('div.folder__b', drillBlurb(d)),
+        // What this skill looks like in the hands of the character it is modelled on.
+        h('div.folder__jane', t(`jane.${key}`)),
         h('div.folder__m',
           t('train.runs', { n: runs }),
           best !== undefined ? t('train.best', { p: Math.round(best * 100) }) : '',

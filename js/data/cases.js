@@ -203,9 +203,9 @@ export const CASES = [
     scene: 'A colleague mentions he gave up smoking two years ago.',
     facts: [
       'When a meeting turns tense, his hand goes to his left breast pocket, then stops.',
-      'When he rolls up his sleeves, you see a nicotine patch on his upper arm.',
+      'On the inside of his right index and middle finger there is a faint yellow stain, already fading.',
+      'Neither he nor his jacket smells of smoke, not even close up.',
       'He carries a lighter but no cigarettes.',
-      'His teeth are unstained.',
     ],
     question: 'What is the most defensible conclusion?',
     options: [
@@ -215,8 +215,8 @@ export const CASES = [
       { t: 'He never smoked and is inventing the history.', ok: false },
     ],
     key: 1,
-    explain: 'Fact 2 decides it. A nicotine patch is a quitting aid, usually worn for a few months after the last cigarette — not two years later. Fact 1 points the same way, the reach for cigarettes that are no longer there, but a habit like that can linger for a long time, so on its own it dates nothing. The lighter (fact 3) fits a recent stop, though some people simply carry one. Clean teeth (fact 4) argue against years of heavy smoking, not against stopping recently.',
-    principle: 'Some traces exist only for a short while after a change. Find one of those and you can date the change.',
+    explain: 'Fact 2 decides it. Skin renews itself, so a nicotine stain like that fades within weeks, a few months at most — it does not survive two years. A stain that is still there but fading means cigarettes not long ago. Fact 3 rules out the other reading: someone who still smokes carries the smell in their clothes and hair for days. Fact 1 is the habit, the reach for cigarettes that are no longer there, but a habit like that can linger for years, so on its own it dates nothing. The lighter (fact 4) fits a recent stop, though some people simply carry one.',
+    principle: 'Some traces fade at a known speed. Find one and you can date the change.',
   },
   {
     id: 'flowers',
@@ -266,9 +266,9 @@ export const CASES = [
     scene: 'Two people at a party tell you, separately, that they have never met.',
     facts: [
       'When he shifts his weight, she shifts hers within a second or two — repeatedly.',
-      'His phone lights up on the table beside you. The lock screen is a photo of the two of them, years younger, on a beach.',
+      'Passing him on her way to the kitchen, she takes a sip from his glass without asking. He does not even look up.',
       'She uses an unusual filler phrase; twenty minutes later, he uses it too.',
-      'They are standing at opposite ends of the room.',
+      'For most of the evening they stand at opposite ends of the room.',
     ],
     question: 'What is the most defensible conclusion?',
     options: [
@@ -278,8 +278,8 @@ export const CASES = [
       { t: 'They are colleagues but not close.', ok: false },
     ],
     key: 1,
-    explain: 'Facts 1 and 3 — copied posture and a copied phrase — can build within a single conversation, so on their own they fit two people who met earlier this evening. Fact 2 cannot: a photo of the two of them, years younger, as the picture he looks at every day, takes years and closeness. Colleagues who are not close do not end up on each other\'s lock screen. Fact 4 is set dressing.',
-    principle: 'Ask how long each clue takes to come about. The slowest one sets the minimum age of the relationship.',
+    explain: 'Facts 1 and 3 — copied posture and a copied phrase — can build within a single conversation, so on their own they fit two people who met earlier this evening. Fact 2 is different, and the important half is his: he does not react at all. A stranger who drank from your glass would get a look, a joke, a remark. He treats it as normal, and that kind of ease takes a long time to build. Fact 4 is set dressing; if anything, keeping apart all evening is what people do when they have agreed to look like strangers.',
+    principle: 'Watch for the reaction that does not come. What someone treats as normal tells you how well they know each other.',
   },
   {
     id: 'photo',

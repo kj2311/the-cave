@@ -192,9 +192,9 @@ export const CASES_NL = {
     scene: 'Een collega vertelt dat hij twee jaar geleden is gestopt met roken.',
     facts: [
       'Als een vergadering gespannen wordt, gaat zijn hand naar zijn linkerborstzak en stopt daar.',
-      'Als hij zijn mouwen opstroopt, zie je een nicotinepleister op zijn bovenarm.',
+      'Aan de binnenkant van zijn rechterwijsvinger en -middelvinger zit een lichtgele vlek. Die is al aan het vervagen.',
+      'Hij en zijn jas ruiken helemaal niet naar rook, ook niet van dichtbij.',
       'Hij heeft een aansteker bij zich, maar geen sigaretten.',
-      'Zijn tanden zijn niet verkleurd.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
@@ -203,8 +203,8 @@ export const CASES_NL = {
       'Hij is twee jaar geleden gestopt, precies zoals hij zegt.',
       'Hij heeft nooit gerookt en verzint het hele verhaal.',
     ],
-    explain: 'Aanwijzing 2 beslist het. Een nicotinepleister is een hulpmiddel om te stoppen. Meestal gebruik je die een paar maanden na je laatste sigaret, niet twee jaar later. Aanwijzing 1 wijst dezelfde kant op: zijn hand zoekt sigaretten die er niet meer zijn. Maar zo\'n gewoonte kan lang blijven hangen, dus op zich zegt die niets over wanneer hij stopte. De aansteker (aanwijzing 3) past bij pas gestopt, al hebben sommige mensen er gewoon een bij zich. Schone tanden (aanwijzing 4) pleiten tegen jarenlang zwaar roken, niet tegen pas gestopt zijn.',
-    principle: 'Sommige sporen bestaan maar kort na een verandering. Vind er zo een, en je weet wanneer de verandering was.',
+    explain: 'Aanwijzing 2 beslist het. Je huid vernieuwt zich, dus zo\'n nicotinevlek verdwijnt binnen een paar weken, hooguit een paar maanden. Twee jaar houdt hij het niet vol. Een vlek die er nog is, maar vervaagt, betekent dat hij kort geleden nog rookte. Aanwijzing 3 sluit de andere lezing uit: wie nog rookt, ruikt er dagenlang naar, in zijn kleren en haar. Aanwijzing 1 is de gewoonte: zijn hand zoekt sigaretten die er niet meer zijn. Maar zo\'n gewoonte kan jaren blijven hangen, dus op zich zegt die niets over wanneer hij stopte. De aansteker (aanwijzing 4) past bij pas gestopt, al hebben sommige mensen er gewoon een bij zich.',
+    principle: 'Sommige sporen verdwijnen in een vast tempo. Vind er zo een, en je weet ongeveer wanneer iets veranderde.',
   },
 
   flowers: {
@@ -252,9 +252,9 @@ export const CASES_NL = {
     scene: 'Op een feest spreek je twee mensen, los van elkaar. Allebei zeggen ze dat ze elkaar nog nooit hebben ontmoet.',
     facts: [
       'Als hij zijn gewicht verplaatst, doet zij dat binnen een seconde of twee ook. Steeds weer.',
-      'Zijn telefoon licht op, op de tafel naast je. Op het vergrendelscherm staat een foto van hen samen, jaren jonger, op een strand.',
+      'Op weg naar de keuken loopt ze langs hem en neemt ze zonder te vragen een slok uit zijn glas. Hij kijkt niet eens op.',
       'Zij gebruikt een ongewoon stopwoordje. Twintig minuten later gebruikt hij het ook.',
-      'Ze staan aan de twee uiteinden van de kamer.',
+      'Het grootste deel van de avond staan ze aan de twee uiteinden van de kamer.',
     ],
     question: 'Welke conclusie past het best bij de aanwijzingen?',
     options: [
@@ -263,8 +263,8 @@ export const CASES_NL = {
       'Hij valt op haar en doet haar onbewust na.',
       'Het zijn collega\'s, maar geen goede vrienden.',
     ],
-    explain: 'Aanwijzing 1 en 3, de nagedane houding en het overgenomen stopwoordje, kunnen ontstaan in één gesprek. Op zich passen ze dus bij twee mensen die elkaar eerder vanavond ontmoetten. Aanwijzing 2 niet. Een foto van hen samen, jaren jonger, als het plaatje dat hij elke dag ziet: daar zijn jaren en een goede band voor nodig. Collega\'s die niet close zijn, zetten elkaar niet op hun vergrendelscherm. Aanwijzing 4 is decor.',
-    principle: 'Vraag je bij elke aanwijzing af hoe lang die nodig had om te ontstaan. De traagste bepaalt hoe lang ze elkaar minstens kennen.',
+    explain: 'Aanwijzing 1 en 3, de nagedane houding en het overgenomen stopwoordje, kunnen ontstaan in één gesprek. Op zich passen ze dus bij twee mensen die elkaar eerder vanavond ontmoetten. Aanwijzing 2 is anders, en het belangrijkste deel is zíjn deel: hij reageert helemaal niet. Een vreemde die uit jouw glas drinkt, krijgt een blik, een grapje of een opmerking. Hij vindt het normaal, en zo\'n vanzelfsprekendheid groeit pas na lange tijd. Aanwijzing 4 is decor. Als het al iets zegt: de hele avond uit elkaar blijven, is wat mensen doen die hebben afgesproken om vreemden te spelen.',
+    principle: 'Let op de reactie die uitblijft. Wat iemand normaal vindt, verraadt hoe goed ze elkaar kennen.',
   },
 
   photo: {
