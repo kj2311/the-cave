@@ -802,6 +802,38 @@ mark, .hl {
   color: rgba(22,22,26,.62);
 }
 
+/* A print of the scene, stapled into the case file: whiter photo stock,
+   a wider bottom margin for the typed label, a steel staple. */
+.case-photo {
+  position: relative;
+  width: 86%;
+  margin: 16px 0 8px 2px;
+  padding: 7px 7px 28px;
+  background: #f4f2ec;
+  box-shadow: 1px 1px 0 rgba(22,22,26,.2);
+  transform: rotate(-1.2deg);
+}
+.case-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; }
+.case-photo figcaption {
+  position: absolute;
+  left: 9px;
+  bottom: 7px;
+  font-family: var(--type);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.case-photo::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 22px;
+  width: 26px;
+  height: 7px;
+  border: 2px solid #8b9099;
+  border-bottom: 0;
+  transform: rotate(-4deg);
+}
+
 /* Typed briefing sheet — missions. Same stock, plainer furniture. */
 .dossier--brief { padding-left: 42px; }
 .dossier--brief .dossier__lede { font-size: 16.5px; }

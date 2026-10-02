@@ -29,11 +29,11 @@ def crop32(img):
     return img.crop((0, y0, w, y0 + nh))
 
 
-def tone(gray):
+def tone(gray, lift=0.72):
     a = gray.astype(np.float64) / 255.0
     lo, hi = np.percentile(a, 0.8), np.percentile(a, 99.6)
     a = np.clip((a - lo) / max(1e-6, hi - lo), 0, 1)
-    a = a ** 0.72                                 # lift the mid-tones
+    a = a ** lift                                 # lift the mid-tones (lower = lighter)
     k = 1.0 - a
     k = np.clip(0.5 + (k - 0.5) * 1.22, 0, 1)    # a little more snap
     return np.clip(0.02 + 0.88 * k, 0, 1)         # at most ~90% ink, as on cheap paper
@@ -49,12 +49,12 @@ def screen(k, cell, angle=45.0):
     return (spot > 1.0 - 2.0 * k).astype(np.float64)
 
 
-def print_photo(src, w, h, cell, ss=3):
+def print_photo(src, w, h, cell, ss=3, lift=0.72):
     g = src.convert('L').resize((w * ss, h * ss), Image.LANCZOS)
     g = g.filter(ImageFilter.GaussianBlur(radius=ss * 0.6))
     g = g.filter(ImageFilter.UnsharpMask(radius=ss * 24, percent=45, threshold=0))
     g = g.filter(ImageFilter.UnsharpMask(radius=ss * 2, percent=80, threshold=2))
-    ink = screen(tone(np.asarray(g)), cell * ss)
+    ink = screen(tone(np.asarray(g), lift), cell * ss)
     im = Image.fromarray((ink * 255).astype(np.uint8), 'L').resize((w, h), Image.BOX)
     alpha = (np.round(np.asarray(im) / 127.5) * 127.5).clip(0, 255).astype(np.uint8)
     rgba = np.zeros((h, w, 4), np.uint8)

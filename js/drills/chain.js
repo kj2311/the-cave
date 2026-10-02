@@ -16,6 +16,21 @@ import { t, tips } from '../i18n.js';
 /** More case files per sitting as the level climbs. */
 const perRunFor = (level) => (level >= 7 ? 5 : level >= 4 ? 4 : 3);
 
+/**
+ * A print of the place, stapled into the file. It shows the setting and
+ * never the clue: a photo of the decisive detail would answer the second
+ * question for you. If the print cannot load, the file goes without.
+ */
+function scenePhoto(c) {
+  const img = h('img', {
+    src: `img/cases/${c.id}.webp`, alt: `${t('doc.photo')}: ${c.title}`,
+    width: 720, height: 480, decoding: 'async',
+  });
+  const fig = h('figure.case-photo', img, h('figcaption', t('doc.photo')));
+  img.addEventListener('error', () => fig.remove());
+  return fig;
+}
+
 export default {
   id: 'chain',
   name: 'The Chain',
@@ -60,6 +75,7 @@ export default {
         stamp: t('doc.open'),
         title: c.title,
         lede: c.scene,
+        extra: [scenePhoto(c)],
         factsLabel: t('doc.observations'),
         facts: c.facts,
       });

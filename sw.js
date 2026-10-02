@@ -5,7 +5,7 @@
    old version is served from cache forever.
    ============================================================ */
 
-const CACHE = 'cave-v16';
+const CACHE = 'cave-v17';
 
 const SHELL = [
   './',
@@ -63,6 +63,21 @@ const SHELL = [
   'img/codex/l-toolkit-s.webp',
   'img/codex/l-interview-s.webp',
   'img/codex/l-sources-s.webp',
+  // Scene photos for the case files: the deduction drill must work offline.
+  'img/cases/chef.webp',
+  'img/cases/ice.webp',
+  'img/cases/car.webp',
+  'img/cases/run.webp',
+  'img/cases/interp.webp',
+  'img/cases/tanline.webp',
+  'img/cases/switch.webp',
+  'img/cases/cardstock.webp',
+  'img/cases/sugar.webp',
+  'img/cases/lighter.webp',
+  'img/cases/flowers.webp',
+  'img/cases/dust.webp',
+  'img/cases/mirror.webp',
+  'img/cases/photo.webp',
 ];
 
 self.addEventListener('install', (e) => {

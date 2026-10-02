@@ -112,6 +112,11 @@ a wrong pick is struck through, a done item gets a rubber stamp.
   ink on a transparent ground (`img/codex/<id>.webp`, and `-s` for the list
   thumbnail), so the newsprint shows through the dots. `tools/halftone.py`
   does the screening; run every new image through it so they stay one style.
+- **Scene photos in the case files.** Each case in The Chain has a print of the
+  place, stapled into the file under the scene (`img/cases/<case id>.webp`).
+  It shows the setting and never the clue: a photo of the decisive detail
+  would answer the second question for the player. Night scenes are screened
+  a little lighter (`lift=0.58`) so they do not swamp the page.
 - **The Body tab and the chrome stay instruments.** Nothing in the paperwork
   section styles a shared class globally; drill paperwork is scoped under `.case`.
 
@@ -153,6 +158,7 @@ js/
 fonts/                  Special Elite + Old Standard TT bold, with licences
 img/                    grain.png (paper fibre), wear.png (stamp wear mask)
   codex/                halftone press photos for the archive (+ -s thumbnails)
+  cases/                halftone scene photos for the case files
 tools/
   serve.ps1             static server (no Node/Python on this machine)
   make-icons.ps1        regenerates the icon set via System.Drawing

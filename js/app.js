@@ -259,6 +259,7 @@ function viewCodex() {
           h('p.clip__deck', l.teaser),
           h('img.clip__thumb', {
             src: `img/codex/${raw.id}-s.webp`, alt: '', width: 336, height: 224, loading: 'lazy', decoding: 'async',
+            onerror: (e) => e.target.remove(),
           })),
         h('div.clip__foot',
           h('span.clip__mins', t('codex.mins', { n: l.mins })),
@@ -297,7 +298,11 @@ function viewLesson(id) {
         h('p.clip__deck', l.teaser),
         // The press photo: a halftone print, captioned the way a paper does it.
         h('figure.news-photo',
-          h('img', { src: `img/codex/${raw.id}.webp`, alt: l.caption || '', width: 960, height: 640, decoding: 'async' }),
+          h('img', {
+            src: `img/codex/${raw.id}.webp`, alt: l.caption || '', width: 960, height: 640, decoding: 'async',
+            // Offline before this article was ever opened: drop the print, keep the article.
+            onerror: (e) => e.target.closest('figure')?.remove(),
+          }),
           l.caption
             ? h('figcaption', l.caption, h('span.news-photo__credit', t('codex.photoCredit')))
             : null),

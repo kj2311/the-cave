@@ -558,6 +558,7 @@ const STRINGS = {
     'doc.onFile': 'On file',
     'doc.filed': 'Filed',
     'doc.decisive': 'Decisive observation, highlighted.',
+    'doc.photo': 'Photo of the scene',
 
     'q.total': 'How many objects were in the scene in total?',
     'q.fillCount': ({ f }) => `How many ${f} objects were there?`,
@@ -1023,6 +1024,7 @@ const STRINGS = {
     'doc.onFile': 'In dossier',
     'doc.filed': 'Gedaan',
     'doc.decisive': 'Doorslaggevende aanwijzing, gemarkeerd.',
+    'doc.photo': 'Foto van de plek',
 
     'q.total': 'Hoeveel vormen zag je in totaal?',
     'q.fillCount': ({ f }) => `Hoeveel ${f} vormen waren er?`,
